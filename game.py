@@ -1,29 +1,28 @@
 import sys, pygame
 
-def Init():
-    pass
+class Game:
+    def __init__(self, size):
+        self.is_running = True
+        
+        pygame.init()
+        self.window = pygame.display.set_mode(size)
+        self.screen = pygame.display.get_surface() 
+        pygame.display.set_caption("Epic Adventure")
 
-pygame.init()
 
-size = width, height = 320, 240
-speed = [1.2, 1.2]
-black = 0, 0, 0
-
-screen = pygame.display.set_mode(size)
-
-ball = pygame.image.load("data/ball.png")
-ballrect = ball.get_rect()
-
-while 1:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT: sys.exit()
-    
-    ballrect = ballrect.move(speed)
-    if ballrect.left < 0 or ballrect.right > width:
-        speed[0] = -speed[0]
-    if ballrect.top < 0 or ballrect.bottom > height:
-        speed[1] = -speed[1]
-    
-    screen.fill(black)
-    screen.blit(ball, ballrect)
-    pygame.display.flip()
+    def run(self):
+        while self.is_running:
+            # event handling
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.is_running = False
+                    
+            # update game
+                    
+            
+            # swap buffers
+            pygame.display.flip()
+            
+if __name__ == '__main__':
+    g = Game((320, 240))
+    g.run()

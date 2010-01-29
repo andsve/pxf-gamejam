@@ -4,6 +4,7 @@ from pygame.locals import *
 import player
 import stage
 import gameobject
+import util
 
 class Game:
     def __init__(self, size):       
@@ -13,6 +14,7 @@ class Game:
         pygame.mouse.set_visible(0)
         self.clock = pygame.time.Clock()
         self.is_running = True
+        util.load_sound("lol")
 
     def update_title(self):
         pygame.display.set_caption("Epic Adventure (%.2f FPS)" % (self.clock.get_fps()))

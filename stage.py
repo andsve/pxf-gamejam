@@ -10,8 +10,9 @@ class Stage:
     def load(self):
         pass
         
-    def draw(self, canvas):
+    def draw(self,canvas,camera_pos):
         for tile in self.tiles:
+            #discard items that should not be drawn
             tile.draw(canvas)
             
 class Stage1(Stage):

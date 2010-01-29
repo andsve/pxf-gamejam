@@ -3,7 +3,6 @@ import pygame
 
 class GameObject:
     def __init__(self, pos, sprite):
-        Sprite.__init__(self)
         self.pos = pos
         self.sprite = sprite
         
@@ -11,4 +10,12 @@ class GameObject:
         pass
     
     def draw(self, canvas):
-        canvas.blit(self.sprite, self.pos)
+        canvas.blit(self.sprite.image, self.pos, None, pygame.BLEND_ADD)
+        
+        
+class StaticBlock(GameObject):
+    def __init__(self, pos, sprite):
+        GameObject.__init__(self, pos, sprite)
+
+    def update(self):
+        pass

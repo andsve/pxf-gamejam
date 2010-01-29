@@ -15,6 +15,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.is_running = True
         self.bg_music = util.load_sound("test.ogg")
+        self.current_stage = stage.Stage1()
 
     def update_title(self):
         pygame.display.set_caption("Epic Adventure (%.2f FPS)" % (self.clock.get_fps()))
@@ -35,7 +36,7 @@ class Game:
                     self.handle_input(event)
                     
             # update game
-            
+            self.current_stage.draw(self.screen)
             
             # fps limit
             self.clock.tick(60)

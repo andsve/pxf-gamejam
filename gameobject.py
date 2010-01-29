@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
 class GameObject:
-    pass
+    def __init__(self, pos):
+        self.pos = pos
 

@@ -1,19 +1,19 @@
 import sys, pygame
 
 import player
-import level
+import stage
 import gameobject
 
 class Game:
     def __init__(self, size):       
         pygame.init()
         self.window = pygame.display.set_mode(size)
-        self.screen = pygame.display.get_surface() 
-        pygame.display.set_caption("Epic Adventure")
-
+        self.screen = pygame.display.get_surface()
+        self.clock = pygame.time.Clock()
         self.is_running = True
-        self.game_objects = []
-        self.current_level = None
+
+    def update_title(self):
+        pygame.display.set_caption("Epic Adventure (%.2f FPS)" % (self.clock.get_fps()))
 
     def run(self):
         while self.is_running:
@@ -25,6 +25,9 @@ class Game:
             # update game
             
             
+            # fps limit
+            self.clock.tick(60)
+            self.update_title()
             # swap buffers
             pygame.display.flip()
             

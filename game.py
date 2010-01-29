@@ -14,12 +14,14 @@ class Game:
         pygame.mouse.set_visible(0)
         self.clock = pygame.time.Clock()
         self.is_running = True
-        util.load_sound("lol")
+        self.bg_music = util.load_sound("test.ogg")
 
     def update_title(self):
         pygame.display.set_caption("Epic Adventure (%.2f FPS)" % (self.clock.get_fps()))
 
-    def handle_input(self, event):        
+    def handle_input(self, event):
+        if event.key == K_SPACE:
+            self.bg_music.play()
         if event.key == K_ESCAPE:
             self.is_running = False
 

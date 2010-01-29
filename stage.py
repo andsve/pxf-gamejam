@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import pygame
-import utils
+import util
 
 class Stage:
     def __init__(self):
@@ -21,8 +21,8 @@ class Stage1(Stage):
         
     def load(self):
         import gameobject
-        green_sprite = utils.load_sprite("data/red_block16.png")
-        blue_sprite = utils.load_sprite("data/blue_block16.png")
+        green_sprite = util.load_sprite("data/red_block16.png")
+        blue_sprite = util.load_sprite("data/blue_block16.png")
         self.tiles.append(gameobject.StaticBlock((0, 0), green_sprite))
         self.tiles.append(gameobject.StaticBlock((0, 0), blue_sprite))
 

@@ -5,6 +5,7 @@ import player
 import stage
 import gameobject
 import util
+import camera
 
 class Game:
     def __init__(self, size):       
@@ -16,6 +17,7 @@ class Game:
         self.is_running = True
         self.bg_music = util.load_sound("data/Test.ogg")
         self.current_stage = stage.Stage1()
+        #self.camera = Camera(None)
 
     def update_title(self):
         pygame.display.set_caption("Epic Adventure (%.2f FPS)" % (self.clock.get_fps()))

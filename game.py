@@ -1,14 +1,19 @@
 import sys, pygame
 
+import player
+import level
+import gameobject
+
 class Game:
-    def __init__(self, size):
-        self.is_running = True
-        
+    def __init__(self, size):       
         pygame.init()
         self.window = pygame.display.set_mode(size)
         self.screen = pygame.display.get_surface() 
         pygame.display.set_caption("Epic Adventure")
 
+        self.is_running = True
+        self.game_objects = []
+        self.current_level = None
 
     def run(self):
         while self.is_running:
@@ -18,7 +23,7 @@ class Game:
                     self.is_running = False
                     
             # update game
-                    
+            
             
             # swap buffers
             pygame.display.flip()

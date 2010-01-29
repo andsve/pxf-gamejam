@@ -15,7 +15,7 @@ class Game:
         pygame.mouse.set_visible(0)
         self.clock = pygame.time.Clock()
         self.is_running = True
-        self.bg_music = util.load_sound("data/Test.ogg")
+        self.bg_music = util.load_sound("data/test.ogg")
         self.current_stage = stage.Stage1()
         #self.player = Player()
         #self.camera = Camera(self.player.pos)

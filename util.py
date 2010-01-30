@@ -5,51 +5,9 @@ import animatedsprite
 #import os.path
 
 class vec2:
-    def __init__(self):
-        self.x = 0
-        self.y = 0
-
-    def __init__(self, x, y):
+    def __init__(self, x = 0, y = 0):
         self.x = x
         self.y = y
-
-    def __repr__(self):
-        return "vec2(%d, %d)" % (self.x, self.y)
-
-    def __eq__(self, o):
-        return self.x == o.x and self.y == o.y
-
-    def __imul__(self, v):
-        self.x *= v
-        self.y *= v
-        return self
-
-    def __idiv__(self, v):
-        self.x /= v
-        self.y /= v
-        return self
-
-    def __iadd__(self, v):
-        self.x += v
-        self.y += v
-        return self
-
-    def __isub__(self, v):
-        self.x -= v
-        self.y -= v
-        return self
-
-    def __mul__(self, v):
-        return vec2(self.x * v.x, self.y * v.y)
-
-    def __div__(self, v):
-        return vec2(self.x / v.x, self.y / v.y)
-
-    def __add__(self, v):
-        return vec2(self.x + v.x, self.y + v.y)
-
-    def __sub__(self, v):
-        return vec2(self.x - v.x, self.y - v.y)
 
     def get(self):
         return (self.x, self.y)
@@ -58,9 +16,6 @@ class vec2:
         self.x = x
         self.y = y
 
-    def set(self, a):
-        self.x = a.x
-        self.y = a.y
 
 def load_sound(name):
     if pygame.mixer.get_init == None:

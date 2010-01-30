@@ -24,5 +24,5 @@ class StaticBlock(GameObject):
     def update(self,camera_pos):
 #        print str(self) + str(self.pos.get())
         print self.draw_pos
-        self.draw_pos.set(self.pos - camera_pos)
+        self.draw_pos.set(self.pos.x - camera_pos.x, self.pos.y - camera_pos.y)
         pass

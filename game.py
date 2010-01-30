@@ -32,8 +32,8 @@ class Game:
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
 
-        self.player = player.Player(util.vec2(4,25), self.space)
-        self.camera = camera.Camera(util.vec2(2,25),size)
+        self.player = player.Player(util.vec2(30,25), self.space)
+        self.camera = camera.Camera(util.vec2(30,25),size)
         self.current_stage = None
         # set color key to black
         #self.screen.set_colorkey(pygame.Color(0,0,0))
@@ -139,7 +139,7 @@ class Game:
                 object.update(self.camera.get_pos())
 
             # update camera
-            self.camera.set_lookat(util.vec2(self.player.sprite.rect.left, self.player.sprite.rect.right))
+            self.camera.set_lookat(util.vec2(self.player.body.position.x, self.player.body.position.y))
             self.camera.update()
 
             # update game

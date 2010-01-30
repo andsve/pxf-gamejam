@@ -59,11 +59,11 @@ class Game:
 
         if pygame.key.get_pressed()[K_LEFT]:
             self.player.look_dir = 1
-            self.player.move(-1.0, 0)
+            self.player.vel.x -= 0.9
 
         if pygame.key.get_pressed()[K_RIGHT]:
             self.player.look_dir = 0
-            self.player.move(1.0, 0)
+            self.player.vel.x += 0.9
             
         if pygame.key.get_pressed()[K_RETURN]:
             self.anim_test.play_animation()

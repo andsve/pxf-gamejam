@@ -9,6 +9,9 @@ class vec2:
         self.x = x
         self.y = y
 
+    def __repr__(self):
+        return "vec2(" + str(self.x) + ", " + str(self.y) + ")"
+
     def get(self):
         return (self.x, self.y)
 
@@ -37,7 +40,7 @@ def get_sequence(frames_names, sequence):
         if not cache.has_key(name): # check if it has benn loaded already
             image = pygame.image.load(name) # not optimized
             cache[name] = image
- 
+
         # constructs a sequence of frames equal to frames_names
         frames.append(cache[name])
     frames2 = []
@@ -45,7 +48,7 @@ def get_sequence(frames_names, sequence):
         # constructing the animation sequence according to sequence
         frames2.append(frames[idx])
     return frames2
- 
+
 def name_sequence(basename, ext, num, num_digits=1, offset=0):
     names = []
     # format string basename+zero_padded_number+.+ext
@@ -56,6 +59,16 @@ def name_sequence(basename, ext, num, num_digits=1, offset=0):
         print new_name
     return names
 
+def load_image(filename):
+    image = pygame.image.load(filename)
+    return image
+
+def to_sprite(image):
+    sprite = pygame.sprite.Sprite()
+    sprite.image = image
+    sprite.rect = image.get_rect()
+    return sprite
+"""
 def load_sprite(filename):
     global cache
     if not cache.has_key(filename): # check if it has benn loaded already
@@ -63,8 +76,9 @@ def load_sprite(filename):
         cache[filename] = image
     else:
         image = cache[filename]
-        
+
     sprite = pygame.sprite.Sprite()
     sprite.image = image
-    sprite.rect = image.get_rect()
+    sprite.rect = image.get_rect().copy()
     return sprite
+"""

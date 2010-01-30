@@ -6,12 +6,15 @@ class GameObject:
     def __init__(self, pos, sprite):
         self.dir = util.vec2(0, 0) # direction
         self.vel = util.vec2(0, 0) # velocity in pixels/frame
+        self.delta_move = util.vec2(0, 0)
         self.draw_pos = util.vec2(0, 0)
         self.sprite = sprite
         self.move(pos.x, pos.y)
 
     def move(self, x, y):
-        self.sprite.rect.move_ip(x, y)
+       # self.sprite.rect.move_ip(x, y)
+       self.delta_move.x += x
+       self.delta_move.y += y
 
     def update(self):
         pass

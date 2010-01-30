@@ -9,6 +9,9 @@ class vec2:
         self.x = x
         self.y = y
 
+    def __repr__(self):
+        return "vec2(" + str(self.x) + ", " + str(self.y) + ")"
+
     def get(self):
         return (self.x, self.y)
 
@@ -30,8 +33,10 @@ def load_sound(name):
     return sound
 
 
-def load_sprite(filename):
+def load_image(filename):
     image = pygame.image.load(filename)
+    return image
+def to_sprite(image):
     sprite = pygame.sprite.Sprite()
     sprite.image = image
     sprite.rect = image.get_rect()

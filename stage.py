@@ -33,10 +33,13 @@ class Stage1(Stage):
 
     def load(self):
         import gameobject
-        green_sprite = util.load_sprite("data/red_block16.png")
-        green_sprite2 = util.load_sprite("data/green_block16.png")
-        blue_sprite = util.load_sprite("data/blue_block16.png")
-        self.tiles.append(gameobject.StaticBlock(util.vec2(0, 0), green_sprite))
-        self.tiles.append(gameobject.StaticBlock(util.vec2(310, -10), green_sprite2))
-        self.tiles.append(gameobject.StaticBlock(util.vec2(0, 0), blue_sprite))
-        self.tiles.append(gameobject.StaticBlock(util.vec2(0, 50), blue_sprite))
+        green_sprite = util.load_image("data/red_block16.png")
+        green_sprite2 = util.load_image("data/green_block16.png")
+        blue_sprite = util.load_image("data/blue_block16.png")
+        self.tiles.append(gameobject.StaticBlock(util.vec2(0, 0), util.to_sprite(green_sprite)))
+        self.tiles.append(gameobject.StaticBlock(util.vec2(310, -10), util.to_sprite(green_sprite2)))
+        self.tiles.append(gameobject.StaticBlock(util.vec2(0, 0), util.to_sprite(blue_sprite)))
+
+        self.tiles.append(gameobject.StaticBlock(util.vec2(0, 50), util.to_sprite(blue_sprite)))
+        self.tiles.append(gameobject.StaticBlock(util.vec2(16, 50), util.to_sprite(blue_sprite)))
+        self.tiles.append(gameobject.StaticBlock(util.vec2(32, 50), util.to_sprite(blue_sprite)))

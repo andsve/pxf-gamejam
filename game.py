@@ -47,11 +47,11 @@ class Game:
 
         if event.key == K_LEFT:
             self.player.look_dir = 1
-            self.player.move(-1.0, 0)
+            self.player.vel.x -= 0.9
 
         if event.key == K_RIGHT:
             self.player.look_dir = 0
-            self.player.move(1.0, 0)
+            self.player.vel.x += 0.9
 
             #pass
         if event.key == K_SPACE:

@@ -84,7 +84,7 @@ class Player(gameobject.GameObject):
     def set_animation(self):
         if self.has_changed:
             new_animation = None
-            
+
             if self.active_color == game.CNONE:
                 new_animation = self.animations[self.determine_lookdir("bw")]
             elif self.active_color == game.CRED:

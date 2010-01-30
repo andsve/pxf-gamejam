@@ -37,7 +37,7 @@ class Game:
 
         # game settings
         active_color = CNONE
-        self.player = player.Player(util.vec2(30,25), self.space)
+        self.player = player.Player(util.vec2(30,10), self.space)
         print(self.player.object_type)
         self.camera = camera.Camera(util.vec2(30,25),size)
         self.current_stage = None

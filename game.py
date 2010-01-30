@@ -27,7 +27,7 @@ class Game:
         test = util.name_sequence("data/anim_test","png",4)
         seq = util.get_sequence(test,[0,1,2,3,4])
         
-        self.anim_test = player.AnimatedGameObject(util.vec2(50,0),seq,15)
+        self.anim_test = player.AnimatedGameObject(util.vec2(50,0),seq,5)
         self.player = player.Player(util.vec2(4,25))
 
         self.camera = camera.Camera(self.player.pos,size)

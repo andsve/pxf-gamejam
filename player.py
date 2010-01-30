@@ -17,28 +17,21 @@ class AnimatedGameObject(gameobject.GameObject):
         # timing:
         self._next_update = 0
         self._period = 1000./freq
-        self._inv_period = 1./self._period
+        self._inv_period = freq/1000     
         self._start_time = 0
         self._frames_len = len(self.frames)
         self._paused_time = 0
     
     def update(self, t):
         if self.playing:
-            print t
-            if self._next_update <= t:
-                delta = t - self._paused_time - self._next_update
-                skipped_frames = int(delta*self._inv_period)
-                self._next_update = self._next_update + self._period + skipped_frames * self._period
-                self.current += (1+skipped_frames)
-                self.current %= self._frames_len
-                self.image = self.frames[self.current]
-                self.rect = self.sprite.image.get_rect(center=self.sprite.rect.center)
-            
-            """self.current += 1
-            if self.current == len(self.frames):
-                self.current = 0
-            self.sprite.image = self.frames[self.current]
-            #aoeu if size changes"""
+            self._next_update += t
+            print self._next_update
+            if self._next_update >= self._period:
+                self.current += int(self._next_update/self._period)
+                self._next_update %= self._period
+                self.current %= len(self.frames)
+                self.sprite.image = self.frames[self.current]
+                self.sprite.rect = self.sprite.image.get_rect(center=self.sprite.rect.center)
     
     def draw(self,canvas):
         canvas.blit(self.sprite.image, self.pos.get(), None, pygame.BLEND_MAX)

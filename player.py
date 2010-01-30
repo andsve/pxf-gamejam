@@ -6,7 +6,7 @@ import animation
 import game
 import pymunk as pm
 
-def create_ball(self, pos, mass=1.0, radius=8.0):
+"""def create_ball(self, pos, mass=1.0, radius=8.0):
     moment = pm.moment_for_circle(mass, radius, 0.0, pm.Vec2d(0,0))
     ball_body = pm.Body(mass, moment)
     ball_body.position = pm.Vec2d(pos)
@@ -15,12 +15,12 @@ def create_ball(self, pos, mass=1.0, radius=8.0):
     #ball_shape.collision_type = COLLTYPE_DEFAULT
     #self.space.add(ball_body, ball_shape)
     # return ball_shape
-    return ball_body, ball_shape
+    return ball_body, ball_shape"""
 
 class Player(gameobject.GameObject):
     def __init__(self, pos, space):
         gameobject.GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/bw_player16.png")), space, gameobject.OBJECT_TYPE_PLAYER, 10.0)
-        self.body, self.shape = create_ball(space, (pos.x, pos.y), 8, 8)
+        self.body, self.shape = gameobject.create_ball(space, (pos.x, pos.y), 8, 8)
         space.add(self.body, self.shape)
         self.shape.collision_type = gameobject.OBJECT_TYPE_PLAYER
         #self.shape.collision_type = gameobject.OBJECT_TYPE_PLAYER

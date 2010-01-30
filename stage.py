@@ -6,6 +6,7 @@ class Stage:
     def __init__(self, space):
         self.tiles = []
         self.game_objects = []
+        self.splosion_objects = []
 
     def load(self, space):
         pass
@@ -21,6 +22,8 @@ class Stage:
             else:
                 #print tile.pos
                 pass
+        for splosion in self.splosion_objects:
+            splosion.draw(canvas)
 
 class Stage1(Stage):
     def __init__(self,camera, space):

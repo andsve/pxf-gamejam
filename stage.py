@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+from __future__ import with_statement
 import pygame
 import util
 
@@ -33,13 +33,27 @@ class Stage1(Stage):
 
     def load(self, space):
         import gameobject
-        green_sprite = util.load_image("data/red_block16.png")
-        green_sprite2 = util.load_image("data/green_block16.png")
-        blue_sprite = util.load_image("data/blue_block16.png")
-        self.tiles.append(gameobject.StaticBlock(util.vec2(0, 0), util.to_sprite(green_sprite), space))
-        self.tiles.append(gameobject.StaticBlock(util.vec2(310, -10), util.to_sprite(green_sprite2), space))
-        self.tiles.append(gameobject.StaticBlock(util.vec2(0, 0), util.to_sprite(blue_sprite), space))
+        import sys
 
-        self.tiles.append(gameobject.StaticBlock(util.vec2(0, 50), util.to_sprite(blue_sprite), space))
-        self.tiles.append(gameobject.StaticBlock(util.vec2(16, 50), util.to_sprite(blue_sprite), space))
-        self.tiles.append(gameobject.StaticBlock(util.vec2(32, 34), util.to_sprite(blue_sprite), space))
+        rblock = util.load_image("data/red_block16.png")
+        gblock = util.load_image("data/green_block16.png")
+        bblock = util.load_image("data/blue_block16.png")
+
+        with open("data/level1.txt") as f:
+            data = f.readlines()
+
+        for rnum, row in enumerate(data):
+            for cnum, col in enumerate(row):
+                if   col == 'R':
+                    block = rblock
+                    type = gameobject.OBJECT_TYPE_RED
+                elif col == 'G':
+                    block = gblock
+                    type = gameobject.OBJECT_TYPE_GREEN
+                elif col == 'B':
+                    block = bblock
+                    type = gameobject.OBJECT_TYPE_BLUE
+                else: continue
+                pos = util.vec2(cnum * 16, rnum * 16)
+                go = gameobject.StaticBlock(pos, util.to_sprite(block), space, type)
+                self.tiles.append(go)

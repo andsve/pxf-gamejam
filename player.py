@@ -7,7 +7,7 @@ import game
 
 class Player(gameobject.GameObject):
     def __init__(self, pos, space):
-        gameobject.GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/bw_player16.png")), space, 10.0)
+        gameobject.GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/bw_player16.png")), space, gameobject.OBJECT_TYPE_PLAYER, 10.0)
         space.add(self.body, self.shape)
         self.shape.collision_type = 2
 
@@ -21,13 +21,13 @@ class Player(gameobject.GameObject):
 
         red_player_walk_left = animation.new_animation("data/red_guy_walk","png",1,animation_freq,[0,1])
         red_player_walk_right = animation.new_animation("data/red_guy_walk_r","png",1,animation_freq,[0,1])
-        
+
         green_player_walk_left = animation.new_animation("data/green_guy_walk","png",1,animation_freq,[0,1])
         green_player_walk_right = animation.new_animation("data/green_guy_walk_r","png",1,animation_freq,[0,1])
-        
+
         blue_player_walk_left = animation.new_animation("data/blue_guy_walk","png",1,animation_freq,[0,1])
         blue_player_walk_right = animation.new_animation("data/blue_guy_walk_r","png",1,animation_freq,[0,1])
-        
+
         #player_walk_left.play()
         self.image = bw_player_walk_left.sprite.image
 
@@ -39,10 +39,10 @@ class Player(gameobject.GameObject):
 
         self.animations["green_player_walk_left"] = green_player_walk_left
         self.animations["green_player_walk_right"] = green_player_walk_right
-        
+
         self.animations["blue_player_walk_left"] = blue_player_walk_left
         self.animations["blue_player_walk_right"] = blue_player_walk_right
-        
+
         self.current_animation = bw_player_walk_left
         self.look_dir = game.PDIR_LEFT
         self.has_changed = True
@@ -50,10 +50,10 @@ class Player(gameobject.GameObject):
     def update(self, camera_pos,dt):
         gameobject.GameObject.update(self, camera_pos)
         self.in_air = True
-        #for anim in self.animations.keys():
-        #   self.animations[anim].update(dt)
+        for anim in self.animations.keys():
+           self.animations[anim].update(dt)
         self.current_animation.update(dt)
-        
+
     # move this elsewhere
     def toggle_color(self,color):
         new_color = None

@@ -51,30 +51,34 @@ class Game:
         self.physics.add_dynamic(self.player)
 
     def handle_input(self, event):
-        if event.key == K_UP:
+        pass
+    
+    def game_input(self):
+        if pygame.key.get_pressed()[K_UP]:
             self.player.vel.y = -3
 
-        if event.key == K_LEFT:
+        if pygame.key.get_pressed()[K_LEFT]:
             self.player.look_dir = 1
             self.player.move(-1.0, 0)
 
-        if event.key == K_RIGHT:
+        if pygame.key.get_pressed()[K_RIGHT]:
             self.player.look_dir = 0
             self.player.move(1.0, 0)
             
-        if event.key == K_RETURN:
-            self.anim_test.play()
-
-            #pass
-        if event.key == K_SPACE:
+        if pygame.key.get_pressed()[K_RETURN]:
+            self.anim_test.play_animation()
+            
+        if pygame.key.get_pressed()[K_SPACE]:
             if not self.bg_music_playing:
                 self.bg_music.play(1)
                 self.bg_music_playing = True
             else:
                 self.bg_music.stop()
                 self.bg_music_playing = False
-        if event.key == K_ESCAPE:
+                
+        if pygame.key.get_pressed()[K_ESCAPE]:
             self.is_running = False
+        
 
     def run(self):
         self.set_level(stage.Stage1(self.camera))
@@ -89,6 +93,9 @@ class Game:
                     self.is_running = False
                 elif event.type == KEYDOWN:
                     self.handle_input(event)
+                
+            # handle game input    
+            self.game_input()
 
             self.screen.fill([0,0,0])
 

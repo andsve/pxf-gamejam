@@ -33,18 +33,18 @@ class AnimatedGameObject(gameobject.GameObject):
     def draw(self,canvas):
         canvas.blit(self.sprite.image, self.pos.get(), None, pygame.BLEND_MAX)
         
-    def play(self):
+    def play_animation(self):
         if self.playing:
             self.playing = False
         else:
             self.current = 0
             self.playing = True
     
-    def stop(self):
+    def stop_animation(self):
         self.current = 0
         self.playing = False
     
-    def pause(self):
+    def pause_animation(self):
         pass
             
 class Player(gameobject.GameObject):

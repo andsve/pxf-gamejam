@@ -31,6 +31,6 @@ class Physics:
                 # Check collisions
                 for co in self.objects:
                     if not o is co:
-                        print str(o) + " collides with " + str(co)
+                        #print str(o) + " collides with " + str(co)
                         if pygame.sprite.collide_rect(o.sprite, co.sprite):
                             o.pos.y = co.pos.y - co.sprite.rect.height

@@ -31,7 +31,6 @@ class Animation():
 
     def draw(self,canvas,pos):
         canvas.blit(self.sprite.image, pos, None, pygame.BLEND_MAX)
-        pass
         
     def play(self):
         #self.current = 0
@@ -39,10 +38,11 @@ class Animation():
     
     def stop(self):
         self.current = 0
+        self.sprite.image = self.frames[0]
         self.playing = False
     
     def pause(self):
-        pass
+        self.playing = False
     
 def new_animation(basename, ext, num, freq, sequence, num_digits=1, offset=0):
     frame_names = util.name_sequence(basename,ext,num,num_digits,offset)

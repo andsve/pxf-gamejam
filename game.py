@@ -14,7 +14,7 @@ import pymunk as pm
 CNONE,CRED,CBLUE,CGREEN = range(4)
 PDIR_RIGHT,PDIR_LEFT = range(2)
 
-vel_epsilon = 0.05
+vel_epsilon = 0.1
 
 class Game:
     def __init__(self, size):

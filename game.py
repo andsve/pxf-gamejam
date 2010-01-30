@@ -124,7 +124,7 @@ class Game:
 
         while self.is_running:
             # update time
-            self.dt_last_frame = self.clock.tick(25)
+            self.dt_last_frame = self.clock.tick(60)
 
             # event handling
             for event in pygame.event.get():
@@ -147,7 +147,7 @@ class Game:
             self.player.draw(self.screen)
 
             # update physics
-            self.space.step(1/25.0)
+            self.space.step(1/60.0)
 
             # update game objects
             for object in self.current_stage.tiles:

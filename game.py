@@ -9,6 +9,9 @@ import camera
 import animation
 
 import pymunk as pm
+# lol enums
+CNONE,CRED,CBLUE,CGREEN = range(4)
+PDIR_RIGHT,PDIR_LEFT = range(2)
 
 class Game:
     def __init__(self, size):
@@ -25,14 +28,17 @@ class Game:
         self.space.gravity = (0.0, 300.0)
         self.space.resize_static_hash()
         self.space.resize_active_hash()
-        self.space.add_collisionpair_func(1, 2, self.draw_collision, self.screen)
+        self.space.add_collisionpair_func(1, 2, self.handle_collision, self.screen)
 
 
         # music:
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
 
+        # game settings
+        self.active_color = CNONE
         self.player = player.Player(util.vec2(30,25), self.space)
+        print(self.player.object_type)
         self.camera = camera.Camera(util.vec2(30,25),size)
         self.current_stage = None
         # set color key to black
@@ -40,12 +46,14 @@ class Game:
         pygame.key.set_repeat(1, 20)
 
 
-    def draw_collision(self, shapea, shapeb, contacts, normal_coef, surface):
+    def handle_collision(self, shapea, shapeb, contacts, normal_coef, surface):
         #self.player.in_air = False
         for c in contacts:
-            """r = max( 3, abs(c.distance*5) )
+            """
+            r = max( 3, abs(c.distance*5) )
             r = int(r)
-            p = (c.position.x - self.camera.get_pos().x, c.position.y - self.camera.get_pos().y)"""
+            p = (c.position.x - self.camera.get_pos().x, c.position.y - self.camera.get_pos().y)
+            """
             if (c.normal.y > 0 and c.normal.x < 0.1 and c.normal.x > -0.1):
                 self.player.in_air = False
             #print(c.normal)
@@ -60,6 +68,14 @@ class Game:
         self.current_stage = stage
 
     def handle_input(self, event):
+        #switch colors
+        if event.key == K_1:
+            self.active_color = self.player.toggle_color(CRED)
+        if event.key == K_2:
+            self.active_color = self.player.toggle_color(CGREEN)
+        if event.key == K_3:
+            self.active_color = self.player.toggle_color(CBLUE)
+
         if event.key == K_RETURN:
             self.anim_test.play_animation()
 

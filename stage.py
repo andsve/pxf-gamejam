@@ -44,10 +44,16 @@ class Stage1(Stage):
 
         for rnum, row in enumerate(data):
             for cnum, col in enumerate(row):
-                if   col == 'R': block = rblock
-                elif col == 'G': block = gblock
-                elif col == 'B': block = bblock
+                if   col == 'R':
+                    block = rblock
+                    type = gameobject.OBJECT_TYPE_RED
+                elif col == 'G':
+                    block = gblock
+                    type = gameobject.OBJECT_TYPE_GREEN
+                elif col == 'B':
+                    block = bblock
+                    type = gameobject.OBJECT_TYPE_BLUE
                 else: continue
                 pos = util.vec2(cnum * 16, rnum * 16)
-                go = gameobject.StaticBlock(pos, util.to_sprite(block), space)
+                go = gameobject.StaticBlock(pos, util.to_sprite(block), space, type)
                 self.tiles.append(go)

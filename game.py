@@ -6,6 +6,7 @@ import stage
 import gameobject
 import util
 import camera
+import physics
 
 class Game:
     def __init__(self, size):
@@ -14,6 +15,7 @@ class Game:
         self.screen = pygame.display.get_surface()
         pygame.mouse.set_visible(0)
         self.clock = pygame.time.Clock()
+        self.dt_last_frame = self.clock.tick()
         self.is_running = True
         
         # load music
@@ -25,19 +27,33 @@ class Game:
         test = util.name_sequence("data/anim_test","png",4)
         seq = util.get_sequence(test,[0,1,2,3,4])
         
-        self.anim_test = player.AnimatedGameObject(util.vec2(50,0),seq,5)
-        self.player = player.Player(util.vec2(4,4))
+        self.anim_test = player.AnimatedGameObject(util.vec2(50,0),seq,15)
+        self.player = player.Player(util.vec2(4,25))
+
         self.camera = camera.Camera(self.player.pos,size)
-        self.current_stage = stage.Stage1(self.camera)
+        self.current_stage = None
+        self.physics = physics.Physics()
         # set color key to black
         self.screen.set_colorkey(pygame.Color(0,0,0))
 
     def update_title(self):
         pygame.display.set_caption("Channel Panic! (%.2f FPS)" % (self.clock.get_fps()))
 
+    def set_level(self, stage):
+        self.physics.reset()
+        self.current_stage = stage
+
+        for o in self.current_stage.game_objects:
+            self.physics.add_dynamic(o)
+
+        for o in self.current_stage.tiles:
+            self.physics.add_static(o)
+
+        self.physics.add_dynamic(self.player)
+
     def handle_input(self, event):
         if event.key == K_UP:
-            self.camera.pos = self.camera.pos + util.vec2(1,0)
+            self.camera.pos.y += 1
             pass
         
         if event.key == K_RETURN:
@@ -63,7 +79,12 @@ class Game:
             self.is_running = False
 
     def run(self):
+        self.set_level(stage.Stage1(self.camera))
+
         while self.is_running:
+            # fps limit
+            self.dt_last_frame = self.clock.tick(25)
+            
             # event handling
             for event in pygame.event.get():
                 if event.type == QUIT:
@@ -73,7 +94,7 @@ class Game:
 
             self.screen.fill([0,0,0])
             
-            self.anim_test.update()
+            self.anim_test.update(self.dt_last_frame)
             self.anim_test.draw(self.screen)
 
             # update player
@@ -82,16 +103,18 @@ class Game:
 
             # update game objects
             for object in self.current_stage.tiles:
-                object.update(self.camera.pos)
+                #object.update(self.camera.pos)
+                object.update(util.vec2(0, 0))
 
             # update camera
             self.camera.update()
-            
+
+            # update physics
+            self.physics.step()
+
             # update game
             self.current_stage.draw(self.screen)
-
-            # fps limit
-            self.clock.tick(60)
+            
             self.update_title()
             # swap buffers
             pygame.display.flip()

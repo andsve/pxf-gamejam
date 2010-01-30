@@ -20,14 +20,25 @@ class AnimatedGameObject(gameobject.GameObject):
         self._inv_period = 1./self._period
         self._start_time = 0
         self._frames_len = len(self.frames)
+        self._paused_time = 0
     
-    def update(self):
+    def update(self, t):
         if self.playing:
-            self.current += 1
+            print t
+            if self._next_update <= t:
+                delta = t - self._paused_time - self._next_update
+                skipped_frames = int(delta*self._inv_period)
+                self._next_update = self._next_update + self._period + skipped_frames * self._period
+                self.current += (1+skipped_frames)
+                self.current %= self._frames_len
+                self.image = self.frames[self.current]
+                self.rect = self.sprite.image.get_rect(center=self.sprite.rect.center)
+            
+            """self.current += 1
             if self.current == len(self.frames):
                 self.current = 0
             self.sprite.image = self.frames[self.current]
-            #aoeu if size changes
+            #aoeu if size changes"""
     
     def draw(self,canvas):
         canvas.blit(self.sprite.image, self.pos.get(), None, pygame.BLEND_MAX)
@@ -49,6 +60,7 @@ class AnimatedGameObject(gameobject.GameObject):
 
 class Player(gameobject.GameObject):
     def __init__(self, pos):
+        gameobject.GameObject.__init__(self, pos, util.load_sprite("data/bw_player16.png"))
         self.pos = pos
         self.look_dir = 0 # 0 = right, 1 = left
         self.bw_image = pygame.image.load("data/bw_player16.png")
@@ -60,7 +72,6 @@ class Player(gameobject.GameObject):
         self.red_image_r = pygame.image.load("data/red_player16_r.png")
         self.green_image_r = pygame.image.load("data/green_player16_r.png")
         self.blue_image_r = pygame.image.load("data/blue_player16_r.png")
-        #gameobject.GameObject.__init__(self, pos, util.load_sprite("data/blue_block16.png"))
 
     def update(self):
         pass

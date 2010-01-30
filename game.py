@@ -35,11 +35,9 @@ class Game:
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
 
-       
-        
         # game settings
         self.active_color = CNONE
-		self.player = player.Player(util.vec2(4,25), self.space)
+	self.player = player.Player(util.vec2(4,25), self.space)
         self.camera = camera.Camera(util.vec2(2,25),size)
         self.current_stage = None
         # set color key to black
@@ -50,9 +48,11 @@ class Game:
     def draw_collision(self, shapea, shapeb, contacts, normal_coef, surface):
         #self.player.in_air = False
         for c in contacts:
-            """r = max( 3, abs(c.distance*5) )
+            """
+            r = max( 3, abs(c.distance*5) )
             r = int(r)
-            p = (c.position.x - self.camera.get_pos().x, c.position.y - self.camera.get_pos().y)"""
+            p = (c.position.x - self.camera.get_pos().x, c.position.y - self.camera.get_pos().y)
+            """
             if (c.normal.y > 0 and c.normal.x < 0.1 and c.normal.x > -0.1):
                 self.player.in_air = False
             #print(c.normal)
@@ -69,11 +69,11 @@ class Game:
     def handle_input(self, event):
         #switch colors
         if event.key == K_1:
-            self.player.toggle_color(CRED)
+            self.active_color = self.player.toggle_color(CRED)
         if event.key == K_2:
-            self.player.toggle_color(CGREEN)
+            self.active_color = self.player.toggle_color(CGREEN)
         if event.key == K_3:
-            self.player.toggle_color(CBLUE)
+            self.active_color = self.player.toggle_color(CBLUE)
         
         if event.key == K_RETURN:
             self.anim_test.play_animation()

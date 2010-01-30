@@ -68,6 +68,18 @@ class Player(gameobject.GameObject):
            self.animations[anim].update(dt)
         self.current_animation.update(dt)
 
+        if self.body.velocity.x > 0:
+            aoeu = 4
+            if self.body.velocity.x < 2:
+                aoeu = 1
+            self.body.velocity.x -= aoeu
+        elif self.body.velocity.x < 0:
+            aoeu = 4
+            if self.body.velocity.x > -2:
+                aoeu = 1
+            self.body.velocity.x += aoeu
+
+
     # move this elsewhere
     def toggle_color(self,color):
         self.active_color = color

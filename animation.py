@@ -22,28 +22,26 @@ class Animation():
         if self.playing:
             self._next_update += t
             if self._next_update >= self._period:
-                self.current += int(self._next_update/self._period)
+                self.current += 1
                 self._next_update %= self._period
                 self.current %= len(self.frames)
                 self.sprite.image = self.frames[self.current]
                 self.sprite.rect = self.sprite.image.get_rect(center=self.sprite.rect.center)
+                #self.current += int(self._next_update/self._period)
 
-    def draw(self,canvas):
-        #canvas.blit(self.sprite.image, self.pos.get(), None, pygame.BLEND_MAX)
+    def draw(self,canvas,pos):
+        canvas.blit(self.sprite.image, pos, None, pygame.BLEND_MAX)
         pass
         
-    def play_animation(self):
-        if self.playing:
-            self.stop_animation()
-        else:
-            self.current = 0
-            self.playing = True
+    def play(self):
+        self.current = 0
+        self.playing = True
     
-    def stop_animation(self):
+    def stop(self):
         self.current = 0
         self.playing = False
     
-    def pause_animation(self):
+    def pause(self):
         pass
     
 def new_animation(basename, ext, num, freq, sequence, num_digits=1, offset=0):

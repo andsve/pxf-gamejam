@@ -7,6 +7,7 @@ import gameobject
 import util
 import camera
 import animation
+import billboard
 
 import pymunk as pm
 # lol enums
@@ -38,7 +39,7 @@ class Game:
         self.bg_music_playing = False
 
         # game settings
-        self.player = player.Player(util.vec2(30,10), self.space)
+        self.player = player.Player(util.vec2(100,20), self.space)
         print(self.player.object_type)
         self.camera = camera.Camera(util.vec2(30,25),size)
         self.current_stage = None

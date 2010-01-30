@@ -56,7 +56,6 @@ def name_sequence(basename, ext, num, num_digits=1, offset=0):
     for i in range(offset, num+1):
         new_name = format % (basename,i,ext)
         names.append(new_name)
-        print new_name
     return names
 
 def load_image(filename):

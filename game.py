@@ -6,6 +6,7 @@ import stage
 import gameobject
 import util
 import camera
+import animation
 
 import pymunk as pm
 
@@ -28,12 +29,14 @@ class Game:
         self.bg_music_playing = False
 
         # load assets
-        # anim test
+        # create animations
+        player_walk_left = animation.new_animation("data/anim_test","png",4,10,[0,1,2,3,4])
+
         test = util.name_sequence("data/anim_test","png",4)
         seq = util.get_sequence(test,[0,1,2,3,4])
         self.dt_last_frame = self.clock.tick()
 
-        self.anim_test = player.AnimatedGameObject(util.vec2(50,0),seq,5)
+        self.anim_test = animation.Animation(seq,5)
         self.player = player.Player(util.vec2(4,25), self.space)
         self.camera = camera.Camera(util.vec2(2,25),size)
         self.current_stage = None
@@ -51,7 +54,8 @@ class Game:
         self.current_stage = stage
 
     def handle_input(self, event):
-        pass
+        if event.key == K_RETURN:
+            self.anim_test.play_animation()
 
     def game_input(self):
         if pygame.key.get_pressed()[K_UP]:
@@ -73,9 +77,6 @@ class Game:
                 self.player.body.apply_impulse((100,0)) #_set_velocity((-80, 0))
                 #self.player.vel.x += 0.9
                 #self.player.vel.y = 0.04
-
-        if pygame.key.get_pressed()[K_RETURN]:
-            self.anim_test.play_animation()
 
         if pygame.key.get_pressed()[K_SPACE]:
             if not self.bg_music_playing:
@@ -110,7 +111,7 @@ class Game:
 
             # update animation
             self.anim_test.update(self.dt_last_frame)
-            self.anim_test.draw(self.screen)
+            #self.anim_test.draw(self.screen)
 
             # update player
             self.player.update(self.camera.get_pos())

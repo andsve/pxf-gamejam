@@ -118,7 +118,7 @@ class Game:
             #self.player.vel.y = -3
             #self.in_air = True
             if (not self.player.in_air):
-                self.player.body.apply_impulse(((self.player.look_dir*2.0 - 1.0) * -100.0,-1200))
+                self.player.body.apply_impulse((0,-1200))
             pass
 
         if pygame.key.get_pressed()[K_LEFT]:

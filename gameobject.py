@@ -23,7 +23,7 @@ class GameObject:
     def draw(self, canvas):
         #canvas.blit(self.sprite.image, self.pos.get(), None, pygame.BLEND_MAX)
         canvas.blit(self.sprite.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
-        draw_pos = util.vec2(0,0)
+        self.draw_pos.set(0,0)
         
         
 class StaticBlock(GameObject):

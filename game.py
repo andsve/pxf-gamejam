@@ -17,9 +17,9 @@ class Game:
         self.is_running = True
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
-        self.camera = camera.Camera(util.vec2(0,0),size)
-        self.current_stage = stage.Stage1(self.camera)
         self.player = player.Player(util.vec2(4,4))
+        self.camera = camera.Camera(self.player.pos,size)
+        self.current_stage = stage.Stage1(self.camera)
         # set color key to black
         self.screen.set_colorkey(pygame.Color(0,0,0))
 

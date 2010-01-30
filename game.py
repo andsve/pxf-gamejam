@@ -36,7 +36,7 @@ class Game:
         self.bg_music_playing = False
 
         # game settings
-        self.active_color = CNONE
+        active_color = CNONE
 	self.player = player.Player(util.vec2(4,25), self.space)
         self.camera = camera.Camera(util.vec2(2,25),size)
         self.current_stage = None
@@ -89,6 +89,7 @@ class Game:
         if pygame.key.get_pressed()[K_LEFT]:
             #if (len(self.physics.get_colliding_objects(self.physics.player)) > 0):
                 self.player.look_dir = 1
+                self.player.has_changed = True
                 #if (-self.player.body._get_velocity().x < 80.0):
                 if (self.player.in_air):
                     self.player.body.apply_impulse((-50,0))
@@ -97,8 +98,9 @@ class Game:
                 #self.player.vel.y = 0.04
 
         if pygame.key.get_pressed()[K_RIGHT]:
-            #if (len(self.physics.get_colliding_objects(self.physics.player)) > 0):
+            #if (len(self.physics.get_colliding_objects(self.physics.player)) > 0)
                 self.player.look_dir = 0
+                self.player.has_changed = True
                 if (self.player.in_air):
                     self.player.body.apply_impulse((50,0))
                 else:

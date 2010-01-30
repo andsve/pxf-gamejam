@@ -45,6 +45,7 @@ class Player(gameobject.GameObject):
         
         self.current_animation = bw_player_walk_left
         self.look_dir = game.PDIR_LEFT
+        self.has_changed = True
 
     def update(self, camera_pos,dt):
         gameobject.GameObject.update(self, camera_pos)
@@ -53,28 +54,18 @@ class Player(gameobject.GameObject):
         #   self.animations[anim].update(dt)
         self.current_animation.update(dt)
         
+    # move this elsewhere
     def toggle_color(self,color):
-        self.current_animation.stop()
         new_color = None
+        
         if self.active_color == color:
-            #self.active_color = game.CNONE
             new_color = game.CNONE
-            self.current_animation = self.animations[self.determine_lookdir("bw")]
         else:
-            #self.active_color = color
-
-            if color == game.CRED:
-                self.current_animation = self.animations[self.determine_lookdir("red")]
-                new_color = game.CRED
-            elif color == game.CGREEN:
-                self.current_animation = self.animations[self.determine_lookdir("green")]
-                new_color = game.CGREEN
-            elif color == game.CBLUE:
-                self.current_animation = self.animations[self.determine_lookdir("blue")]
-                new_color = game.CBLUE
-                
+            new_color = color
+        
         self.active_color = new_color
-        self.current_animation.play()
+        self.has_changed  = True
+        
         return new_color
     
     def determine_lookdir(self,color_str):
@@ -83,7 +74,31 @@ class Player(gameobject.GameObject):
             return color_str + "_player_walk_right"
         else:
             return color_str + "_player_walk_left"
+        
+    def set_animation(self):
+        if self.has_changed:
+            new_animation = None
+            print self.active_color
+        
+            if self.active_color == game.CNONE:
+                new_animation = self.animations[self.determine_lookdir("bw")]
+            elif self.active_color == game.CRED:
+                new_animation = self.animations[self.determine_lookdir("red")]
+            elif self.active_color == game.CGREEN:
+                new_animation = self.animations[self.determine_lookdir("green")]
+            elif self.active_color == game.CBLUE:
+                new_animation = self.animations[self.determine_lookdir("blue")]
+        
+            
+            self.current_animation = new_animation
+            self.current_animation.play()
+            self.has_changed = False
+               
+    
     def draw(self, canvas):
+        
+        self.set_animation()
+        
         #gameobject.GameObject.draw(self, canvas)
         #canvas.blit(cloth_image, self.draw_pos.get(), None, pygame.BLEND_MAX)
         #canvas.blit(self.image, self.draw_pos.get(), None, pygame.BLEND_MAX)

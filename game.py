@@ -9,6 +9,10 @@ import camera
 import physics
 import animation
 
+# lol enums
+CNONE,CRED,CBLUE,CGREEN = range(4)
+PDIR_RIGHT,PDIR_LEFT = range(2)
+
 class Game:
     def __init__(self, size):
         pygame.init()
@@ -23,6 +27,8 @@ class Game:
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
         
+        # game settings
+        self.active_color = CNONE
         self.player = player.Player(util.vec2(4,25))
         self.camera = camera.Camera(util.vec2(2,25),size)
         self.current_stage = None
@@ -47,10 +53,18 @@ class Game:
         self.physics.add_player(self.player)
 
     def handle_input(self, event):
+        #switch colors
+        if event.key == K_1:
+            self.player.toggle_color(CRED)
+        if event.key == K_2:
+            self.player.toggle_color(CGREEN)
+        if event.key == K_3:
+            self.player.toggle_color(CBLUE)
+        
         if event.key == K_RETURN:
             self.anim_test.play_animation()
             
-    def game_input(self):
+    def game_input(self):        
         if pygame.key.get_pressed()[K_UP]:
             self.player.vel.y = -3
             self.in_air = True

@@ -53,6 +53,10 @@ class Game:
         # music:
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
+        
+        # billboards
+        self.billboards = []
+        self.billboards.append(billboard.Billboard("data/background_stars.png",(0,0),20))
 
         # game settings
         self.player = player.Player(util.vec2(100,20), self.space)
@@ -195,6 +199,11 @@ class Game:
             # update camera
             self.camera.set_lookat(util.vec2(self.player.body.position.x, self.player.body.position.y))
             self.camera.update()
+            
+            # draw billboards
+            for billboard in self.billboards:
+                billboard.update(self.camera.get_pos(),self.dt_last_frame)
+                billboard.draw(self.screen)
 
             # update game
             self.current_stage.draw(self.screen)

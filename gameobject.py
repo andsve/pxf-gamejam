@@ -20,7 +20,7 @@ def create_box(space, pos, size = 10, mass = 5.0):
     box_points = map(pm.Vec2d, [(-size, -size), (-size, size), (size,size), (size, -size)])
     return create_poly(space, box_points, mass = mass, pos = pos)
 
-OBJECT_TYPE_PLAYER,OBJECT_TYPE_RED,OBJECT_TYPE_GREEN,OBJECT_TYPE_BLUE,OBJECT_TYPE_ALL = range(5)
+aoeaoea,OBJECT_TYPE_PLAYER,OBJECT_TYPE_RED,OBJECT_TYPE_GREEN,OBJECT_TYPE_BLUE = range(5)
 
 class GameObject:
     def __init__(self, pos, sprite, space, obj_type, mass = 5.0):
@@ -30,6 +30,7 @@ class GameObject:
         self.body, self.shape = create_box(space, (pos.x, pos.y), 8, mass)
 
         self.object_type = obj_type
+        self.shape.collision_type = obj_type
 
     def move(self, x, y):
         pass
@@ -50,7 +51,7 @@ class StaticBlock(GameObject):
     def __init__(self, pos, sprite, space, obj_type):
         GameObject.__init__(self, pos, sprite, space, obj_type, pm.inf)
         space.add_static(self.shape)
-        self.shape.collision_type = 1
+        #self.shape.collision_type = 1
 
     def update(self, camera_pos):
         GameObject.update(self, camera_pos)

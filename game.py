@@ -28,7 +28,22 @@ class Game:
         self.space.gravity = (0.0, 300.0)
         self.space.resize_static_hash()
         self.space.resize_active_hash()
-        self.space.add_collisionpair_func(1, 2, self.handle_collision, self.screen)
+
+        # collisions between different colors
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_GREEN, None)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_RED, None)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_BLUE, None)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_GREEN, None)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_BLUE, None)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_RED, None)
+
+        # collisions between
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_RED, self.handle_collision, self.screen)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_GREEN, self.handle_collision, self.screen)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_BLUE, self.handle_collision, self.screen)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_PLAYER, self.handle_collision, self.screen)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_PLAYER, self.handle_collision, self.screen)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_PLAYER, self.handle_collision, self.screen)
 
 
         # music:
@@ -36,9 +51,9 @@ class Game:
         self.bg_music_playing = False
 
         # game settings
-        active_color = CNONE
+        self.active_color = CBLUE
         self.player = player.Player(util.vec2(30,25), self.space)
-        print(self.player.object_type)
+        #print(self.player.object_type)
         self.camera = camera.Camera(util.vec2(30,25),size)
         self.current_stage = None
         # set color key to black
@@ -49,17 +64,23 @@ class Game:
     def handle_collision(self, shapea, shapeb, contacts, normal_coef, surface):
         #self.player.in_air = False
         for c in contacts:
-            """
-            r = max( 3, abs(c.distance*5) )
-            r = int(r)
-            p = (c.position.x - self.camera.get_pos().x, c.position.y - self.camera.get_pos().y)
-            """
+            in_air = True
             if (c.normal.y > 0 and c.normal.x < 0.1 and c.normal.x > -0.1):
-                self.player.in_air = False
-            #print(c.normal)
-            #pygame.draw.circle(surface, (255, 0, 0), p, r, 0)
+                in_air = False
+            if (self.active_color == CRED):
+                if (shapea.collision_type == gameobject.OBJECT_TYPE_RED or shapeb.collision_type == gameobject.OBJECT_TYPE_RED):
+                    self.player.in_air = in_air
+                    return True;
+            elif (self.active_color == CGREEN):
+                if (shapea.collision_type == gameobject.OBJECT_TYPE_GREEN or shapeb.collision_type == gameobject.OBJECT_TYPE_GREEN):
+                    self.player.in_air = in_air
+                    return True;
+            elif (self.active_color == CBLUE):
+                if (shapea.collision_type == gameobject.OBJECT_TYPE_BLUE or shapeb.collision_type == gameobject.OBJECT_TYPE_BLUE):
+                    self.player.in_air = in_air
+                    return True;
 
-        return True
+        return False
 
     def update_title(self):
         pygame.display.set_caption("Channel Panic! (%.2f FPS)" % (self.clock.get_fps()))

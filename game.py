@@ -19,7 +19,7 @@ class Game:
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
         self.player = player.Player(util.vec2(4,25))
-        self.camera = camera.Camera(self.player.sprite.rect.center,size)
+        self.camera = camera.Camera(util.vec2(2,25),size)
         self.current_stage = None
         self.physics = physics.Physics()
         # set color key to black

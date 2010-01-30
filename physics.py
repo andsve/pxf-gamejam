@@ -4,6 +4,7 @@ import pygame
 class Physics:
     def __init__(self):
         self.gravity = 0.4
+        self.damp = 0.2
         self.reset()
 
     def reset(self):
@@ -26,8 +27,11 @@ class Physics:
                 old_rect = o.sprite.rect.copy()
                 o.move(o.vel.x, o.vel.y)
                 o.vel.set(o.vel.x, o.vel.y + self.gravity)
+
                 if o.vel.y > 5: o.vel.y = 5
                 if o.vel.x > 5: o.vel.x = 5
+                if o.vel.y < -5: o.vel.y = -5
+                if o.vel.x < -5: o.vel.x = -5
 
                 # Check collisions
                 for co in self.objects:

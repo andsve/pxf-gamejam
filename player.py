@@ -24,6 +24,7 @@ class Player(gameobject.GameObject):
         space.add(self.body, self.shape)
         self.shape.collision_type = gameobject.OBJECT_TYPE_PLAYER
         #self.shape.collision_type = gameobject.OBJECT_TYPE_PLAYER
+        self.stop_hammer_time = False
 
         #self.image = pygame.image.load("data/bw_guy_walk0.png")
         self.animations = {}
@@ -68,6 +69,23 @@ class Player(gameobject.GameObject):
         for anim in self.animations.keys():
            self.animations[anim].update(dt)
         self.current_animation.update(dt)
+
+        if self.stop_hammer_time:
+            if -1.5 < self.body.velocity.x < 1.5:
+                self.body.velocity.x = 0
+            elif self.body.velocity.x > 0:
+                aoeu = 4
+                self.body.velocity.x -= aoeu
+            elif self.body.velocity.x < 0:
+                aoeu = 4
+                self.body.velocity.x += aoeu
+        else:
+            max_speed = 160
+            if self.body.velocity.x > max_speed:
+                self.body.velocity.x = max_speed
+            elif self.body.velocity.x < -max_speed:
+                self.body.velocity.x = -max_speed
+
 
     # move this elsewhere
     def toggle_color(self,color):
@@ -121,7 +139,8 @@ class Player(gameobject.GameObject):
         #canvas.blit(self.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
         #canvas.blit(self.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
         #self.current_animation.draw(canvas,self.draw_pos.get())
-        canvas.blit(self.current_animation.sprite.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
+        pos = self.draw_pos.get()
+        canvas.blit(self.current_animation.sprite.image, (pos[0], pos[1]-4), None, pygame.BLEND_MAX)
 
         # allways show "body"
         #canvas.blit(body_image, self.draw_pos.get(), None, pygame.BLEND_RGB_ADD)

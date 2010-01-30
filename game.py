@@ -7,6 +7,7 @@ import gameobject
 import util
 import camera
 import animation
+import billboard
 
 import pymunk as pm
 # lol enums
@@ -54,7 +55,7 @@ class Game:
         self.bg_music_playing = False
 
         # game settings
-        self.player = player.Player(util.vec2(30,10), self.space)
+        self.player = player.Player(util.vec2(100,20), self.space)
         #print(self.player.object_type)
         self.camera = camera.Camera(util.vec2(30,25),size)
         self.current_stage = None
@@ -112,6 +113,9 @@ class Game:
         self.current_stage = stage
 
     def handle_input(self, event):
+        if event.type == KEYUP and event.key in (K_LEFT, K_RIGHT):
+            self.player.stop_hammer_time = True
+
         #switch colors
         if event.key == K_1:
             self.active_color = self.player.toggle_color(CRED)
@@ -128,10 +132,11 @@ class Game:
             #self.player.vel.y = -3
             #self.in_air = True
             if (not self.player.in_air):
-                self.player.body.apply_impulse(((self.player.look_dir*2.0 - 1.0) * -100.0,-1200))
+                self.player.body.apply_impulse((0,-1080))
             pass
 
         if pygame.key.get_pressed()[K_LEFT]:
+                self.player.stop_hammer_time = False
             #if (len(self.physics.get_colliding_objects(self.physics.player)) > 0):
                 self.player.look_dir = 1
                 self.player.has_changed = True
@@ -143,6 +148,7 @@ class Game:
                 #self.player.vel.y = 0.04
 
         if pygame.key.get_pressed()[K_RIGHT]:
+                self.player.stop_hammer_time = False
             #if (len(self.physics.get_colliding_objects(self.physics.player)) > 0)
                 self.player.look_dir = 0
                 self.player.has_changed = True
@@ -176,7 +182,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     self.is_running = False
-                elif event.type == KEYDOWN:
+                elif event.type in (KEYDOWN, KEYUP):
                     self.handle_input(event)
 
             # handle game input

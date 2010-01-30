@@ -7,6 +7,7 @@ class GameObject:
         self.pos = pos # position in pixels
         self.vel = util.vec2(0, 0) # velocity in pixels/frame
         self.sprite = sprite
+        self.draw_pos = util.vec2(0,0)
         
     def update_physics(self, objects, physics):
         old_values = (self.pos, self.vel)
@@ -20,7 +21,9 @@ class GameObject:
         pass
     
     def draw(self, canvas):
-        canvas.blit(self.sprite.image, self.pos.get(), None, pygame.BLEND_MAX)
+        #canvas.blit(self.sprite.image, self.pos.get(), None, pygame.BLEND_MAX)
+        canvas.blit(self.sprite.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
+        draw_pos = util.vec2(0,0)
         
         
 class StaticBlock(GameObject):
@@ -28,5 +31,6 @@ class StaticBlock(GameObject):
         GameObject.__init__(self, pos, sprite)
         
 
-    def update(self):
+    def update(self,camera_pos):
+        self.draw_pos = self.pos - camera_pos
         pass

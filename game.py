@@ -17,7 +17,7 @@ class Game:
         self.is_running = True
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
-        self.camera = camera.Camera((100,0),size)
+        self.camera = camera.Camera(util.vec2(100,0),size)
         self.current_stage = stage.Stage1(self.camera)
         self.player = player.Player((4,4))
         # set color key to black
@@ -28,7 +28,7 @@ class Game:
 
     def handle_input(self, event):
         if event.key == K_UP:
-            #for tile in self.current_stage.tiles:
+            self.camera.pos = self.camera.pos + util.vec2(1,0)
             pass
                 
             #pass
@@ -50,17 +50,18 @@ class Game:
                     self.is_running = False
                 elif event.type == KEYDOWN:
                     self.handle_input(event)
+            #self.screen.fill([0,0,0])
             
             # update player
             self.player.update()
             self.player.draw(self.screen)
             
-            # update game objects
-            for object in self.current_stage.tiles:
-                object.update()
-            
             # update camera
             self.camera.update()
+            
+            # update game objects
+            for object in self.current_stage.tiles:
+                object.update(self.camera.pos)
                     
             # update game
             self.current_stage.draw(self.screen)

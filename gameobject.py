@@ -27,7 +27,7 @@ class GameObject:
         self.draw_pos = util.vec2(0, 0)
         self.sprite = sprite
         #self.move(pos.x, pos.y)
-        self.body, self.shape = create_box(space, (pos.x, pos.y), 8, mass)
+
 
         self.object_type = obj_type
 
@@ -49,6 +49,7 @@ class GameObject:
 class StaticBlock(GameObject):
     def __init__(self, pos, sprite, space, obj_type):
         GameObject.__init__(self, pos, sprite, space, obj_type, pm.inf)
+        self.body, self.shape = create_box(space, (pos.x, pos.y), 8, pm.inf)
         space.add_static(self.shape)
         self.shape.collision_type = 1
 

@@ -15,17 +15,27 @@ class Game:
         pygame.mouse.set_visible(0)
         self.clock = pygame.time.Clock()
         self.is_running = True
-        self.bg_music = util.load_sound("data/test.ogg")
-        self.current_stage = stage.Stage1()
+        self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
+        self.bg_music_playing = False
+        self.camera = camera.Camera((0,0),size)
+        self.current_stage = stage.Stage1(self.camera.rect)
         #self.player = Player()
-        #self.camera = Camera(self.player.pos)
 
     def update_title(self):
         pygame.display.set_caption("Epic Adventure (%.2f FPS)" % (self.clock.get_fps()))
 
     def handle_input(self, event):
+        if event.key == K_UP:
+            # move player
+            # aoeu
+            pass
         if event.key == K_SPACE:
-            self.bg_music.play()
+            if not self.bg_music_playing:
+                self.bg_music.play(1)
+                self.bg_music_playing = True
+            else:
+                self.bg_music.stop()
+                self.bg_music_playing = False
         if event.key == K_ESCAPE:
             self.is_running = False
 
@@ -37,9 +47,15 @@ class Game:
                     self.is_running = False
                 elif event.type == KEYDOWN:
                     self.handle_input(event)
+            
+            # update player
+            #self.player.update()
+            
+            # update camera
+            self.camera.update()
                     
             # update game
-            self.current_stage.draw(self.screen,(0,0))
+            self.current_stage.draw(self.screen)
             
             # fps limit
             self.clock.tick(60)

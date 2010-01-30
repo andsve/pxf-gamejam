@@ -13,18 +13,18 @@ class GameObject:
     def move(self, x, y):
         self.sprite.rect.move_ip(x, y)
 
-    def update(self):
-        pass
+    def update(self, camera_pos):
+        self.draw_pos = util.vec2(self.sprite.rect.left - camera_pos.x, self.sprite.rect.top - camera_pos.y)
 
     def draw(self, canvas):
         #canvas.blit(self.sprite.image, self.pos.get(), None, pygame.BLEND_MAX)
-        canvas.blit(self.sprite.image, self.sprite.rect, None, pygame.BLEND_MAX)
+        canvas.blit(self.sprite.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
 
 class StaticBlock(GameObject):
     def __init__(self, pos, sprite):
         GameObject.__init__(self, pos, sprite)
 
-    def update(self,camera_pos):
-        GameObject.update(self)
+    def update(self, camera_pos):
+        GameObject.update(self, camera_pos)
 #        self.draw_pos.set(self.pos.x - camera_pos.x, self.pos.y - camera_pos.y)
         pass

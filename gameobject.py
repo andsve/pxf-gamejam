@@ -39,6 +39,7 @@ class GameObject:
 
 
         self.object_type = obj_type
+        #self.shape.collision_type = obj_type
 
     def move(self, x, y):
         pass
@@ -59,8 +60,9 @@ class StaticBlock(GameObject):
     def __init__(self, pos, sprite, space, obj_type):
         GameObject.__init__(self, pos, sprite, space, obj_type, pm.inf)
         self.body, self.shape = create_box(space, (pos.x, pos.y), 8, pm.inf)
+        self.shape.collision_type = obj_type
         space.add_static(self.shape)
-        self.shape.collision_type = 1
+        #self.shape.collision_type = 1
 
     def update(self, camera_pos):
         GameObject.update(self, camera_pos)

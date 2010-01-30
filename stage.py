@@ -18,15 +18,18 @@ class Stage:
             #discard items that should not be drawn
             if self.collide(tile.sprite.rect):
                 tile.draw(canvas)
+            else:
+                #print tile.pos
+                pass
             
 class Stage1(Stage):
-    def __init__(self,camera_rect):
+    def __init__(self,camera):
         Stage.__init__(self)
         self.load()
-        self.camera_rect = camera_rect
+        self.camera = camera
     
     def collide(self,rect):
-        return self.camera_rect.colliderect(rect)
+        return rect.colliderect(self.camera.rect)
         
     def load(self):
         import gameobject

@@ -57,6 +57,10 @@ class vec2:
     
     def get(self):
         return (self.x, self.y)
+        
+    def set(self, x, y):
+        self.x = x
+        self.y = y
     
 def load_sound(name):
     if pygame.mixer.get_init == None:

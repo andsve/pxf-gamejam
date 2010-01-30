@@ -5,6 +5,7 @@ import util
 
 class Player(gameobject.GameObject):
     def __init__(self, pos):
+        gameobject.GameObject.__init__(self, pos, util.load_sprite("data/bw_player16.png"))
         self.pos = pos
         self.look_dir = 0 # 0 = right, 1 = left
         self.bw_image = pygame.image.load("data/bw_player16.png")
@@ -16,7 +17,6 @@ class Player(gameobject.GameObject):
         self.red_image_r = pygame.image.load("data/red_player16_r.png")
         self.green_image_r = pygame.image.load("data/green_player16_r.png")
         self.blue_image_r = pygame.image.load("data/blue_player16_r.png")
-        #gameobject.GameObject.__init__(self, pos, util.load_sprite("data/blue_block16.png"))
 
     def update(self):
         pass

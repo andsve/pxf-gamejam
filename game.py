@@ -18,9 +18,9 @@ class Game:
         self.is_running = True
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
-        self.camera = camera.Camera((100,0),size)
-        self.current_stage = None
         self.player = player.Player(util.vec2(4,4))
+        self.camera = camera.Camera(self.player.pos,size)
+        self.current_stage = None
         self.physics = physics.Physics()
         # set color key to black
         self.screen.set_colorkey(pygame.Color(0,0,0))
@@ -31,16 +31,18 @@ class Game:
     def set_level(self, stage):
         self.physics.reset()
         self.current_stage = stage
-        
+
         for o in self.current_stage.game_objects:
             self.physics.add_dynamic(o)
-            
+
         for o in self.current_stage.tiles:
             self.physics.add_static(o)
 
+        self.physics.add_dynamic(self.player)
+
     def handle_input(self, event):
         if event.key == K_UP:
-            #for tile in self.current_stage.tiles:
+            self.camera.pos = self.camera.pos + util.vec2(1,0)
             pass
 
         if event.key == K_LEFT:
@@ -64,7 +66,7 @@ class Game:
 
     def run(self):
         self.set_level(stage.Stage1(self.camera))
-        
+
         while self.is_running:
             # event handling
             for event in pygame.event.get():
@@ -81,16 +83,20 @@ class Game:
 
             # update game objects
             for object in self.current_stage.tiles:
-                object.update()
+                #object.update(self.camera.pos)
+                object.update(util.vec2(0, 0))
 
             # update camera
             self.camera.update()
+
+            # update physics
+            self.physics.step()
 
             # update game
             self.current_stage.draw(self.screen)
 
             # fps limit
-            self.clock.tick(60)
+            self.clock.tick(25)
             self.update_title()
             # swap buffers
             pygame.display.flip()

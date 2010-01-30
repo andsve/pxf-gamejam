@@ -1,8 +1,8 @@
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 B                                           B
+B                                           B
 BGGGGG                                      B
 B    GRRGGGGG                               B
-B           B                               B
 B           B                               B
 B           G       G                       B
 B           B       R   B    G              B

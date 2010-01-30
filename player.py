@@ -4,10 +4,23 @@ import gameobject
 import util
 import animation
 import game
+import pymunk as pm
+
+def create_ball(self, pos, mass=1.0, radius=8.0):
+    moment = pm.moment_for_circle(mass, radius, 0.0, pm.Vec2d(0,0))
+    ball_body = pm.Body(mass, moment)
+    ball_body.position = pm.Vec2d(pos)
+    ball_shape = pm.Circle(ball_body, radius, pm.Vec2d(0,0))
+    ball_shape.friction = 1.5
+    #ball_shape.collision_type = COLLTYPE_DEFAULT
+    #self.space.add(ball_body, ball_shape)
+    # return ball_shape
+    return ball_body, ball_shape
 
 class Player(gameobject.GameObject):
     def __init__(self, pos, space):
         gameobject.GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/bw_player16.png")), space, gameobject.OBJECT_TYPE_PLAYER, 10.0)
+        self.body, self.shape = create_ball(space, (pos.x, pos.y), 8, 8)
         space.add(self.body, self.shape)
         self.shape.collision_type = 2
 
@@ -57,29 +70,29 @@ class Player(gameobject.GameObject):
     # move this elsewhere
     def toggle_color(self,color):
         new_color = None
-        
+
         if self.active_color == color:
             new_color = game.CNONE
         else:
             new_color = color
-        
+
         self.active_color = new_color
         self.has_changed  = True
-        
+
         return new_color
-    
+
     def determine_lookdir(self,color_str):
         # right
         if self.look_dir == game.PDIR_RIGHT:
             return color_str + "_player_walk_right"
         else:
             return color_str + "_player_walk_left"
-        
+
     def set_animation(self):
         if self.has_changed:
             new_animation = None
             print self.active_color
-        
+
             if self.active_color == game.CNONE:
                 new_animation = self.animations[self.determine_lookdir("bw")]
             elif self.active_color == game.CRED:
@@ -88,17 +101,17 @@ class Player(gameobject.GameObject):
                 new_animation = self.animations[self.determine_lookdir("green")]
             elif self.active_color == game.CBLUE:
                 new_animation = self.animations[self.determine_lookdir("blue")]
-        
-            
+
+
             self.current_animation = new_animation
             self.current_animation.play()
             self.has_changed = False
-               
-    
+
+
     def draw(self, canvas):
-        
+
         self.set_animation()
-        
+
         #gameobject.GameObject.draw(self, canvas)
         #canvas.blit(cloth_image, self.draw_pos.get(), None, pygame.BLEND_MAX)
         #canvas.blit(self.image, self.draw_pos.get(), None, pygame.BLEND_MAX)

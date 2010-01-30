@@ -69,6 +69,14 @@ class Player(gameobject.GameObject):
             return color_str + "_player_walk_left"
         
     def set_animation(self):
+        vel = self.body._get_velocity()
+        _play = True
+        
+        if abs(vel.x) <= game.vel_epsilon:
+            if not self.has_changed:
+                self.current_animation.stop()            
+            _play = False
+        
         if self.has_changed:
             new_animation = None
             
@@ -83,8 +91,11 @@ class Player(gameobject.GameObject):
         
             
             self.current_animation = new_animation
-            self.current_animation.play()
+            
+            if _play:
+                self.current_animation.play()
             self.has_changed = False
+    
                
     
     def draw(self, canvas):
@@ -95,7 +106,8 @@ class Player(gameobject.GameObject):
         #canvas.blit(cloth_image, self.draw_pos.get(), None, pygame.BLEND_MAX)
         #canvas.blit(self.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
         #canvas.blit(self.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
-        self.current_animation.draw(canvas,self.draw_pos.get())
+        #self.current_animation.draw(canvas,self.draw_pos.get())
+        canvas.blit(self.current_animation.sprite.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
 
         # allways show "body"
         #canvas.blit(body_image, self.draw_pos.get(), None, pygame.BLEND_RGB_ADD)

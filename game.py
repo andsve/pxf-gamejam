@@ -13,6 +13,8 @@ import pymunk as pm
 CNONE,CRED,CBLUE,CGREEN = range(4)
 PDIR_RIGHT,PDIR_LEFT = range(2)
 
+vel_epsilon = 0.05
+
 class Game:
     def __init__(self, size):
         pygame.init()
@@ -36,7 +38,6 @@ class Game:
         self.bg_music_playing = False
 
         # game settings
-        active_color = CNONE
         self.player = player.Player(util.vec2(30,25), self.space)
         print(self.player.object_type)
         self.camera = camera.Camera(util.vec2(30,25),size)

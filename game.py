@@ -96,7 +96,7 @@ class Game:
             self.current_stage.draw(self.screen)
 
             # fps limit
-            self.clock.tick(25)
+            self.clock.tick(2)
             self.update_title()
             # swap buffers
             pygame.display.flip()

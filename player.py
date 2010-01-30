@@ -20,7 +20,7 @@ def create_ball(self, pos, mass=1.0, radius=8.0):
 class Player(gameobject.GameObject):
     def __init__(self, pos, space):
         gameobject.GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/bw_player16.png")), space, gameobject.OBJECT_TYPE_PLAYER, 10.0)
-        self.body, self.shape = create_ball(space, (pos.x, pos.y), 8, 8)
+        self.body, self.shape = create_ball(space, (pos.x, pos.y), 8, 4)
         space.add(self.body, self.shape)
         self.shape.collision_type = gameobject.OBJECT_TYPE_PLAYER
         #self.shape.collision_type = gameobject.OBJECT_TYPE_PLAYER
@@ -68,6 +68,14 @@ class Player(gameobject.GameObject):
         for anim in self.animations.keys():
            self.animations[anim].update(dt)
         self.current_animation.update(dt)
+
+        if self.body.velocity.x > 0:
+            aoeu = 4
+            self.body.velocity.x -= aoeu
+        elif self.body.velocity.x < 0:
+            aoeu = 4
+            self.body.velocity.x += aoeu
+
 
     # move this elsewhere
     def toggle_color(self,color):
@@ -121,7 +129,8 @@ class Player(gameobject.GameObject):
         #canvas.blit(self.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
         #canvas.blit(self.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
         #self.current_animation.draw(canvas,self.draw_pos.get())
-        canvas.blit(self.current_animation.sprite.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
+        pos = self.draw_pos.get()
+        canvas.blit(self.current_animation.sprite.image, (pos[0], pos[1]-4), None, pygame.BLEND_MAX)
 
         # allways show "body"
         #canvas.blit(body_image, self.draw_pos.get(), None, pygame.BLEND_RGB_ADD)

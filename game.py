@@ -99,6 +99,9 @@ class Game:
         self.current_stage = stage
 
     def handle_input(self, event):
+        #if event.type == KEYUP and event.key in (K_LEFT, K_RIGHT):
+        #    self.player.stop_hammer_time = True
+
         #switch colors
         if event.key == K_1:
             self.active_color = self.player.toggle_color(CRED)
@@ -163,7 +166,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     self.is_running = False
-                elif event.type == KEYDOWN:
+                elif event.type in (KEYDOWN, KEYUP):
                     self.handle_input(event)
 
             # handle game input

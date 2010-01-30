@@ -49,7 +49,7 @@ class AnimatedGameObject(gameobject.GameObject):
 
 class Player(gameobject.GameObject):
     def __init__(self, pos):
-        gameobject.GameObject.__init__(self, pos, util.load_sprite("data/bw_player16.png"))
+        gameobject.GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/bw_player16.png")))
         self.look_dir = 0 # 0 = right, 1 = left
         self.bw_image = pygame.image.load("data/bw_player16.png")
         self.red_image = pygame.image.load("data/red_player16.png")

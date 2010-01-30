@@ -53,7 +53,7 @@ class Game:
 
     def handle_input(self, event):
         if event.key == K_UP:
-            self.camera.pos.y += 1
+            #self.camera.pos.y += 1
             pass
         
         if event.key == K_RETURN:
@@ -98,15 +98,16 @@ class Game:
             self.anim_test.draw(self.screen)
 
             # update player
-            self.player.update()
+            self.player.update(self.camera.get_pos())
             self.player.draw(self.screen)
 
             # update game objects
             for object in self.current_stage.tiles:
                 #object.update(self.camera.pos)
-                object.update(util.vec2(0, 0))
+                object.update(self.camera.get_pos())
 
             # update camera
+            self.camera.set_lookat(self.player.pos)
             self.camera.update()
 
             # update physics

@@ -23,6 +23,10 @@ class Game:
         pm.init_pymunk()
         self.space = pm.Space() #3
         self.space.gravity = (0.0, 300.0)
+        self.space.resize_static_hash()
+        self.space.resize_active_hash()
+        self.space.add_collisionpair_func(1, 2, self.draw_collision, self.screen)
+
 
         # music:
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
@@ -36,7 +40,15 @@ class Game:
         pygame.key.set_repeat(1, 20)
 
 
-
+    def draw_collision(self, shapea, shapeb, contacts, normal_coef, surface):
+        self.player.in_air = False
+        """for c in contacts:
+            r = max( 3, abs(c.distance*5) )
+            r = int(r)
+            p = (c.position.x - self.camera.get_pos().x, c.position.y - self.camera.get_pos().y)
+            pygame.draw.circle(surface, (255, 0, 0), p, r, 0)
+            """
+        return True
 
     def update_title(self):
         pygame.display.set_caption("Channel Panic! (%.2f FPS)" % (self.clock.get_fps()))
@@ -52,20 +64,23 @@ class Game:
         if pygame.key.get_pressed()[K_UP]:
             #self.player.vel.y = -3
             #self.in_air = True
-            self.player.body.apply_impulse((0,-400))
+            if (not self.player.in_air):
+                self.player.body.apply_impulse(((self.player.look_dir*2.0 - 1.0) * -100.0,-900))
             pass
 
         if pygame.key.get_pressed()[K_LEFT]:
             #if (len(self.physics.get_colliding_objects(self.physics.player)) > 0):
                 self.player.look_dir = 1
                 #if (-self.player.body._get_velocity().x < 80.0):
-                self.player.body.apply_impulse((-100,0)) #_set_velocity((-80, 0))
+                if (not self.player.in_air):
+                    self.player.body.apply_impulse((-100,0)) #_set_velocity((-80, 0))
                 #self.player.vel.y = 0.04
 
         if pygame.key.get_pressed()[K_RIGHT]:
             #if (len(self.physics.get_colliding_objects(self.physics.player)) > 0):
                 self.player.look_dir = 0
-                self.player.body.apply_impulse((100,0)) #_set_velocity((-80, 0))
+                if (not self.player.in_air):
+                    self.player.body.apply_impulse((100,0)) #_set_velocity((-80, 0))
                 #self.player.vel.x += 0.9
                 #self.player.vel.y = 0.04
 

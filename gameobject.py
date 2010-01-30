@@ -46,6 +46,7 @@ class StaticBlock(GameObject):
     def __init__(self, pos, sprite, space):
         GameObject.__init__(self, pos, sprite, space, pm.inf)
         space.add_static(self.shape)
+        self.shape.collision_type = 1
 
     def update(self, camera_pos):
         GameObject.update(self, camera_pos)

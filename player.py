@@ -8,6 +8,8 @@ class Player(gameobject.GameObject):
     def __init__(self, pos, space):
         gameobject.GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/bw_player16.png")), space, 10.0)
         space.add(self.body, self.shape)
+        self.shape.collision_type = 2
+
         #self.image = pygame.image.load("data/bw_guy_walk0.png")
         self.animations = {}
 
@@ -36,6 +38,7 @@ class Player(gameobject.GameObject):
 
     def update(self, camera_pos,dt):
         gameobject.GameObject.update(self, camera_pos)
+        self.in_air = True
         for anim in self.animations.keys():
             self.animations[anim].update(dt)
 

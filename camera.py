@@ -9,7 +9,7 @@ class Camera:
         self.lookat_pos = util.vec2(pos.x, pos.y)
         self.center = util.vec2(size[0] / 2.0, size[1] / 2.0)
         self.rect = Rect((0,0),size)
-        self.delta_threshold = 0.6
+        self.delta_threshold = 0.3
 
     def update(self):
         delta = util.vec2(self.lookat_pos.x - self.real_pos.x, self.lookat_pos.y - self.real_pos.y)

@@ -24,6 +24,7 @@ class Game:
         self.physics = physics.Physics()
         # set color key to black
         self.screen.set_colorkey(pygame.Color(0,0,0))
+        pygame.key.set_repeat(1, 20)
 
     def update_title(self):
         pygame.display.set_caption("Channel Panic! (%.2f FPS)" % (self.clock.get_fps()))
@@ -42,8 +43,7 @@ class Game:
 
     def handle_input(self, event):
         if event.key == K_UP:
-            self.camera.pos.y += 1
-            pass
+            self.player.vel.y = -3
 
         if event.key == K_LEFT:
             self.player.look_dir = 1

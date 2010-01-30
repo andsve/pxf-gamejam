@@ -18,7 +18,7 @@ class Game:
         self.is_running = True
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
-        self.player = player.Player(util.vec2(4,4))
+        self.player = player.Player(util.vec2(4,25))
         self.camera = camera.Camera(self.player.pos,size)
         self.current_stage = None
         self.physics = physics.Physics()

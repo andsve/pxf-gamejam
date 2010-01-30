@@ -16,14 +16,13 @@ class GameObject:
     def draw(self, canvas):
         #canvas.blit(self.sprite.image, self.pos.get(), None, pygame.BLEND_MAX)
         canvas.blit(self.sprite.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
-        self.draw_pos.set(0,0)
-
 
 class StaticBlock(GameObject):
     def __init__(self, pos, sprite):
         GameObject.__init__(self, pos, sprite)
 
     def update(self,camera_pos):
-        print str(self) + str(self.pos.get())
-        self.draw_pos = self.pos - camera_pos
+#        print str(self) + str(self.pos.get())
+        print self.draw_pos
+        self.draw_pos.set(self.pos - camera_pos)
         pass

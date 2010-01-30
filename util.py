@@ -8,6 +8,7 @@ class vec2:
     def __init__(self):
         self.x = 0
         self.y = 0
+
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -56,6 +57,10 @@ class vec2:
     def set(self, x, y):
         self.x = x
         self.y = y
+
+    def set(self, a):
+        self.x = a.x
+        self.y = a.y
 
 def load_sound(name):
     if pygame.mixer.get_init == None:

@@ -38,6 +38,7 @@ class Stage1(Stage):
         rblock = util.load_image("data/red_block16.png")
         gblock = util.load_image("data/green_block16.png")
         bblock = util.load_image("data/blue_block16.png")
+        wblock = util.load_image("data/bw_block16.png")
 
         with open("data/level1.txt") as f:
             data = f.readlines()
@@ -53,6 +54,9 @@ class Stage1(Stage):
                 elif col == 'B':
                     block = bblock
                     type = gameobject.OBJECT_TYPE_BLUE
+                elif col == 'W':
+                    block = wblock
+                    type = gameobject.OBJECT_TYPE_BW
                 else: continue
                 pos = util.vec2(cnum * 16, rnum * 16)
                 go = gameobject.StaticBlock(pos, util.to_sprite(block), space, type)

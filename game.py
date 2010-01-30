@@ -6,6 +6,7 @@ import stage
 import gameobject
 import util
 import camera
+import physics
 
 class Game:
     def __init__(self, size):       
@@ -18,13 +19,24 @@ class Game:
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
         self.camera = camera.Camera((100,0),size)
-        self.current_stage = stage.Stage1(self.camera)
+        self.current_stage = None
         self.player = player.Player((4,4))
+        self.physics = physics.Physics()
         # set color key to black
         self.screen.set_colorkey(pygame.Color(0,0,0))
 
     def update_title(self):
         pygame.display.set_caption("Channel Panic! (%.2f FPS)" % (self.clock.get_fps()))
+
+    def set_level(self, stage):
+        self.physics.reset()
+        self.current_stage = stage
+        
+        for o in self.current_stage.game_objects:
+            self.physics.add_dynamic(o)
+            
+        for o in self.current_stage.tiles:
+            self.physics.add_static(o)
 
     def handle_input(self, event):
         if event.key == K_UP:
@@ -43,6 +55,8 @@ class Game:
             self.is_running = False
 
     def run(self):
+        self.set_level(stage.Stage1(self.camera))
+        
         while self.is_running:
             # event handling
             for event in pygame.event.get():

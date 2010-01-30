@@ -5,16 +5,9 @@ import util
 class GameObject:
     def __init__(self, pos, sprite):
         self.pos = pos # position in pixels
+        self.dir = util.vec2(0, 0) # direction
         self.vel = util.vec2(0, 0) # velocity in pixels/frame
-        self.sprite = sprite
-        
-    def update_physics(self, objects, physics):
-        old_values = (self.pos, self.vel)
-        self.pos += self.vel
-        self.vel += physics.gravity
-        new_values = self.pos, self.vel
-        return (old_values, new_values)
-        
+        self.sprite = sprite   
         
     def update(self):
         pass

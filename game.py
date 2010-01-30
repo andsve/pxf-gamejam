@@ -13,6 +13,8 @@ import pymunk as pm
 CNONE,CRED,CBLUE,CGREEN = range(4)
 PDIR_RIGHT,PDIR_LEFT = range(2)
 
+vel_epsilon = 0.05
+
 class Game:
     def __init__(self, size):
         pygame.init()
@@ -41,9 +43,10 @@ class Game:
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_RED, self.handle_collision, self.screen)
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_GREEN, self.handle_collision, self.screen)
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_BLUE, self.handle_collision, self.screen)
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_PLAYER, self.handle_collision, self.screen)
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_PLAYER, self.handle_collision, self.screen)
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_PLAYER, self.handle_collision, self.screen)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_BW, self.handle_collision, self.screen)
+        #self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_PLAYER, self.handle_collision, self.screen)
+        #self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_PLAYER, self.handle_collision, self.screen)
+        #self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_PLAYER, self.handle_collision, self.screen)
 
 
         # music:
@@ -51,14 +54,15 @@ class Game:
         self.bg_music_playing = False
 
         # game settings
-        self.active_color = CBLUE
-        self.player = player.Player(util.vec2(30,25), self.space)
+        self.player = player.Player(util.vec2(30,10), self.space)
         #print(self.player.object_type)
         self.camera = camera.Camera(util.vec2(30,25),size)
         self.current_stage = None
         # set color key to black
         #self.screen.set_colorkey(pygame.Color(0,0,0))
         pygame.key.set_repeat(1, 20)
+
+        self.active_color = CRED
 
 
     def handle_collision(self, shapea, shapeb, contacts, normal_coef, surface):
@@ -67,6 +71,11 @@ class Game:
             in_air = True
             if (c.normal.y > 0 and c.normal.x < 0.1 and c.normal.x > -0.1):
                 in_air = False
+
+            if (shapea.collision_type == gameobject.OBJECT_TYPE_BW or shapeb.collision_type == gameobject.OBJECT_TYPE_BW):
+                self.player.in_air = in_air
+                return True;
+
             if (self.active_color == CRED):
                 if (shapea.collision_type == gameobject.OBJECT_TYPE_RED or shapeb.collision_type == gameobject.OBJECT_TYPE_RED):
                     self.player.in_air = in_air

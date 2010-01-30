@@ -1,9 +1,14 @@
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 B                                           B
 BGGGGG                                      B
-B    GRRGGGGG                               B
-B           B                               B
-B           B                               B
-B           G       G                       B
-B           B       R   B    G              B
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+B    GRRGGGGG                             Z B
+B           B                            WWWB
+B           W       R                       B
+B     W     G       G                       B
+B   Y W     W       R   B    G              B
+WWWWWWWWWWWWWWWWWWWWWWWWWWGGGBWWWWWWWWWWWWWWW
+                          B  G XW
+                          B  GWwW
+                          WWWWW
+                           
+

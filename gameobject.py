@@ -1,32 +1,51 @@
 #!/usr/bin/env python
 import pygame
 import util
+import pymunk as pm
+
+def create_poly(space, points, mass = -5.0, pos = (0,0)):
+    moment = pm.moment_for_poly(mass, points, pm.Vec2d(0,0))
+    #moment = 1000
+    body = pm.Body(mass, moment)
+    body.position = pm.Vec2d(pos)
+
+    shape = pm.Poly(body, points, pm.Vec2d(0,0))
+    shape.friction = 0.5
+    #shape.collision_type = 0
+    #space.add(body, shape)
+    #space.add_static(shape)
+    return body, shape
+
+def create_box(space, pos, size = 10, mass = 5.0):
+    box_points = map(pm.Vec2d, [(-size, -size), (-size, size), (size,size), (size, -size)])
+    return create_poly(space, box_points, mass = mass, pos = pos)
 
 class GameObject:
-    def __init__(self, pos, sprite):
-        self.dir = util.vec2(0, 0) # direction
-        self.vel = util.vec2(0, 0) # velocity in pixels/frame
-        self.in_air = False
-        self.delta_move = util.vec2(0, 0)
+    def __init__(self, pos, sprite, space, mass = 5.0):
         self.draw_pos = util.vec2(0, 0)
         self.sprite = sprite
-        self.move(pos.x, pos.y)
+        #self.move(pos.x, pos.y)
+        self.body, self.shape = create_box(space, (pos.x, pos.y), 8, mass)
 
     def move(self, x, y):
-       # self.sprite.rect.move_ip(x, y)
-       self.delta_move.x += x
-       self.delta_move.y += y
+        pass
+       #self.sprite.rect.move_ip(x, y)
+       #self.delta_move.x += x
+       #self.delta_move.y += y
 
     def update(self, camera_pos):
-        self.draw_pos = util.vec2(self.sprite.rect.left - camera_pos.x, self.sprite.rect.top - camera_pos.y)
+        self.draw_pos = util.vec2(self.body.position.x - camera_pos.x, self.body.position.y - camera_pos.y)#util.vec2(self.sprite.rect.left - camera_pos.x, self.sprite.rect.top - camera_pos.y)
 
     def draw(self, canvas):
         #canvas.blit(self.sprite.image, self.pos.get(), None, pygame.BLEND_MAX)
         canvas.blit(self.sprite.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
 
+
+
 class StaticBlock(GameObject):
-    def __init__(self, pos, sprite):
-        GameObject.__init__(self, pos, sprite)
+    def __init__(self, pos, sprite, space):
+        GameObject.__init__(self, pos, sprite, space, pm.inf)
+        space.add_static(self.shape)
 
     def update(self, camera_pos):
         GameObject.update(self, camera_pos)

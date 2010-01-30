@@ -6,7 +6,8 @@ import stage
 import gameobject
 import util
 import camera
-import physics
+
+import pymunk as pm
 
 class Game:
     def __init__(self, size):
@@ -16,6 +17,12 @@ class Game:
         pygame.mouse.set_visible(0)
         self.clock = pygame.time.Clock()
         self.is_running = True
+
+        # physics
+        pm.init_pymunk()
+        self.space = pm.Space() #3
+        self.space.gravity = (0.0, 300.0)
+
         # music:
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
@@ -27,46 +34,45 @@ class Game:
         self.dt_last_frame = self.clock.tick()
 
         self.anim_test = player.AnimatedGameObject(util.vec2(50,0),seq,5)
-        self.player = player.Player(util.vec2(4,25))
+        self.player = player.Player(util.vec2(4,25), self.space)
         self.camera = camera.Camera(util.vec2(2,25),size)
         self.current_stage = None
-        self.physics = physics.Physics()
         # set color key to black
         #self.screen.set_colorkey(pygame.Color(0,0,0))
         pygame.key.set_repeat(1, 20)
+
+
+
 
     def update_title(self):
         pygame.display.set_caption("Channel Panic! (%.2f FPS)" % (self.clock.get_fps()))
 
     def set_level(self, stage):
-        self.physics.reset()
         self.current_stage = stage
-
-        for o in self.current_stage.game_objects:
-            self.physics.add_dynamic(o)
-
-        for o in self.current_stage.tiles:
-            self.physics.add_static(o)
-
-        self.physics.add_player(self.player)
 
     def handle_input(self, event):
         pass
 
     def game_input(self):
         if pygame.key.get_pressed()[K_UP]:
-            self.player.vel.y = -3
-            self.in_air = True
+            #self.player.vel.y = -3
+            #self.in_air = True
+            self.player.body.apply_impulse((0,-400))
+            pass
 
         if pygame.key.get_pressed()[K_LEFT]:
-            self.player.look_dir = 1
-            self.player.vel.x -= 0.9
-            self.player.vel.y = 0.04
+            #if (len(self.physics.get_colliding_objects(self.physics.player)) > 0):
+                self.player.look_dir = 1
+                #if (-self.player.body._get_velocity().x < 80.0):
+                self.player.body.apply_impulse((-100,0)) #_set_velocity((-80, 0))
+                #self.player.vel.y = 0.04
 
         if pygame.key.get_pressed()[K_RIGHT]:
-            self.player.look_dir = 0
-            self.player.vel.x += 0.9
-            self.player.vel.y = 0.04
+            #if (len(self.physics.get_colliding_objects(self.physics.player)) > 0):
+                self.player.look_dir = 0
+                self.player.body.apply_impulse((100,0)) #_set_velocity((-80, 0))
+                #self.player.vel.x += 0.9
+                #self.player.vel.y = 0.04
 
         if pygame.key.get_pressed()[K_RETURN]:
             self.anim_test.play_animation()
@@ -84,7 +90,7 @@ class Game:
 
 
     def run(self):
-        self.set_level(stage.Stage1(self.camera))
+        self.set_level(stage.Stage1(self.camera, self.space))
 
         while self.is_running:
             # update time
@@ -111,7 +117,7 @@ class Game:
             self.player.draw(self.screen)
 
             # update physics
-            self.physics.step()
+            self.space.step(1/25.0)
 
             # update game objects
             for object in self.current_stage.tiles:

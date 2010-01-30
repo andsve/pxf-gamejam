@@ -32,24 +32,25 @@ class AnimatedGameObject(gameobject.GameObject):
 
     def draw(self,canvas):
         canvas.blit(self.sprite.image, self.pos.get(), None, pygame.BLEND_MAX)
-        
+
     def play_animation(self):
         if self.playing:
             self.playing = False
         else:
             self.current = 0
             self.playing = True
-    
+
     def stop_animation(self):
         self.current = 0
         self.playing = False
-    
+
     def pause_animation(self):
         pass
 
 class Player(gameobject.GameObject):
-    def __init__(self, pos):
-        gameobject.GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/bw_player16.png")))
+    def __init__(self, pos, space):
+        gameobject.GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/bw_player16.png")), space, 10.0)
+        space.add(self.body, self.shape)
         self.look_dir = 0 # 0 = right, 1 = left
         self.bw_image = pygame.image.load("data/bw_player16.png")
         self.red_image = pygame.image.load("data/red_player16.png")

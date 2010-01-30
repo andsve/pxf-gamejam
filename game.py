@@ -98,8 +98,8 @@ class Game:
         self.current_stage = stage
 
     def handle_input(self, event):
-        #if event.type == KEYUP and event.key in (K_LEFT, K_RIGHT):
-        #    self.player.stop_hammer_time = True
+        if event.type == KEYUP and event.key in (K_LEFT, K_RIGHT):
+            self.player.stop_hammer_time = True
 
         #switch colors
         if event.key == K_1:
@@ -121,6 +121,7 @@ class Game:
             pass
 
         if pygame.key.get_pressed()[K_LEFT]:
+                self.player.stop_hammer_time = False
             #if (len(self.physics.get_colliding_objects(self.physics.player)) > 0):
                 self.player.look_dir = 1
                 self.player.has_changed = True
@@ -132,6 +133,7 @@ class Game:
                 #self.player.vel.y = 0.04
 
         if pygame.key.get_pressed()[K_RIGHT]:
+                self.player.stop_hammer_time = False
             #if (len(self.physics.get_colliding_objects(self.physics.player)) > 0)
                 self.player.look_dir = 0
                 self.player.has_changed = True

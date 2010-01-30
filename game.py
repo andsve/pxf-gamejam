@@ -17,19 +17,12 @@ class Game:
         pygame.mouse.set_visible(0)
         self.clock = pygame.time.Clock()
         self.is_running = True
+        
+        # load assets
         # music:
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
-
-        # load assets
-        # create animations
-        player_walk_left = animation.new_animation("data/anim_test","png",4,10,[0,1,2,3,4])
         
-        test = util.name_sequence("data/anim_test","png",4)
-        seq = util.get_sequence(test,[0,1,2,3,4])
-        self.dt_last_frame = self.clock.tick()
-
-        self.anim_test = animation.Animation(seq,5)
         self.player = player.Player(util.vec2(4,25))
         self.camera = camera.Camera(util.vec2(2,25),size)
         self.current_stage = None
@@ -73,12 +66,12 @@ class Game:
             self.player.vel.y = 0.04
 
         if pygame.key.get_pressed()[K_SPACE]:
-            if not self.bg_music_playing:
-                self.bg_music.play(1)
-                self.bg_music_playing = True
-            else:
+            if self.bg_music_playing:
                 self.bg_music.stop()
                 self.bg_music_playing = False
+            else:
+                self.bg_music.play(1)
+                self.bg_music_playing = True
 
         if pygame.key.get_pressed()[K_ESCAPE]:
             self.is_running = False
@@ -104,11 +97,11 @@ class Game:
             self.screen.fill([0,0,0])
 
             # update animation
-            self.anim_test.update(self.dt_last_frame)
+            #self.anim_test.update(self.dt_last_frame)
             #self.anim_test.draw(self.screen)
 
             # update player
-            self.player.update(self.camera.get_pos())
+            self.player.update(self.camera.get_pos(),self.dt_last_frame)
             self.player.draw(self.screen)
 
             # update physics

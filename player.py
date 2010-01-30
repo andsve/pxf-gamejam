@@ -6,7 +6,7 @@ import animation
 
 class Player(gameobject.GameObject):
     def __init__(self, pos, space):
-        gameobject.GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/bw_player16.png")), space, 10.0)
+        gameobject.GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/bw_player16.png")), space, gameobject.OBJECT_TYPE_PLAYER, 10.0)
         space.add(self.body, self.shape)
         self.shape.collision_type = 2
 

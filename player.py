@@ -71,7 +71,9 @@ class Player(gameobject.GameObject):
         self.current_animation.update(dt)
 
         if self.stop_hammer_time:
-            if self.body.velocity.x > 0:
+            if -1.5 < self.body.velocity.x < 1.5:
+                self.body.velocity.x = 0
+            elif self.body.velocity.x > 0:
                 aoeu = 4
                 self.body.velocity.x -= aoeu
             elif self.body.velocity.x < 0:

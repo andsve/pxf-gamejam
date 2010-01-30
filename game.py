@@ -9,7 +9,7 @@ import camera
 import physics
 
 class Game:
-    def __init__(self, size):       
+    def __init__(self, size):
         pygame.init()
         self.window = pygame.display.set_mode(size)
         self.screen = pygame.display.get_surface()
@@ -20,7 +20,7 @@ class Game:
         self.bg_music_playing = False
         self.camera = camera.Camera((100,0),size)
         self.current_stage = None
-        self.player = player.Player((4,4))
+        self.player = player.Player(util.vec2(4,4))
         self.physics = physics.Physics()
         # set color key to black
         self.screen.set_colorkey(pygame.Color(0,0,0))
@@ -42,7 +42,15 @@ class Game:
         if event.key == K_UP:
             #for tile in self.current_stage.tiles:
             pass
-                
+
+        if event.key == K_LEFT:
+            self.player.look_dir = 1
+            self.player.pos.x -= 1.0
+
+        if event.key == K_RIGHT:
+            self.player.look_dir = 0
+            self.player.pos.x += 1.0
+
             #pass
         if event.key == K_SPACE:
             if not self.bg_music_playing:
@@ -64,27 +72,29 @@ class Game:
                     self.is_running = False
                 elif event.type == KEYDOWN:
                     self.handle_input(event)
-            
+
+            self.screen.fill([0,0,0])
+
             # update player
             self.player.update()
             self.player.draw(self.screen)
-            
+
             # update game objects
             for object in self.current_stage.tiles:
                 object.update()
-            
+
             # update camera
             self.camera.update()
-                    
+
             # update game
             self.current_stage.draw(self.screen)
-            
+
             # fps limit
             self.clock.tick(60)
             self.update_title()
             # swap buffers
             pygame.display.flip()
-            
+
 if __name__ == '__main__':
     g = Game((320, 240))
     g.run()

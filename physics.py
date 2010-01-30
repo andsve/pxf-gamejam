@@ -1,6 +1,6 @@
 import util
 import pygame
-
+"""
 class Physics:
     def __init__(self):
         self.gravity = 0.4
@@ -53,20 +53,18 @@ class Physics:
                 if o.vel.x > 5: o.vel.x = 5
                 if o.vel.y < -5: o.vel.y = -5
                 if o.vel.x < -5: o.vel.x = -5
-                """
-                player_collisions = self.get_colliding_objects(self.player)
-                if len(player_collisions) > 0:
-                    r = None
-                    diff = 100000000
-                    for c in player_collisions[1:]:
-                        a = c.sprite.rect.top - self.player.sprite.rect.top
-                        if a < diff:
-                            diff = a
-                            r = c
-                    self.player.sprite.rect.move_ip(0, -diff)
-                """
+
                 # Check collisions
                 for co in self.objects:
                     if not o is co:# and o is not self.player:
                         if pygame.sprite.collide_rect(o.sprite, co.sprite):
-                            o.sprite.rect = old_rect
+                            o.sprite.v
+                            #if o is self.player:
+                                #if self.player.sprite.rect.move(0, 3).colliderect(co.sprite.rect):
+                                #    self.player.sprite.rect.move_ip(0, -self.gravity)
+                                #else:
+                                #    o.sprite.rect = old_rect
+                            #else:
+                                #o.sprite.rect = old_rect
+"""
+

@@ -6,6 +6,7 @@ class GameObject:
     def __init__(self, pos, sprite):
         self.dir = util.vec2(0, 0) # direction
         self.vel = util.vec2(0, 0) # velocity in pixels/frame
+        self.in_air = False
         self.delta_move = util.vec2(0, 0)
         self.draw_pos = util.vec2(0, 0)
         self.sprite = sprite

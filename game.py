@@ -16,17 +16,17 @@ class Game:
         pygame.mouse.set_visible(0)
         self.clock = pygame.time.Clock()
         self.is_running = True
-        # music: 
+        # music:
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
-        
+
         # load assets
         # anim test
         test = util.name_sequence("data/anim_test","png",4)
         seq = util.get_sequence(test,[0,1,2,3,4])
         self.dt_last_frame = self.clock.tick()
-        
-        self.anim_test = player.AnimatedGameObject(util.vec2(50,0),seq,5)        
+
+        self.anim_test = player.AnimatedGameObject(util.vec2(50,0),seq,5)
         self.player = player.Player(util.vec2(4,25))
         self.camera = camera.Camera(util.vec2(2,25),size)
         self.current_stage = None
@@ -48,20 +48,23 @@ class Game:
         for o in self.current_stage.tiles:
             self.physics.add_static(o)
 
-        self.physics.add_dynamic(self.player)
+        self.physics.add_player(self.player)
 
     def handle_input(self, event):
         if event.key == K_UP:
             self.player.vel.y = -3
+            self.in_air = True
 
         if event.key == K_LEFT:
             self.player.look_dir = 1
             self.player.vel.x -= 0.9
+            self.player.vel.y = 0.04
 
         if event.key == K_RIGHT:
             self.player.look_dir = 0
             self.player.vel.x += 0.9
-            
+            self.player.vel.y = 0.04
+
         if event.key == K_RETURN:
             self.anim_test.play()
 
@@ -82,7 +85,7 @@ class Game:
         while self.is_running:
             # update time
             self.dt_last_frame = self.clock.tick(25)
-            
+
             # event handling
             for event in pygame.event.get():
                 if event.type == QUIT:

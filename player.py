@@ -46,7 +46,7 @@ class AnimatedGameObject(gameobject.GameObject):
     
     def pause(self):
         pass
-        
+            
 class Player(gameobject.GameObject):
     def __init__(self, pos):
         gameobject.GameObject.__init__(self, pos, util.load_sprite("data/bw_player16.png"))

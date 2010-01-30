@@ -42,7 +42,7 @@ class Game:
 
     def handle_input(self, event):
         if event.key == K_UP:
-            self.camera.pos = self.camera.pos + util.vec2(1,0)
+            self.camera.pos.y += 1
             pass
 
         if event.key == K_LEFT:

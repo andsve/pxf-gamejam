@@ -32,6 +32,6 @@ class StaticBlock(GameObject):
         
 
     def update(self,camera_pos):
-        print camera_pos.get()
+        #print camera_pos.get()
         self.draw_pos = self.pos - camera_pos
         pass

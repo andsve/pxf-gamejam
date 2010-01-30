@@ -3,6 +3,50 @@ import pygame
 import gameobject
 import util
 
+class AnimatedGameObject(gameobject.GameObject):
+    def __init__(self,pos,frames,freq):
+        #gameobject.GameObject.__init__(self,pos,util.load_sprite(frames[0])
+        #self.sprite = util.load_sprite(frames[0])
+        self.pos = pos
+        self.current = 0
+        self.playing = False
+        self.frames = frames
+        self.sprite = pygame.sprite.Sprite()
+        self.sprite.image = frames[0]
+        self.sprite.rect = self.sprite.image.get_rect()
+        # timing:
+        self._next_update = 0
+        self._period = 1000./freq
+        self._inv_period = 1./self._period
+        self._start_time = 0
+        self._frames_len = len(self.frames)
+    
+    def update(self):
+        if self.playing:
+            self.current += 1
+            if self.current == len(self.frames):
+                self.current = 0
+            self.sprite.image = self.frames[self.current]
+            #aoeu if size changes
+    
+    def draw(self,canvas):
+        canvas.blit(self.sprite.image, self.pos.get(), None, pygame.BLEND_MAX)
+        
+    def play(self):
+        if self.playing:
+            self.playing = False
+        else:
+            self.current = 0
+            self.playing = True
+    
+    def stop(self):
+        self.current = 0
+        self.playing = False
+    
+    def pause(self):
+        pass
+        
+
 class Player(gameobject.GameObject):
     def __init__(self, pos):
         self.pos = pos

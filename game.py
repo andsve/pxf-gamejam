@@ -15,8 +15,17 @@ class Game:
         pygame.mouse.set_visible(0)
         self.clock = pygame.time.Clock()
         self.is_running = True
+        
+        # load music
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
+        
+        # load assets
+        # anim test
+        test = util.name_sequence("data/anim_test","png",4)
+        seq = util.get_sequence(test,[0,1,2,3,4])
+        
+        self.anim_test = player.AnimatedGameObject(util.vec2(50,0),seq,5)
         self.player = player.Player(util.vec2(4,4))
         self.camera = camera.Camera(self.player.pos,size)
         self.current_stage = stage.Stage1(self.camera)
@@ -30,6 +39,9 @@ class Game:
         if event.key == K_UP:
             self.camera.pos = self.camera.pos + util.vec2(1,0)
             pass
+        
+        if event.key == K_RETURN:
+            self.anim_test.play()
 
         if event.key == K_LEFT:
             self.player.look_dir = 1
@@ -60,6 +72,9 @@ class Game:
                     self.handle_input(event)
 
             self.screen.fill([0,0,0])
+            
+            self.anim_test.update()
+            self.anim_test.draw(self.screen)
 
             # update player
             self.player.update()

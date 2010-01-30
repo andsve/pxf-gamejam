@@ -48,13 +48,16 @@ class Game:
 
 
     def draw_collision(self, shapea, shapeb, contacts, normal_coef, surface):
-        self.player.in_air = False
-        """for c in contacts:
-            r = max( 3, abs(c.distance*5) )
+        #self.player.in_air = False
+        for c in contacts:
+            """r = max( 3, abs(c.distance*5) )
             r = int(r)
-            p = (c.position.x - self.camera.get_pos().x, c.position.y - self.camera.get_pos().y)
-            pygame.draw.circle(surface, (255, 0, 0), p, r, 0)
-            """
+            p = (c.position.x - self.camera.get_pos().x, c.position.y - self.camera.get_pos().y)"""
+            if (c.normal.y > 0 and c.normal.x < 0.1 and c.normal.x > -0.1):
+                self.player.in_air = False
+            #print(c.normal)
+            #pygame.draw.circle(surface, (255, 0, 0), p, r, 0)
+
         return True
 
     def update_title(self):
@@ -80,21 +83,25 @@ class Game:
             #self.player.vel.y = -3
             #self.in_air = True
             if (not self.player.in_air):
-                self.player.body.apply_impulse(((self.player.look_dir*2.0 - 1.0) * -100.0,-900))
+                self.player.body.apply_impulse(((self.player.look_dir*2.0 - 1.0) * -100.0,-1200))
             pass
 
         if pygame.key.get_pressed()[K_LEFT]:
             #if (len(self.physics.get_colliding_objects(self.physics.player)) > 0):
                 self.player.look_dir = 1
                 #if (-self.player.body._get_velocity().x < 80.0):
-                if (not self.player.in_air):
+                if (self.player.in_air):
+                    self.player.body.apply_impulse((-50,0))
+                else:
                     self.player.body.apply_impulse((-100,0)) #_set_velocity((-80, 0))
                 #self.player.vel.y = 0.04
 
         if pygame.key.get_pressed()[K_RIGHT]:
             #if (len(self.physics.get_colliding_objects(self.physics.player)) > 0):
                 self.player.look_dir = 0
-                if (not self.player.in_air):
+                if (self.player.in_air):
+                    self.player.body.apply_impulse((50,0))
+                else:
                     self.player.body.apply_impulse((100,0)) #_set_velocity((-80, 0))
                 #self.player.vel.x += 0.9
                 #self.player.vel.y = 0.04

@@ -34,7 +34,7 @@ class Animation():
         pass
         
     def play(self):
-        self.current = 0
+        #self.current = 0
         self.playing = True
     
     def stop(self):

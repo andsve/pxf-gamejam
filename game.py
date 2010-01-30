@@ -17,8 +17,8 @@ class Game:
         self.is_running = True
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
-        self.camera = camera.Camera((0,0),size)
-        self.current_stage = stage.Stage1(self.camera.rect)
+        self.camera = camera.Camera((100,0),size)
+        self.current_stage = stage.Stage1(self.camera)
         #self.player = Player()
 
     def update_title(self):
@@ -26,9 +26,10 @@ class Game:
 
     def handle_input(self, event):
         if event.key == K_UP:
-            # move player
-            # aoeu
+            #for tile in self.current_stage.tiles:
             pass
+                
+            #pass
         if event.key == K_SPACE:
             if not self.bg_music_playing:
                 self.bg_music.play(1)
@@ -50,6 +51,10 @@ class Game:
             
             # update player
             #self.player.update()
+            
+            # update game objects
+            for object in self.current_stage.tiles:
+                object.update()
             
             # update camera
             self.camera.update()

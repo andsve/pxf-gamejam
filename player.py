@@ -6,7 +6,6 @@ import util
 class Player(gameobject.GameObject):
     def __init__(self, pos):
         gameobject.GameObject.__init__(self, pos, util.load_sprite("data/bw_player16.png"))
-        self.pos = pos
         self.look_dir = 0 # 0 = right, 1 = left
         self.bw_image = pygame.image.load("data/bw_player16.png")
         self.red_image = pygame.image.load("data/red_player16.png")
@@ -19,7 +18,7 @@ class Player(gameobject.GameObject):
         self.blue_image_r = pygame.image.load("data/blue_player16_r.png")
 
     def update(self):
-        pass
+        gameobject.GameObject.update(self)
 
     def draw(self, canvas):
         if (self.look_dir == 0):
@@ -34,7 +33,7 @@ class Player(gameobject.GameObject):
             cloth_image = self.red_image_r
 
         #gameobject.GameObject.draw(self, canvas)
-        canvas.blit(cloth_image, self.pos.get(), None, pygame.BLEND_MAX)
+       # canvas.blit(cloth_image, self.sprite.rect, None, pygame.BLEND_MAX)
 
         # allways show "body"
-        canvas.blit(body_image, self.pos.get(), None, pygame.BLEND_MAX)
+        canvas.blit(body_image, self.sprite.rect, None, pygame.BLEND_MAX)

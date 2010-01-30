@@ -19,7 +19,7 @@ class Game:
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
         self.player = player.Player(util.vec2(4,25))
-        self.camera = camera.Camera(self.player.pos,size)
+        self.camera = camera.Camera(self.player.sprite.rect.center,size)
         self.current_stage = None
         self.physics = physics.Physics()
         # set color key to black
@@ -47,11 +47,11 @@ class Game:
 
         if event.key == K_LEFT:
             self.player.look_dir = 1
-            self.player.pos.x -= 1.0
+            self.player.move(-1.0, 0)
 
         if event.key == K_RIGHT:
             self.player.look_dir = 0
-            self.player.pos.x += 1.0
+            self.player.move(1.0, 0)
 
             #pass
         if event.key == K_SPACE:
@@ -81,6 +81,9 @@ class Game:
             self.player.update()
             self.player.draw(self.screen)
 
+            # update physics
+            self.physics.step()
+
             # update game objects
             for object in self.current_stage.tiles:
                 #object.update(self.camera.pos)
@@ -89,14 +92,11 @@ class Game:
             # update camera
             self.camera.update()
 
-            # update physics
-            self.physics.step()
-
             # update game
             self.current_stage.draw(self.screen)
 
             # fps limit
-            self.clock.tick(2)
+            self.clock.tick(25)
             self.update_title()
             # swap buffers
             pygame.display.flip()

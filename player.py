@@ -15,7 +15,7 @@ class Player(gameobject.GameObject):
         self.animations = {}
         self.active_color = game.CNONE
         #create animations
-        animation_freq = 8
+        animation_freq = 4
         bw_player_walk_left = animation.new_animation("data/bw_guy_walk","png",1,animation_freq,[0,1])
         bw_player_walk_right = animation.new_animation("data/bw_guy_walk_r","png",1,animation_freq,[0,1])
 
@@ -43,8 +43,9 @@ class Player(gameobject.GameObject):
         self.animations["blue_player_walk_left"] = blue_player_walk_left
         self.animations["blue_player_walk_right"] = blue_player_walk_right
 
-        self.current_animation = bw_player_walk_left
+        self.current_animation = red_player_walk_left
         self.look_dir = game.PDIR_LEFT
+        self.active_color = game.CRED
         self.has_changed = True
 
     def update(self, camera_pos,dt):
@@ -56,17 +57,9 @@ class Player(gameobject.GameObject):
 
     # move this elsewhere
     def toggle_color(self,color):
-        new_color = None
-        
-        if self.active_color == color:
-            new_color = game.CNONE
-        else:
-            new_color = color
-        
-        self.active_color = new_color
+        self.active_color = color
         self.has_changed  = True
-        
-        return new_color
+        return color
     
     def determine_lookdir(self,color_str):
         # right
@@ -78,8 +71,7 @@ class Player(gameobject.GameObject):
     def set_animation(self):
         if self.has_changed:
             new_animation = None
-            print self.active_color
-        
+            
             if self.active_color == game.CNONE:
                 new_animation = self.animations[self.determine_lookdir("bw")]
             elif self.active_color == game.CRED:

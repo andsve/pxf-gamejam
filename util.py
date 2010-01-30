@@ -55,9 +55,15 @@ def name_sequence(basename, ext, num, num_digits=1, offset=0):
         names.append(new_name)
         print new_name
     return names
-        
+
 def load_sprite(filename):
-    image = pygame.image.load(filename)
+    global cache
+    if not cache.has_key(filename): # check if it has benn loaded already
+        image = pygame.image.load(filename) # not optimized
+        cache[filename] = image
+    else:
+        image = cache[filename]
+        
     sprite = pygame.sprite.Sprite()
     sprite.image = image
     sprite.rect = image.get_rect()

@@ -5,8 +5,6 @@ import util
 
 class AnimatedGameObject(gameobject.GameObject):
     def __init__(self,pos,frames,freq):
-        #gameobject.GameObject.__init__(self,pos,util.load_sprite(frames[0])
-        #self.sprite = util.load_sprite(frames[0])
         self.pos = pos
         self.current = 0
         self.playing = False
@@ -25,7 +23,6 @@ class AnimatedGameObject(gameobject.GameObject):
     def update(self, t):
         if self.playing:
             self._next_update += t
-            print self._next_update
             if self._next_update >= self._period:
                 self.current += int(self._next_update/self._period)
                 self._next_update %= self._period

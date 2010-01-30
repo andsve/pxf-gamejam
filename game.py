@@ -19,15 +19,16 @@ class Game:
         self.bg_music_playing = False
         self.camera = camera.Camera((0,0),size)
         self.current_stage = stage.Stage1(self.camera.rect)
-        #self.player = Player()
+        self.player = player.Player((4,4))
+        # set color key to black
+        self.screen.set_colorkey(pygame.Color(0,0,0))
 
     def update_title(self):
-        pygame.display.set_caption("Epic Adventure (%.2f FPS)" % (self.clock.get_fps()))
+        pygame.display.set_caption("Channel Panic! (%.2f FPS)" % (self.clock.get_fps()))
 
     def handle_input(self, event):
         if event.key == K_UP:
             # move player
-            # aoeu
             pass
         if event.key == K_SPACE:
             if not self.bg_music_playing:
@@ -49,7 +50,8 @@ class Game:
                     self.handle_input(event)
             
             # update player
-            #self.player.update()
+            self.player.update()
+            self.player.draw(self.screen)
             
             # update camera
             self.camera.update()

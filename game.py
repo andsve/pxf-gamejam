@@ -32,7 +32,7 @@ class Game:
         self.current_stage = None
         self.physics = physics.Physics()
         # set color key to black
-        self.screen.set_colorkey(pygame.Color(0,0,0))
+        #self.screen.set_colorkey(pygame.Color(0,0,0))
         pygame.key.set_repeat(1, 20)
 
     def update_title(self):
@@ -51,33 +51,37 @@ class Game:
         self.physics.add_player(self.player)
 
     def handle_input(self, event):
-        if event.key == K_UP:
+        pass
+
+    def game_input(self):
+        if pygame.key.get_pressed()[K_UP]:
             self.player.vel.y = -3
             self.in_air = True
 
-        if event.key == K_LEFT:
+        if pygame.key.get_pressed()[K_LEFT]:
             self.player.look_dir = 1
             self.player.vel.x -= 0.9
             self.player.vel.y = 0.04
 
-        if event.key == K_RIGHT:
+        if pygame.key.get_pressed()[K_RIGHT]:
             self.player.look_dir = 0
             self.player.vel.x += 0.9
             self.player.vel.y = 0.04
 
-        if event.key == K_RETURN:
-            self.anim_test.play()
+        if pygame.key.get_pressed()[K_RETURN]:
+            self.anim_test.play_animation()
 
-            #pass
-        if event.key == K_SPACE:
+        if pygame.key.get_pressed()[K_SPACE]:
             if not self.bg_music_playing:
                 self.bg_music.play(1)
                 self.bg_music_playing = True
             else:
                 self.bg_music.stop()
                 self.bg_music_playing = False
-        if event.key == K_ESCAPE:
+
+        if pygame.key.get_pressed()[K_ESCAPE]:
             self.is_running = False
+
 
     def run(self):
         self.set_level(stage.Stage1(self.camera))
@@ -93,6 +97,9 @@ class Game:
                 elif event.type == KEYDOWN:
                     self.handle_input(event)
 
+            # handle game input
+            self.game_input()
+
             self.screen.fill([0,0,0])
 
             # update animation
@@ -100,7 +107,7 @@ class Game:
             self.anim_test.draw(self.screen)
 
             # update player
-            self.player.update()
+            self.player.update(self.camera.get_pos())
             self.player.draw(self.screen)
 
             # update physics
@@ -109,9 +116,10 @@ class Game:
             # update game objects
             for object in self.current_stage.tiles:
                 #object.update(self.camera.pos)
-                object.update(util.vec2(0, 0))
+                object.update(self.camera.get_pos())
 
             # update camera
+            self.camera.set_lookat(util.vec2(self.player.sprite.rect.left, self.player.sprite.rect.right))
             self.camera.update()
 
             # update game

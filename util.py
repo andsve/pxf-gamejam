@@ -29,22 +29,6 @@ def load_sound(name):
         raise message
     return sound
 
-cache = {} # has to be global (or a class variable)
-def get_sequence(frames_names, sequence):
-    frames = []
-    global cache
-    for name in frames_names:
-        if not cache.has_key(name): # check if it has benn loaded already
-            image = pygame.image.load(name) # not optimized
-            cache[name] = image
- 
-        # constructs a sequence of frames equal to frames_names
-        frames.append(cache[name])
-    frames2 = []
-    for idx in sequence:
-        # constructing the animation sequence according to sequence
-        frames2.append(frames[idx])
-    return frames2
 
 def name_sequence(basename, ext, num, num_digits=1, offset=0):
     names = []
@@ -63,8 +47,7 @@ def load_sprite(filename):
         cache[filename] = image
     else:
         image = cache[filename]
-        
-    sprite = pygame.sprite.Sprite()
+def load_sprite(filename):    sprite = pygame.sprite.Sprite()
     sprite.image = image
     sprite.rect = image.get_rect()
     return sprite

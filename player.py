@@ -35,7 +35,7 @@ class AnimatedGameObject(gameobject.GameObject):
         
     def play_animation(self):
         if self.playing:
-            self.playing = False
+            self.stop_animation()
         else:
             self.current = 0
             self.playing = True
@@ -49,7 +49,10 @@ class AnimatedGameObject(gameobject.GameObject):
 
 class Player(gameobject.GameObject):
     def __init__(self, pos):
-        gameobject.GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/bw_player16.png")))
+        #gameobject.GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/bw_player16.png")))
+        gameobject.GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/bw_guy_walk0.png")))
+        self.image = pygame.image.load("data/bw_guy_walk0.png")
+        
         self.look_dir = 0 # 0 = right, 1 = left
         self.bw_image = pygame.image.load("data/bw_player16.png")
         self.red_image = pygame.image.load("data/red_player16.png")
@@ -77,7 +80,8 @@ class Player(gameobject.GameObject):
             cloth_image = self.red_image_r
 
         #gameobject.GameObject.draw(self, canvas)
-        canvas.blit(cloth_image, self.draw_pos.get(), None, pygame.BLEND_MAX)
+        #canvas.blit(cloth_image, self.draw_pos.get(), None, pygame.BLEND_MAX)
+        canvas.blit(self.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
 
         # allways show "body"
-        canvas.blit(body_image, self.draw_pos.get(), None, pygame.BLEND_RGB_ADD)
+        #canvas.blit(body_image, self.draw_pos.get(), None, pygame.BLEND_RGB_ADD)

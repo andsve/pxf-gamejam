@@ -51,7 +51,8 @@ class Game:
         self.physics.add_dynamic(self.player)
 
     def handle_input(self, event):
-        pass
+        if event.key == K_RETURN:
+            self.anim_test.play_animation()
     
     def game_input(self):
         if pygame.key.get_pressed()[K_UP]:
@@ -64,9 +65,6 @@ class Game:
         if pygame.key.get_pressed()[K_RIGHT]:
             self.player.look_dir = 0
             self.player.vel.x += 0.9
-            
-        if pygame.key.get_pressed()[K_RETURN]:
-            self.anim_test.play_animation()
             
         if pygame.key.get_pressed()[K_SPACE]:
             if not self.bg_music_playing:

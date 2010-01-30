@@ -7,6 +7,7 @@ import gameobject
 import util
 import camera
 import physics
+import animation
 
 class Game:
     def __init__(self, size):
@@ -21,12 +22,14 @@ class Game:
         self.bg_music_playing = False
 
         # load assets
-        # anim test
+        # create animations
+        player_walk_left = animation.new_animation("data/anim_test","png",4,10,[0,1,2,3,4])
+        
         test = util.name_sequence("data/anim_test","png",4)
         seq = util.get_sequence(test,[0,1,2,3,4])
         self.dt_last_frame = self.clock.tick()
 
-        self.anim_test = player.AnimatedGameObject(util.vec2(50,0),seq,5)
+        self.anim_test = animation.Animation(seq,5)
         self.player = player.Player(util.vec2(4,25))
         self.camera = camera.Camera(util.vec2(2,25),size)
         self.current_stage = None
@@ -48,24 +51,27 @@ class Game:
         for o in self.current_stage.tiles:
             self.physics.add_static(o)
 
-        self.physics.add_dynamic(self.player)
+        self.physics.add_player(self.player)
 
     def handle_input(self, event):
         if event.key == K_RETURN:
             self.anim_test.play_animation()
-    
+            
     def game_input(self):
         if pygame.key.get_pressed()[K_UP]:
             self.player.vel.y = -3
+            self.in_air = True
 
         if pygame.key.get_pressed()[K_LEFT]:
             self.player.look_dir = 1
             self.player.vel.x -= 0.9
+            self.player.vel.y = 0.04
 
         if pygame.key.get_pressed()[K_RIGHT]:
             self.player.look_dir = 0
             self.player.vel.x += 0.9
-            
+            self.player.vel.y = 0.04
+
         if pygame.key.get_pressed()[K_SPACE]:
             if not self.bg_music_playing:
                 self.bg_music.play(1)
@@ -73,10 +79,10 @@ class Game:
             else:
                 self.bg_music.stop()
                 self.bg_music_playing = False
-                
+
         if pygame.key.get_pressed()[K_ESCAPE]:
             self.is_running = False
-        
+
 
     def run(self):
         self.set_level(stage.Stage1(self.camera))
@@ -91,15 +97,15 @@ class Game:
                     self.is_running = False
                 elif event.type == KEYDOWN:
                     self.handle_input(event)
-                
-            # handle game input    
+
+            # handle game input
             self.game_input()
 
             self.screen.fill([0,0,0])
 
             # update animation
             self.anim_test.update(self.dt_last_frame)
-            self.anim_test.draw(self.screen)
+            #self.anim_test.draw(self.screen)
 
             # update player
             self.player.update(self.camera.get_pos())

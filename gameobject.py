@@ -10,9 +10,10 @@ class GameObject:
         
     def update_physics(self, objects, physics):
         old_values = (self.pos, self.vel)
-        self.pos.x += self.vel.x
-        self.pos.y += self.vel.y
-        self.vel.y += physics.gravity.x
+        self.pos += self.vel
+        self.vel += physics.gravity
+        new_values = self.pos, self.vel
+        return (old_values, new_values)
         
         
     def update(self):

@@ -64,7 +64,7 @@ class Game:
         self.is_running = True
 
         self.restart_level_counter = -1
-        self.current_stage_id = stage.STAGE_INTRO
+        self.current_stage_id = stage.STAGE_2
         self.remove_player = False
 
         # physics
@@ -79,6 +79,9 @@ class Game:
         self.billboards = []
         self.billboards.append(billboard.Billboard("data/background_stars.png",(0,0),20))
         self.billboards.append(billboard.Billboard("data/background_stars.png",(320,0),20))
+
+        # key gui thingy
+        self.gui_key = billboard.GuiKeys(util.vec2(0,0),16)
 
         # game settings
         #self.player = player.Player(util.vec2(100,20), self.space)
@@ -99,16 +102,19 @@ class Game:
     def handle_key_collisions(self, shapea, shapeb, contacts, normal_coef, surface):
         if (shapea.collision_type == gameobject.OBJECT_TYPE_KEY_RED or shapeb.collision_type == gameobject.OBJECT_TYPE_KEY_RED):
             self.current_stage.keys[gameobject.OBJECT_TYPE_KEY_RED] = True
+            self.gui_key.update(gameobject.OBJECT_TYPE_KEY_RED)
         elif (shapea.collision_type == gameobject.OBJECT_TYPE_KEY_GREEN or shapeb.collision_type == gameobject.OBJECT_TYPE_KEY_GREEN):
             self.current_stage.keys[gameobject.OBJECT_TYPE_KEY_GREEN] = True
+            self.gui_key.update(gameobject.OBJECT_TYPE_KEY_GREEN)
         elif (shapea.collision_type == gameobject.OBJECT_TYPE_KEY_BLUE or shapeb.collision_type == gameobject.OBJECT_TYPE_KEY_BLUE):
             self.current_stage.keys[gameobject.OBJECT_TYPE_KEY_BLUE] = True
+            self.gui_key.update(gameobject.OBJECT_TYPE_KEY_BLUE)
 
         if (shapea.collision_type == gameobject.OBJECT_TYPE_PLAYER):
             shapeb.body.position = (-10000,-10000)
         else:
             shapea.body.position = (-10000,-10000)
-        
+
         return False
 
     def handle_collision(self, shapea, shapeb, contacts, normal_coef, surface):
@@ -186,10 +192,13 @@ class Game:
         self.player = player.Player(util.vec2(100,20), self.space)
         self.active_color = CRED
 
-        if (stage_id == stage.STAGE_INTRO):
-            self.set_level(stage.IntroStage(self.camera, self.player, self.space))
-        else:
-            self.set_level(stage.Stage1(self.camera, self.player, self.space))
+        stages = {
+            stage.STAGE_INTRO: stage.IntroStage,
+            stage.STAGE_1: stage.Stage1,
+            stage.STAGE_2: stage.Stage2
+        }
+
+        self.set_level(stages[stage_id](self.camera, self.player, self.space))
 
     def set_level(self, stage):
         self.current_stage = stage
@@ -205,6 +214,13 @@ class Game:
             self.active_color = self.player.toggle_color(CGREEN)
         if event.key == K_3:
             self.active_color = self.player.toggle_color(CBLUE)
+
+        if event.key == K_4:
+            self.gui_key.update(gameobject.OBJECT_TYPE_KEY_RED)
+        if event.key == K_5:
+            self.gui_key.update(gameobject.OBJECT_TYPE_KEY_GREEN)
+        if event.key == K_6:
+            self.gui_key.update(gameobject.OBJECT_TYPE_KEY_BLUE)
 
         if event.key == K_RETURN:
             self.anim_test.play_animation()
@@ -322,6 +338,9 @@ class Game:
 
             # update game
             self.current_stage.draw(self.screen)
+
+            # draw key gui
+            self.gui_key.draw(self.screen)
 
             # fps limit
             #3self.clock.tick(25)

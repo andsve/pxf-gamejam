@@ -5,11 +5,11 @@
                                W   WW
                                WY   W
 WWWWWWWWWWWWWWWWWWWW           WW   W
-WP                 W           W   WW
-WWWRW              WW          W    W
-W   W               WWWWWWWWWWWWW   W
+WP                 W         wWW   WW
+WWWRW              WW        w      W
+W   W               WWWWWWWWWW  W   W
 W 1 G                              XW
-WWWWWWWWWWWWWWWWWWW              RRRW
+WWWWWWWWWWWWWWWWWWW         RRRRGGBBW
                   WW                W
                   WWW               W
                   WWWWWWWWWWWWWWWWWWW

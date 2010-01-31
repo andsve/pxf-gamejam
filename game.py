@@ -67,7 +67,7 @@ class Game:
         self.is_running = True
 
         self.restart_level_counter = -1
-        self.current_stage_id = stage.STAGE_6
+        self.current_stage_id = stage.STAGE_1
         self.remove_player = False
 
         # physics

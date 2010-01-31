@@ -17,10 +17,18 @@ PDIR_RIGHT,PDIR_LEFT = range(2)
 vel_epsilon = 0.1
 
 class Game:
-    def __init__(self, size):
+    def __init__(self, size, scale):
         pygame.init()
-        self.window = pygame.display.set_mode(size)
-        self.screen = pygame.display.get_surface()
+        self.scale = scale
+        self.size = size
+        if scale:
+            self.window = pygame.display.set_mode((size[0]*2, size[1]*2))
+        else:
+            self.window = pygame.display.set_mode(size)
+
+        self.screen = pygame.Surface(size)
+        self.actual_screen = pygame.display.get_surface()
+
         pygame.mouse.set_visible(0)
         self.clock = pygame.time.Clock()
         self.is_running = True
@@ -40,6 +48,13 @@ class Game:
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_BLUE, None)
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_RED, None)
 
+        """self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_RED, self.handle_collision, self.screen)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_BW, self.handle_collision, self.screen)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_GREEN, self.handle_collision, self.screen)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_BW, self.handle_collision, self.screen)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_BLUE, self.handle_collision, self.screen)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_BW, self.handle_collision, self.screen)"""
+
         # collisions between
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_RED, self.handle_collision, self.screen)
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_GREEN, self.handle_collision, self.screen)
@@ -53,7 +68,7 @@ class Game:
         # music:
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
         self.bg_music_playing = False
-        
+
         # billboards
         self.billboards = []
         self.billboards.append(billboard.Billboard("data/background_stars.png",(0,0),20))
@@ -78,6 +93,14 @@ class Game:
     def handle_collision(self, shapea, shapeb, contacts, normal_coef, surface):
         #self.player.in_air = False
         for c in contacts:
+
+            """if (shapea.collision_type == gameobject.OBJECT_TYPE_RED and shapeb.collision_type == gameobject.OBJECT_TYPE_RED):
+                return True
+            elif (shapea.collision_type == gameobject.OBJECT_TYPE_GREEN and shapeb.collision_type == gameobject.OBJECT_TYPE_GREEN):
+                return True
+            elif (shapea.collision_type == gameobject.OBJECT_TYPE_BLUE and shapeb.collision_type == gameobject.OBJECT_TYPE_BLUE):
+                return True"""
+
             in_air = True
             r = max( 3, abs(c.distance*5) )
             spawn_splosions = False
@@ -177,7 +200,7 @@ class Game:
 
 
     def run(self):
-        self.set_level(stage.IntroStage(self.camera, self.player, self.space))
+        self.set_level(stage.Stage1(self.camera, self.player, self.space))
 
         while self.is_running:
             # update time
@@ -215,10 +238,14 @@ class Game:
                 #object.update(self.camera.pos)
                 splosion.update(self.camera.get_pos())
 
+            for obj in self.current_stage.game_objects:
+                #object.update(self.camera.pos)
+                obj.update(self.camera.get_pos())
+
             # update camera
             self.camera.set_lookat(util.vec2(self.player.body.position.x, self.player.body.position.y))
             self.camera.update()
-            
+
             # draw billboards
             for billboard in self.billboards:
                 billboard.update(self.camera.get_pos(),self.dt_last_frame)
@@ -230,9 +257,15 @@ class Game:
             # fps limit
             #3self.clock.tick(25)
             self.update_title()
+
+            if self.scale:
+                pygame.transform.scale2x(self.screen, self.actual_screen)
+            else:
+                self.actual_screen.blit(self.screen, (0, 0))
+
             # swap buffers
             pygame.display.flip()
 
 if __name__ == '__main__':
-    g = Game((320, 240))
+    g = Game((320, 240), True)
     g.run()

@@ -101,9 +101,13 @@ class Game:
             elif (shapea.collision_type == gameobject.OBJECT_TYPE_BLUE and shapeb.collision_type == gameobject.OBJECT_TYPE_BLUE):
                 return True"""
 
+            cs = [shapea.collision_type, shapeb.collision_type]
+            alles = [gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_BLUE]
+            m = {CRED: gameobject.OBJECT_TYPE_RED
+                ,CGREEN: gameobject.OBJECT_TYPE_GREEN
+                ,CBLUE: gameobject.OBJECT_TYPE_BLUE}
 
-            if shapea.collision_type not in [gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_BLUE]\
-            and shapeb.collision_type not in [gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_BLUE]:
+            if all(x not in alles for x in cs) or m[self.player.active_color] in cs:
                 if c.position.y == self.player.body.position.y:
                     d = c.position.x - self.player.body.position.x
                     if d < 0:

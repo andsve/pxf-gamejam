@@ -35,6 +35,7 @@ def create_box(space, pos, size = 10, mass = 5.0):
 (OBJECT_TYPE_FAIL,
  OBJECT_TYPE_PLAYER,
  OBJECT_TYPE_GOAL,
+ OBJECT_TYPE_INFO,
  OBJECT_TYPE_KEY_RED,
  OBJECT_TYPE_KEY_GREEN,
  OBJECT_TYPE_KEY_BLUE,
@@ -43,7 +44,7 @@ def create_box(space, pos, size = 10, mass = 5.0):
  OBJECT_TYPE_BLUE,
  OBJECT_TYPE_SPLOSION,
  OBJECT_TYPE_BW,
- OBJECT_TYPE_ALL) = range(12)
+ OBJECT_TYPE_ALL) = range(13)
 
 class GameObject:
     def __init__(self, pos, sprite, space, obj_type, mass = 5.0):
@@ -98,6 +99,22 @@ class MovableBlock(GameObject):
         GameObject.update(self, camera_pos)
         pass
 
+class InfoBlock(GameObject):
+    def __init__(self, pos, sprite, space):
+        self.is_movable = True
+        GameObject.__init__(self, pos, sprite, space, OBJECT_TYPE_INFO, pm.inf)
+        self.body, self.shape = create_box(space, (pos.x, pos.y), 8, 12.0)
+        self.shape.collision_type = OBJECT_TYPE_INFO
+        space.add_static(self.shape)
+        self.showing_info = False
+
+    def update(self, camera_pos):
+        GameObject.update(self, camera_pos)
+        pass
+
+    def activate(self):
+        pass
+
 
 splosion_red = util.to_sprite(util.load_image("data/red_explosion.png"))
 splosion_green = util.to_sprite(util.load_image("data/green_explosion.png"))
@@ -112,7 +129,7 @@ class SplosionBlock(GameObject):
         else:
             t_sprite = splosion_blue
         GameObject.__init__(self, pos, t_sprite, space, OBJECT_TYPE_SPLOSION, pm.inf)
-        self.body, self.shape = create_ball(self, (pos.x, pos.y), mass=0.6, radius=0.1)
+        self.body, self.shape = create_ball(self, (pos.x, pos.y), mass=0.6, radius=0.4)
         self.shape.collision_type = OBJECT_TYPE_SPLOSION
         space.add(self.body, self.shape)
 

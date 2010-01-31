@@ -3,7 +3,7 @@ import pygame
 import util
 import gameobject
 
-STAGE_INTRO, STAGE_1, STAGE_2, STAGE_3 = range(4)
+STAGE_INTRO, STAGE_1, STAGE_2, STAGE_3, STAGE_5 = range(5)
 
 class Stage:
     def __init__(self, player, space):
@@ -131,5 +131,8 @@ class Stage3(Stage):
         self.keys[gameobject.OBJECT_TYPE_KEY_GREEN] = True
         self.keys[gameobject.OBJECT_TYPE_KEY_BLUE] = True
 
-    #def load(self, space):
-    #    Stage.load(self, "data/level1.txt", space)
+class Stage5(Stage):
+    def __init__(self,camera, player, space):
+        Stage.__init__(self, player, space)
+        self.load("data/stage5.txt", space)
+        self.camera = camera

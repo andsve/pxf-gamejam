@@ -193,7 +193,7 @@ class Game:
 
 
     def run(self):
-        self.set_level(stage.Stage1(self.camera, self.player, self.space))
+        self.set_level(stage.AnotherHugeLevel(self.camera, self.player, self.space))
         #self.set_level(stage.Stage2(self.camera, self.player, self.space))
 
         while self.is_running:

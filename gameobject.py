@@ -82,33 +82,17 @@ class StaticBlock(GameObject):
 
     def update(self, camera_pos):
         GameObject.update(self, camera_pos)
+#        self.draw_pos.set(self.pos.x - camera_pos.x, self.pos.y - camera_pos.y)
         pass
-
-class MovableBlock(GameObject):
-    def __init__(self, pos, sprite, space, obj_type):
-        GameObject.__init__(self, pos, sprite, space, obj_type, pm.inf)
-        self.body, self.shape = create_box(space, (pos.x, pos.y), 8, 5.0)
-        self.shape.collision_type = obj_type
-        space.add(self.body, self.shape)
-        #self.shape.collision_type = 1
-
-    def update(self, camera_pos):
-        GameObject.update(self, camera_pos)
-        pass
-
-
-splosion_red = util.to_sprite(util.load_image("data/red_explosion.png"))
-splosion_green = util.to_sprite(util.load_image("data/green_explosion.png"))
-splosion_blue = util.to_sprite(util.load_image("data/blue_explosion.png"))
 
 class SplosionBlock(GameObject):
     def __init__(self, pos, space, color_type):
         if color_type == OBJECT_TYPE_RED:
-            t_sprite = splosion_red
+            t_sprite = util.to_sprite(util.load_image("data/red_explosion.png"))
         elif color_type == OBJECT_TYPE_GREEN:
-            t_sprite = splosion_green
+            t_sprite = util.to_sprite(util.load_image("data/green_explosion.png"))
         else:
-            t_sprite = splosion_blue
+            t_sprite = util.to_sprite(util.load_image("data/blue_explosion.png"))
         GameObject.__init__(self, pos, t_sprite, space, OBJECT_TYPE_SPLOSION, pm.inf)
         self.body, self.shape = create_ball(self, (pos.x, pos.y), mass=0.6, radius=0.1)
         self.shape.collision_type = OBJECT_TYPE_SPLOSION

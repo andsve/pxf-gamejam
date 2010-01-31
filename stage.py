@@ -16,6 +16,7 @@ class Stage:
         self.tiles = []
         self.player = player
         self.game_objects = []
+        self.info_blocks = []
         self.splosion_objects = []
         self.keys = { gameobject.OBJECT_TYPE_KEY_RED : False,
                      gameobject.OBJECT_TYPE_KEY_GREEN : False,
@@ -117,12 +118,16 @@ class Stage:
             splosion.draw(canvas)
         for obj in self.game_objects:
             obj.draw(canvas)
+        for inf in self.info_blocks:
+            inf.draw(canvas)
 
 class IntroStage(Stage):
     def __init__(self,camera, player, space):
         Stage.__init__(self, player, space)
         self.load("data/intro_level.txt", space)
         self.camera = camera
+        info1 = gameobject.InfoBlock(util.vec2(16,16), util.to_sprite(util.load_image("data/red_block16.png")), space)
+        self.info_blocks.append(info1)
 
 class Stage1(Stage):
     def __init__(self,camera, player, space):

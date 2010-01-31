@@ -40,6 +40,9 @@ class Game:
         # win collisions
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_GOAL, self.handle_win_collisions, self.screen)
 
+        # info collisions
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_INFO, self.handle_info_collisions, self.screen)
+
         # collisions between
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_RED, self.handle_collision, self.screen)
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_GREEN, self.handle_collision, self.screen)
@@ -127,6 +130,13 @@ class Game:
         else:
             shapea.body.position = (-10000,-10000)
 
+        return False
+
+    def handle_info_collisions(self, shapea, shapeb, contacts, normal_coef, surface):
+        # find correct info block
+        for infoblock in self.current_stage.info_blocks:
+            if (infoblock.shape == shapea or infoblock.shape == shapeb):
+                infoblock.activate()
         return False
 
     def handle_win_collisions(self, shapea, shapeb, contacts, normal_coef, surface):
@@ -347,12 +357,13 @@ class Game:
                 object.update(self.camera.get_pos())
 
             for splosion in self.current_stage.splosion_objects:
-                #object.update(self.camera.pos)
                 splosion.update(self.camera.get_pos())
 
             for obj in self.current_stage.game_objects:
-                #object.update(self.camera.pos)
                 obj.update(self.camera.get_pos())
+
+            for inf in self.current_stage.info_blocks:
+                inf.update(self.camera.get_pos())
 
             # update camera
             if (self.restart_level_counter < 0):

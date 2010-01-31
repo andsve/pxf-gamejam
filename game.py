@@ -59,7 +59,7 @@ class Game:
         self.is_running = True
 
         self.restart_level_counter = -1
-        self.current_stage_id = stage.STAGE_INTRO
+        self.current_stage_id = stage.STAGE_2
 
         # physics
         #init_physics()
@@ -162,9 +162,11 @@ class Game:
         self.active_color = CRED
 
         if (stage_id == stage.STAGE_INTRO):
-            self.set_level(stage.AnotherStage(self.camera, self.player, self.space))
-        else:
+            self.set_level(stage.IntroStage(self.camera, self.player, self.space))
+        elif stage_id == stage.STAGE_1:
             self.set_level(stage.Stage1(self.camera, self.player, self.space))
+        elif stage_id == stage.STAGE_2:
+            self.set_level(stage.Stage2(self.camera, self.player, self.space))
 
     def set_level(self, stage):
         self.current_stage = stage

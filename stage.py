@@ -127,8 +127,10 @@ class IntroStage(Stage):
         Stage.__init__(self, player, space)
         self.load("data/stage0.txt", space)
         self.camera = camera
-        info1 = gameobject.InfoBlock(util.vec2(-96,16), "data/info_bubble0_0.png", space)
+        info0 = gameobject.InfoBlock(util.vec2(-64,16), "data/info_bubble0_0.png", space,"data/info_bubble0_")
+        info1 = gameobject.InfoBlock(util.vec2(32,16), "data/info_bubble1_0.png", space,"data/info_bubble1_")
         self.info_blocks.append(info1)
+        self.info_blocks.append(info0)
 
 class Stage1(Stage):
     def __init__(self,camera, player, space):

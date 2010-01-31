@@ -44,11 +44,12 @@ class Billboard:
     def __init__(self,name,pos,speed,repeat = False,animated = False):
         self.image = util.load_image(name)
         self.rect = self.image.get_rect()
+        self.width = self.rect.width
         self.is_animated = animated
-        self.pos = util.vec2(0,0)
+        self.pos = pos
         self.draw_pos = util.vec2(0,0)
         self.speed = speed
-        self.inv_speed = speed/100.
+        self.inv_speed = speed/5.
         self.repeat = repeat
         self.offset = 320
         self.last_frame_pos = 0
@@ -56,8 +57,25 @@ class Billboard:
     def draw(self,canvas):
         if not self.is_animated:
             if self.repeat:
-                canvas.blit(self.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
-                canvas.blit(self.image, (self.draw_pos.x+self.offset,0), None, pygame.BLEND_MAX)
+                if self.draw_pos.x < -320:
+                    self.draw_pos.x += 320
+                    
+                canvas.blit(self.image, (self.draw_pos.x,self.draw_pos.y), None)
+                canvas.blit(self.image, (self.draw_pos.x+320,self.draw_pos.y), None)
+                    
+                
+                """
+                if self.outside(self.draw_pos):
+                    self.draw_pos.x -= 320
+                    canvas.blit(self.image, (self.draw_pos.x,self.draw_pos.y), None)
+                    #canvas.blit(self.image, (self.draw_pos.x,self.draw_pos.y), None)
+                    print self.draw_pos.get()
+                else:
+                    canvas.blit(self.image, (self.draw_pos.x,self.draw_pos.y), None)
+                    #canvas.blit(self.image, (self.draw_pos.x,self.draw_pos.y), None)
+                """
+                #canvas.blit(self.image, self.draw_pos.get(), None)
+                #canvas.blit(self.image, (self.draw_pos.x+self.offset,self.draw_pos.y), None)
         pass
     
     def update(self,cam_pos,dt):        
@@ -67,19 +85,16 @@ class Billboard:
         self.draw_pos.x * dt
         self.draw_pos.y * dt
         
-        self.draw_pos.set(self.draw_pos.x,0)
+        self.draw_pos.set(int(self.draw_pos.x),self.pos.y)
         
         #print self.draw_pos
         
-        """
-        if self.draw_pos.x < -320:
-            self.draw_pos.x = -320
-        """ 
-        #print self.draw_pos
+        outside = self.outside(self.draw_pos)
             
-        """    
-        if self.draw_pos.x > 320:
-            self.draw_pos.x = 320
-        """
-        
-        #print self.draw_pos.x 
+            
+    def outside(self,pos):
+        if pos.x < -self.width:
+            return True
+        if pos.x > self.width:
+            return True
+            

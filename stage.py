@@ -2,6 +2,7 @@ from __future__ import with_statement
 import pygame
 import util
 import gameobject
+import animation
 
 STAGE_INTRO, STAGE_1, STAGE_2, STAGE_3, STAGE_5 = range(5)
 

@@ -12,6 +12,7 @@ STAGE_3 = 4
 STAGE_4 = 5
 STAGE_5 = 6
 STAGE_6 = 7
+STAGE_7 = 8
 
 class Stage:
     def __init__(self, player, space):
@@ -180,4 +181,10 @@ class Stage6(Stage):
     def __init__(self,camera, player, space):
         Stage.__init__(self, player, space)
         self.load("data/stage6.txt", space)
+        self.camera = camera
+
+class Stage7(Stage):
+    def __init__(self,camera, player, space):
+        Stage.__init__(self, player, space)
+        self.load("data/stage7.txt", space)
         self.camera = camera

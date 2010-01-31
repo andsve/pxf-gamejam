@@ -251,6 +251,9 @@ class Game:
             stage.STAGE_6: stage.Stage6
         }
 
+        if stage_id > len(stages)-1:
+            stage_id = 0
+
         self.set_level(stages[stage_id](self.camera, self.player, self.space))
 
     def set_level(self, stage):

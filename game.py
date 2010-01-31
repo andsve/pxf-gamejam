@@ -142,7 +142,7 @@ class Game:
         for infoblock in self.current_stage.info_blocks:
             if (infoblock.shape == shapea or infoblock.shape == shapeb):
                 infoblock.activate()
-                
+
         return False
 
     def handle_win_collisions(self, shapea, shapeb, contacts, normal_coef, surface):
@@ -234,7 +234,8 @@ class Game:
         self.gui_key.reset()
 
         stages = {
-            stage.STAGE_INTRO: stage.IntroStage,
+            stage.STAGE_INTRO: stage.StageIntro,
+            stage.STAGE_0: stage.Stage0,
             stage.STAGE_1: stage.Stage1,
             stage.STAGE_2: stage.Stage2,
             stage.STAGE_4: stage.Stage4,

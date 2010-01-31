@@ -60,6 +60,7 @@ class Game:
 
         self.restart_level_counter = -1
         self.current_stage_id = stage.STAGE_2
+        self.remove_player = False
 
         # physics
         #init_physics()
@@ -86,7 +87,7 @@ class Game:
         #self.active_color = CRED
 
     def create_splosions(self, spltype):
-        for i in range(20):
+        for i in range(30):
             splobj = gameobject.SplosionBlock(util.vec2(self.player.body.position.x, self.player.body.position.y), self.space, spltype)
             self.current_stage.splosion_objects.append(splobj)
 
@@ -132,6 +133,7 @@ class Game:
                     if (spawn_splosions):
                         self.create_splosions(gameobject.OBJECT_TYPE_RED)
                         self.restart_level_counter = 4.0
+                        self.remove_player = True
                     self.player.in_air = in_air
                     return True;
             elif (self.active_color == CGREEN):
@@ -139,6 +141,7 @@ class Game:
                     if (spawn_splosions):
                         self.create_splosions(gameobject.OBJECT_TYPE_GREEN)
                         self.restart_level_counter = 4.0
+                        self.remove_player = True
                     self.player.in_air = in_air
                     return True;
             elif (self.active_color == CBLUE):
@@ -146,6 +149,7 @@ class Game:
                     if (spawn_splosions):
                         self.create_splosions(gameobject.OBJECT_TYPE_BLUE)
                         self.restart_level_counter = 4.0
+                        self.remove_player = True
                     self.player.in_air = in_air
                     return True;
 
@@ -157,16 +161,18 @@ class Game:
     def start_new_level(self, stage_id):
         self.restart_level_counter = -1
         self.init_physics()
+        self.remove_player = False
 
         self.player = player.Player(util.vec2(100,20), self.space)
         self.active_color = CRED
 
-        if (stage_id == stage.STAGE_INTRO):
-            self.set_level(stage.IntroStage(self.camera, self.player, self.space))
-        elif stage_id == stage.STAGE_1:
-            self.set_level(stage.Stage1(self.camera, self.player, self.space))
-        elif stage_id == stage.STAGE_2:
-            self.set_level(stage.Stage2(self.camera, self.player, self.space))
+        stages = {
+            stage.STAGE_INTRO: stage.IntroStage,
+            stage.STAGE_1: stage.Stage1,
+            stage.STAGE_2: stage.Stage2
+        }
+
+        self.set_level(stages[stage_id](self.camera, self.player, self.space))
 
     def set_level(self, stage):
         self.current_stage = stage
@@ -239,6 +245,7 @@ class Game:
             self.dt_last_frame = self.clock.tick(60)
 
             if (self.restart_level_counter > 0):
+                self.player.body.position = (-111111, -111111)
                 self.restart_level_counter -= self.dt_last_frame / 1000.0
                 if (self.restart_level_counter <= 0):
                     self.start_new_level(self.current_stage_id)
@@ -266,6 +273,12 @@ class Game:
 
             # update physics
             self.space.step(1/60.0)
+            if (self.remove_player):
+                self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_RED, None)
+                self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_GREEN, None)
+                self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_BLUE, None)
+                self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_BW, None)
+                self.remove_player = False
 
             # update game objects
             for object in self.current_stage.tiles:
@@ -281,7 +294,8 @@ class Game:
                 obj.update(self.camera.get_pos())
 
             # update camera
-            self.camera.set_lookat(util.vec2(self.player.body.position.x, self.player.body.position.y))
+            if (self.restart_level_counter < 0):
+                self.camera.set_lookat(util.vec2(self.player.body.position.x, self.player.body.position.y))
             self.camera.update()
 
             # draw billboards

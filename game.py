@@ -142,6 +142,7 @@ class Game:
         for infoblock in self.current_stage.info_blocks:
             if (infoblock.shape == shapea or infoblock.shape == shapeb):
                 infoblock.activate()
+                
         return False
 
     def handle_win_collisions(self, shapea, shapeb, contacts, normal_coef, surface):

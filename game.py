@@ -32,6 +32,11 @@ class Game:
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_BLUE, None)
         #self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_RED, None)
 
+        # key collisions
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_KEY_RED, self.handle_key_collisions, self.screen)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_KEY_GREEN, self.handle_key_collisions, self.screen)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_KEY_BLUE, self.handle_key_collisions, self.screen)
+
         # collisions between
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_RED, self.handle_collision, self.screen)
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_GREEN, self.handle_collision, self.screen)
@@ -90,6 +95,21 @@ class Game:
         for i in range(30):
             splobj = gameobject.SplosionBlock(util.vec2(self.player.body.position.x, self.player.body.position.y), self.space, spltype)
             self.current_stage.splosion_objects.append(splobj)
+
+    def handle_key_collisions(self, shapea, shapeb, contacts, normal_coef, surface):
+        if (shapea.collision_type == gameobject.OBJECT_TYPE_KEY_RED or shapeb.collision_type == gameobject.OBJECT_TYPE_KEY_RED):
+            self.current_stage.keys[gameobject.OBJECT_TYPE_KEY_RED] = True
+        elif (shapea.collision_type == gameobject.OBJECT_TYPE_KEY_GREEN or shapeb.collision_type == gameobject.OBJECT_TYPE_KEY_GREEN):
+            self.current_stage.keys[gameobject.OBJECT_TYPE_KEY_GREEN] = True
+        elif (shapea.collision_type == gameobject.OBJECT_TYPE_KEY_BLUE or shapeb.collision_type == gameobject.OBJECT_TYPE_KEY_BLUE):
+            self.current_stage.keys[gameobject.OBJECT_TYPE_KEY_BLUE] = True
+
+        if (shapea.collision_type == gameobject.OBJECT_TYPE_PLAYER):
+            shapeb.body.position = (-10000,-10000)
+        else:
+            shapea.body.position = (-10000,-10000)
+        
+        return False
 
     def handle_collision(self, shapea, shapeb, contacts, normal_coef, surface):
         #self.player.in_air = False
@@ -167,7 +187,7 @@ class Game:
         self.active_color = CRED
 
         if (stage_id == stage.STAGE_INTRO):
-            self.set_level(stage.AnotherStage(self.camera, self.player, self.space))
+            self.set_level(stage.IntroStage(self.camera, self.player, self.space))
         else:
             self.set_level(stage.Stage1(self.camera, self.player, self.space))
 

@@ -14,6 +14,8 @@ class Stage:
         self.keys = { gameobject.OBJECT_TYPE_KEY_RED : False,
                      gameobject.OBJECT_TYPE_KEY_GREEN : False,
                      gameobject.OBJECT_TYPE_KEY_BLUE : False }
+    def finished(self):
+        return (self.keys[gameobject.OBJECT_TYPE_KEY_RED] and self.keys[gameobject.OBJECT_TYPE_KEY_GREEN] and self.keys[gameobject.OBJECT_TYPE_KEY_BLUE])
 
     def load(self, filepath, space):
         import sys

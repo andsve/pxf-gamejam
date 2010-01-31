@@ -60,6 +60,7 @@ class Game:
 
         self.restart_level_counter = -1
         self.current_stage_id = stage.STAGE_INTRO
+        self.remove_player = False
 
         # physics
         #init_physics()
@@ -71,8 +72,8 @@ class Game:
 
         # billboards
         self.billboards = []
-        self.billboards.append(billboard.Billboard("data/background_stars.png",(0,0),20,True))
-        #self.billboards.append(billboard.Billboard("data/background_stars.png",(320,0),20))
+        self.billboards.append(billboard.Billboard("data/background_stars.png",(0,0),20))
+        self.billboards.append(billboard.Billboard("data/background_stars.png",(320,0),20))
         
         # key gui thingy
         self.gui_key = billboard.GuiKeys(util.vec2(0,0),16)
@@ -89,27 +90,41 @@ class Game:
         #self.active_color = CRED
 
     def create_splosions(self, spltype):
-        for i in range(20):
+        for i in range(30):
             splobj = gameobject.SplosionBlock(util.vec2(self.player.body.position.x, self.player.body.position.y), self.space, spltype)
             self.current_stage.splosion_objects.append(splobj)
 
     def handle_collision(self, shapea, shapeb, contacts, normal_coef, surface):
         #self.player.in_air = False
         for c in contacts:
+
+            """if (shapea.collision_type == gameobject.OBJECT_TYPE_RED and shapeb.collision_type == gameobject.OBJECT_TYPE_RED):
+                return True
+            elif (shapea.collision_type == gameobject.OBJECT_TYPE_GREEN and shapeb.collision_type == gameobject.OBJECT_TYPE_GREEN):
+                return True
+            elif (shapea.collision_type == gameobject.OBJECT_TYPE_BLUE and shapeb.collision_type == gameobject.OBJECT_TYPE_BLUE):
+                return True"""
+
+            cs = [shapea.collision_type, shapeb.collision_type]
+            alles = [gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_BLUE]
+            m = {CRED: gameobject.OBJECT_TYPE_RED
+                ,CGREEN: gameobject.OBJECT_TYPE_GREEN
+                ,CBLUE: gameobject.OBJECT_TYPE_BLUE}
+
+            if all(x not in alles for x in cs) or m[self.player.active_color] in cs:
+                if c.position.y == self.player.body.position.y:
+                    d = c.position.x - self.player.body.position.x
+                    if d < 0:
+                        self.player.body.position.x += 0.5
+                    else:
+                        self.player.body.position.x -= 0.5
+
             in_air = True
             r = max( 3, abs(c.distance*5) )
             spawn_splosions = False
             if (r > 24.0):
                 spawn_splosions = True
-
-            if c.position.y == self.player.body.position.y:
-                d = c.position.x - self.player.body.position.x
-                if d < 0:
-                    self.player.body.position.x += 0.5
-                else:
-                    self.player.body.position.x -= 0.5
-
-            if (c.normal.y > 0 and c.normal.x < 0.1 and c.normal.x > -0.1):# or c.position.x != c.player.body.position.x:
+            if (c.normal.y > 0 and c.normal.x < 0.1 and c.normal.x > -0.1):
                 in_air = False
 
             if (shapea.collision_type == gameobject.OBJECT_TYPE_BW or shapeb.collision_type == gameobject.OBJECT_TYPE_BW):
@@ -121,6 +136,7 @@ class Game:
                     if (spawn_splosions):
                         self.create_splosions(gameobject.OBJECT_TYPE_RED)
                         self.restart_level_counter = 4.0
+                        self.remove_player = True
                     self.player.in_air = in_air
                     return True;
             elif (self.active_color == CGREEN):
@@ -128,6 +144,7 @@ class Game:
                     if (spawn_splosions):
                         self.create_splosions(gameobject.OBJECT_TYPE_GREEN)
                         self.restart_level_counter = 4.0
+                        self.remove_player = True
                     self.player.in_air = in_air
                     return True;
             elif (self.active_color == CBLUE):
@@ -135,6 +152,7 @@ class Game:
                     if (spawn_splosions):
                         self.create_splosions(gameobject.OBJECT_TYPE_BLUE)
                         self.restart_level_counter = 4.0
+                        self.remove_player = True
                     self.player.in_air = in_air
                     return True;
 
@@ -146,12 +164,13 @@ class Game:
     def start_new_level(self, stage_id):
         self.restart_level_counter = -1
         self.init_physics()
+        self.remove_player = False
 
         self.player = player.Player(util.vec2(100,20), self.space)
         self.active_color = CRED
 
         if (stage_id == stage.STAGE_INTRO):
-            self.set_level(stage.IntroStage(self.camera, self.player, self.space))
+            self.set_level(stage.AnotherStage(self.camera, self.player, self.space))
         else:
             self.set_level(stage.Stage1(self.camera, self.player, self.space))
 
@@ -227,15 +246,14 @@ class Game:
     def run(self):
         #self.set_level(stage.Stage1(self.camera, self.player, self.space))
         self.start_new_level(self.current_stage_id)
-        #self.set_level(stage.Stage2(self.camera, self.player, self.space))
 
         while self.is_running:
             # update time
             self.dt_last_frame = self.clock.tick(60)
 
             if (self.restart_level_counter > 0):
+                self.player.body.position = (-111111, -111111)
                 self.restart_level_counter -= self.dt_last_frame / 1000.0
-                print(self.dt_last_frame)
                 if (self.restart_level_counter <= 0):
                     self.start_new_level(self.current_stage_id)
 
@@ -262,6 +280,12 @@ class Game:
 
             # update physics
             self.space.step(1/60.0)
+            if (self.remove_player):
+                self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_RED, None)
+                self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_GREEN, None)
+                self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_BLUE, None)
+                self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_BW, None)
+                self.remove_player = False
 
             # update game objects
             for object in self.current_stage.tiles:
@@ -272,8 +296,13 @@ class Game:
                 #object.update(self.camera.pos)
                 splosion.update(self.camera.get_pos())
 
+            for obj in self.current_stage.game_objects:
+                #object.update(self.camera.pos)
+                obj.update(self.camera.get_pos())
+
             # update camera
-            self.camera.set_lookat(util.vec2(self.player.body.position.x, self.player.body.position.y))
+            if (self.restart_level_counter < 0):
+                self.camera.set_lookat(util.vec2(self.player.body.position.x, self.player.body.position.y))
             self.camera.update()
 
             # draw billboards

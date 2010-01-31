@@ -19,9 +19,9 @@ class Camera:
             self.real_pos = util.vec2(self.real_pos.x - 3.0, self.real_pos.y)
 
         elif (delta.y > self.center.y * self.delta_threshold):
-            self.real_pos = util.vec2(self.real_pos.x, self.real_pos.y + 3.0)
+            self.real_pos = util.vec2(self.real_pos.x, self.real_pos.y + 2.0)
         elif (-delta.y > self.center.y * self.delta_threshold):
-            self.real_pos = util.vec2(self.real_pos.x, self.real_pos.y - 3.0)
+            self.real_pos = util.vec2(self.real_pos.x, self.real_pos.y - 2.0)
 
         """delta = util.vec2(self.lookat_pos.x - self.real_pos.x, self.lookat_pos.y - self.real_pos.y)
         amount = math.sqrt(delta.x * delta.x + delta.y * delta.y)

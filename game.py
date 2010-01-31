@@ -71,7 +71,7 @@ class Game:
 
         # billboards
         self.billboards = []
-        self.billboards.append(billboard.Billboard("data/background_stars.png",(0,0),20))
+        self.billboards.append(billboard.Billboard("data/background_stars.png",(0,0),20,True))
         #self.billboards.append(billboard.Billboard("data/background_stars.png",(320,0),20))
 
         # game settings
@@ -201,6 +201,7 @@ class Game:
 
     def run(self):
         self.set_level(stage.Stage1(self.camera, self.player, self.space))
+        #self.set_level(stage.Stage2(self.camera, self.player, self.space))
 
         while self.is_running:
             # update time

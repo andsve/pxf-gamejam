@@ -110,18 +110,24 @@ class InfoBlock(GameObject):
         self.info_bubble = util.load_image(image)
         space.add_static(self.shape)
         self._show_info = False
-        
+        self.cool_down = 0.0
+
         if not anim_name == "":
             self.animation = animation.new_animation(anim_name,"png",1,6,[0,1])
         self.animation.play()
 
     def update(self, camera_pos,dt):
+        if (self.cool_down > 0.0):
+            self.cool_down -= dt / 1000.0
+            if (self.cool_down <= 0.0):
+                self.deactivate()
+
         GameObject.update(self, camera_pos)
         self.animation.update(dt)
-    
+
     def draw(self,canvas):
         canvas.blit(self.sprite.image, self.draw_pos.get(), None)
-        
+
         if self._show_info:
             if not self.animation.playing:
                 self.animation.play()
@@ -134,6 +140,7 @@ class InfoBlock(GameObject):
 
     def activate(self):
         #called when player lala
+        self.cool_down = 2.0
         self._show_info = True
 
     def deactivate(self):

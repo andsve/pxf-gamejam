@@ -89,6 +89,7 @@ class Stage:
                 elif col == 'D':
                     block = doorblock
                     type = gameobject.OBJECT_TYPE_GOAL
+                    self.doorpos = (cnum * 16 - xoffset * 16, rnum * 16 - yoffset * 16)
                 elif col == 'P':
                     self.player.body.position = (cnum * 16 - xoffset * 16, rnum * 16 - yoffset * 16)
                     continue

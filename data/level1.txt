@@ -1,12 +1,14 @@
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-B             3  3 3                        B
-BGGGGG           112 2                      B
-B    GRRGGGGG       1                     Z B
-B           B       1                    WWWB
-B           W    P  R                       B
-B     W     G       G                       B
-B   Y W     W       R   B    G              B
-WWWWWWWWWWWWWWWWWWWWWWWWWWGGGBWWWWWWWWWWWWWWW
-                          B  G XW
-                          B  GWWW
-                          WWWWW
+                               WWWWWW
+                               WD   W
+                               WW   W
+                               W   ZW
+                               WY  WW
+WWWWWWWWWWWWWWWWWWWW           WW   W
+WP                 W           W   WW
+WWWRW              WW          W    W
+W   W               WWWWWWWWWWWWW   W
+W 1 G                              XW
+WWWWWWWWWWWWWWWWWWW              RRRW
+                  WW                W
+                  WWW               W
+                  WWWWWWWWWWWWWWWWWWW

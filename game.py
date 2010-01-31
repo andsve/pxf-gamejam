@@ -190,7 +190,7 @@ class Game:
         self.remove_player = False
 
         self.player = player.Player(util.vec2(100,20), self.space)
-        self.active_color = CRED
+        self.active_color = self.player.toggle_color(CRED)
 
         stages = {
             stage.STAGE_INTRO: stage.IntroStage,

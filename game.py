@@ -48,13 +48,6 @@ class Game:
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_BLUE, None)
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_RED, None)
 
-        """self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_RED, self.handle_collision, self.screen)
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_BW, self.handle_collision, self.screen)
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_GREEN, self.handle_collision, self.screen)
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_BW, self.handle_collision, self.screen)
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_BLUE, self.handle_collision, self.screen)
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_BW, self.handle_collision, self.screen)"""
-
         # collisions between
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_RED, self.handle_collision, self.screen)
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_GREEN, self.handle_collision, self.screen)
@@ -93,20 +86,20 @@ class Game:
     def handle_collision(self, shapea, shapeb, contacts, normal_coef, surface):
         #self.player.in_air = False
         for c in contacts:
-
-            """if (shapea.collision_type == gameobject.OBJECT_TYPE_RED and shapeb.collision_type == gameobject.OBJECT_TYPE_RED):
-                return True
-            elif (shapea.collision_type == gameobject.OBJECT_TYPE_GREEN and shapeb.collision_type == gameobject.OBJECT_TYPE_GREEN):
-                return True
-            elif (shapea.collision_type == gameobject.OBJECT_TYPE_BLUE and shapeb.collision_type == gameobject.OBJECT_TYPE_BLUE):
-                return True"""
-
             in_air = True
             r = max( 3, abs(c.distance*5) )
             spawn_splosions = False
             if (r > 20.0):
                 spawn_splosions = True
-            if (c.normal.y > 0 and c.normal.x < 0.1 and c.normal.x > -0.1):
+
+            if c.position.y == self.player.body.position.y:
+                d = c.position.x - self.player.body.position.x
+                if d < 0:
+                    self.player.body.position.x += 0.5
+                else:
+                    self.player.body.position.x -= 0.5
+
+            if (c.normal.y > 0 and c.normal.x < 0.1 and c.normal.x > -0.1):# or c.position.x != c.player.body.position.x:
                 in_air = False
 
             if (shapea.collision_type == gameobject.OBJECT_TYPE_BW or shapeb.collision_type == gameobject.OBJECT_TYPE_BW):
@@ -200,7 +193,7 @@ class Game:
 
 
     def run(self):
-        self.set_level(stage.Stage1(self.camera, self.player, self.space))
+        self.set_level(stage.AnotherHugeLevel(self.camera, self.player, self.space))
 
         while self.is_running:
             # update time
@@ -237,10 +230,6 @@ class Game:
             for splosion in self.current_stage.splosion_objects:
                 #object.update(self.camera.pos)
                 splosion.update(self.camera.get_pos())
-
-            for obj in self.current_stage.game_objects:
-                #object.update(self.camera.pos)
-                obj.update(self.camera.get_pos())
 
             # update camera
             self.camera.set_lookat(util.vec2(self.player.body.position.x, self.player.body.position.y))

@@ -87,6 +87,7 @@ class StaticBlock(GameObject):
 
 class MovableBlock(GameObject):
     def __init__(self, pos, sprite, space, obj_type):
+        self.is_movable = True
         GameObject.__init__(self, pos, sprite, space, obj_type, pm.inf)
         self.body, self.shape = create_box(space, (pos.x, pos.y), 8, 12.0)
         self.shape.collision_type = obj_type

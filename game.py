@@ -137,7 +137,7 @@ class Game:
                 ,CGREEN: gameobject.OBJECT_TYPE_GREEN
                 ,CBLUE: gameobject.OBJECT_TYPE_BLUE}
 
-            if all(x not in alles for x in cs) or m[self.player.active_color] in cs:
+            if all(x not in alles for x in cs) or m[self.player.active_color] in cs:# or any(not hasattr(x, 'is_movable') for x in cs):
                 if c.position.y == self.player.body.position.y:
                     d = c.position.x - self.player.body.position.x
                     if d < 0:
@@ -194,7 +194,7 @@ class Game:
 
         self.player = player.Player(util.vec2(100,20), self.space)
         self.active_color = CRED
-        
+
         self.gui_key.reset()
 
         stages = {

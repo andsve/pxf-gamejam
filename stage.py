@@ -146,6 +146,8 @@ class Stage5(Stage):
     def __init__(self,camera, player, space):
         Stage.__init__(self, player, space)
         self.load("data/stage5.txt", space)
+        self.keys[gameobject.OBJECT_TYPE_KEY_GREEN] = True
+        self.keys[gameobject.OBJECT_TYPE_KEY_BLUE] = True
         self.camera = camera
 
 class Stage6(Stage):

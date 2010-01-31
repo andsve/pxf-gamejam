@@ -20,7 +20,7 @@ import pymunk as pm
 class Player(gameobject.GameObject):
     def __init__(self, pos, space):
         gameobject.GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/bw_player16.png")), space, gameobject.OBJECT_TYPE_PLAYER, 10.0)
-        self.body, self.shape = gameobject.create_ball(space, (pos.x, pos.y), 8, 4)
+        self.body, self.shape = gameobject.create_ball(space, (pos.x, pos.y), 8, 6)
         space.add(self.body, self.shape)
         self.shape.collision_type = gameobject.OBJECT_TYPE_PLAYER
         #self.shape.collision_type = gameobject.OBJECT_TYPE_PLAYER
@@ -139,7 +139,7 @@ class Player(gameobject.GameObject):
         #canvas.blit(self.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
         #self.current_animation.draw(canvas,self.draw_pos.get())
         pos = self.draw_pos.get()
-        canvas.blit(self.current_animation.sprite.image, (pos[0], pos[1]-4), None, pygame.BLEND_MAX)
+        canvas.blit(self.current_animation.sprite.image, (pos[0], pos[1]-2), None, pygame.BLEND_MAX)
 
         # allways show "body"
         #canvas.blit(body_image, self.draw_pos.get(), None, pygame.BLEND_RGB_ADD)

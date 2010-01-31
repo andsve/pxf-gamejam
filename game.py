@@ -64,7 +64,7 @@ class Game:
         self.is_running = True
 
         self.restart_level_counter = -1
-        self.current_stage_id = stage.STAGE_3
+        self.current_stage_id = stage.STAGE_2
         self.remove_player = False
 
         # physics
@@ -129,7 +129,10 @@ class Game:
                 return True"""
 
             cs = [shapea.collision_type, shapeb.collision_type]
-            alles = [gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_BLUE]
+            alles = [gameobject.OBJECT_TYPE_RED
+                    ,gameobject.OBJECT_TYPE_GREEN
+                    ,gameobject.OBJECT_TYPE_BLUE]
+
             m = {CRED: gameobject.OBJECT_TYPE_RED
                 ,CGREEN: gameobject.OBJECT_TYPE_GREEN
                 ,CBLUE: gameobject.OBJECT_TYPE_BLUE}
@@ -137,10 +140,16 @@ class Game:
             if all(x not in alles for x in cs) or m[self.player.active_color] in cs:
                 if c.position.y == self.player.body.position.y:
                     d = c.position.x - self.player.body.position.x
-                    if d < 0:
-                        self.player.body.position.x += 0.5
+                    if type(shapea) == type(gameobject.MovableBlock) or type(shapeb) == type(gameobject.MovableBlock):
+                        dir = -1
+                        honk = 5
                     else:
-                        self.player.body.position.x -= 0.5
+                        dir = 1
+                        honk = 0.5
+                    if d < 0:
+                        self.player.body.position.x += honk * dir
+                    else:
+                        self.player.body.position.x -= honk * dir
 
             in_air = True
             r = max( 3, abs(c.distance*5) )

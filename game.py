@@ -172,7 +172,7 @@ class Game:
 
 
     def run(self):
-        self.set_level(stage.Stage1(self.camera, self.space))
+        self.set_level(stage.Stage1(self.camera, self.player, self.space))
 
         while self.is_running:
             # update time

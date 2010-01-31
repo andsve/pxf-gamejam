@@ -2,7 +2,7 @@ BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 B                                           B
 BGGGGG                                      B
 B    GRRGGGGG                             Z B
-B           B                            WWWB
+B P         B                            WWWB
 B           W       R                       B
 B     W     G       G                       B
 B   Y W     W       R   B    G              B
@@ -10,5 +10,3 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWGGGBWWWWWWWWWWWWWWW
                           B  G XW
                           B  GWWW
                           WWWWW
-                           
-

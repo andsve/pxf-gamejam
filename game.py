@@ -73,6 +73,9 @@ class Game:
         self.billboards = []
         self.billboards.append(billboard.Billboard("data/background_stars.png",(0,0),20,True))
         #self.billboards.append(billboard.Billboard("data/background_stars.png",(320,0),20))
+        
+        # key gui thingy
+        self.gui_key = billboard.GuiKeys(util.vec2(0,0),16)
 
         # game settings
         #self.player = player.Player(util.vec2(100,20), self.space)
@@ -166,6 +169,13 @@ class Game:
             self.active_color = self.player.toggle_color(CGREEN)
         if event.key == K_3:
             self.active_color = self.player.toggle_color(CBLUE)
+        
+        if event.key == K_4:
+            self.gui_key.update(gameobject.OBJECT_TYPE_KEY_RED)
+        if event.key == K_5:
+            self.gui_key.update(gameobject.OBJECT_TYPE_KEY_GREEN)
+        if event.key == K_6:
+            self.gui_key.update(gameobject.OBJECT_TYPE_KEY_BLUE)
 
         if event.key == K_RETURN:
             self.anim_test.play_animation()
@@ -273,6 +283,9 @@ class Game:
 
             # update game
             self.current_stage.draw(self.screen)
+            
+            # draw key gui
+            self.gui_key.draw(self.screen)
 
             # fps limit
             #3self.clock.tick(25)

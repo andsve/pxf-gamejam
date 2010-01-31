@@ -334,10 +334,14 @@ class Game:
 
     def run(self):
 
-        pxf_logo = animation.new_animation("data/pxf_logo0", "png", 12, 5, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 12, 12, 12, 12][:-1])
+        pxf_logo = animation.new_animation("data/pxf_logo0", "png", 12, 5, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12][:-1])
         pxf_logo.play()
+        intro_end_time = 5000
         while self.playing_intro:
             self.dt_last_frame = self.clock.tick(60)
+            intro_end_time -= self.dt_last_frame
+            if intro_end_time <= 0:
+                self.playing_intro = False
 
             self.screen.fill([0,0,0])
 

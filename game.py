@@ -65,9 +65,9 @@ class Game:
 
         self.active_color = CRED
 
-    def create_splosions(self):
+    def create_splosions(self, spltype):
         for i in range(20):
-            splobj = gameobject.SplosionBlock(util.vec2(self.player.body.position.x, self.player.body.position.y), self.space, gameobject.OBJECT_TYPE_RED)
+            splobj = gameobject.SplosionBlock(util.vec2(self.player.body.position.x, self.player.body.position.y), self.space, spltype)
             self.current_stage.splosion_objects.append(splobj)
 
     def handle_collision(self, shapea, shapeb, contacts, normal_coef, surface):
@@ -88,19 +88,19 @@ class Game:
             if (self.active_color == CRED):
                 if (shapea.collision_type == gameobject.OBJECT_TYPE_RED or shapeb.collision_type == gameobject.OBJECT_TYPE_RED):
                     if (spawn_splosions):
-                        self.create_splosions()
+                        self.create_splosions(gameobject.OBJECT_TYPE_RED)
                     self.player.in_air = in_air
                     return True;
             elif (self.active_color == CGREEN):
                 if (shapea.collision_type == gameobject.OBJECT_TYPE_GREEN or shapeb.collision_type == gameobject.OBJECT_TYPE_GREEN):
                     if (spawn_splosions):
-                        self.create_splosions()
+                        self.create_splosions(gameobject.OBJECT_TYPE_GREEN)
                     self.player.in_air = in_air
                     return True;
             elif (self.active_color == CBLUE):
                 if (shapea.collision_type == gameobject.OBJECT_TYPE_BLUE or shapeb.collision_type == gameobject.OBJECT_TYPE_BLUE):
                     if (spawn_splosions):
-                        self.create_splosions()
+                        self.create_splosions(gameobject.OBJECT_TYPE_BLUE)
                     self.player.in_air = in_air
                     return True;
 

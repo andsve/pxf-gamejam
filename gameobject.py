@@ -84,7 +84,12 @@ class StaticBlock(GameObject):
 
 class SplosionBlock(GameObject):
     def __init__(self, pos, space, color_type):
-        t_sprite = util.to_sprite(util.load_image("data/green_explosion.png"))
+        if color_type == OBJECT_TYPE_RED:
+            t_sprite = util.to_sprite(util.load_image("data/red_explosion.png"))
+        elif color_type == OBJECT_TYPE_GREEN:
+            t_sprite = util.to_sprite(util.load_image("data/green_explosion.png"))
+        else:
+            t_sprite = util.to_sprite(util.load_image("data/blue_explosion.png"))
         GameObject.__init__(self, pos, t_sprite, space, OBJECT_TYPE_SPLOSION, pm.inf)
         self.body, self.shape = create_ball(self, (pos.x, pos.y), mass=0.6, radius=0.1)
         self.shape.collision_type = OBJECT_TYPE_SPLOSION

@@ -2,6 +2,7 @@ from __future__ import with_statement
 import pygame
 import util
 import gameobject
+import animation
 
 STAGE_INTRO = 1
 STAGE_1 = 2

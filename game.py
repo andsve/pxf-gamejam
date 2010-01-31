@@ -84,8 +84,14 @@ class Game:
         self.bg_music_playing = False
         # billboards
         self.billboards = []
-        self.billboards.append(billboard.Billboard("data/background_stars.png",(0,0),20))
-        self.billboards.append(billboard.Billboard("data/background_stars.png",(320,0),20))
+        self.billboards.append(billboard.Billboard("data/background_stars.png",util.vec2(0,0),20,True))
+        self.billboards.append(billboard.Billboard("data/background_city.png",util.vec2(0,200),30,True))
+        
+        # misc
+        names = util.name_sequence("data/entity_door","png",4)
+        frames = util.get_sequence(names,[0,1,2,3,4])
+        self.door_anim = animation.Animation(frames,8)
+        self.door_anim.play()
 
         # key gui thingy
         self.gui_key = billboard.GuiKeys(util.vec2(0,0),16)
@@ -110,9 +116,11 @@ class Game:
         if (shapea.collision_type == gameobject.OBJECT_TYPE_KEY_RED or shapeb.collision_type == gameobject.OBJECT_TYPE_KEY_RED):
             self.current_stage.keys[gameobject.OBJECT_TYPE_KEY_RED] = True
             self.gui_key.update(gameobject.OBJECT_TYPE_KEY_RED)
+
         elif (shapea.collision_type == gameobject.OBJECT_TYPE_KEY_GREEN or shapeb.collision_type == gameobject.OBJECT_TYPE_KEY_GREEN):
             self.current_stage.keys[gameobject.OBJECT_TYPE_KEY_GREEN] = True
             self.gui_key.update(gameobject.OBJECT_TYPE_KEY_GREEN)
+
         elif (shapea.collision_type == gameobject.OBJECT_TYPE_KEY_BLUE or shapeb.collision_type == gameobject.OBJECT_TYPE_KEY_BLUE):
             self.current_stage.keys[gameobject.OBJECT_TYPE_KEY_BLUE] = True
             self.gui_key.update(gameobject.OBJECT_TYPE_KEY_BLUE)
@@ -328,7 +336,6 @@ class Game:
 
             # update player
             self.player.update(self.camera.get_pos(),self.dt_last_frame)
-            self.player.draw(self.screen)
 
             # update physics
             self.space.step(1/60.0)
@@ -365,6 +372,11 @@ class Game:
 
             # update game
             self.current_stage.draw(self.screen)
+            
+            self.door_anim.update(self.dt_last_frame)
+            self.door_anim.draw(self.screen,(0,20))
+            
+            self.player.draw(self.screen)
 
             # draw key gui
             self.gui_key.draw(self.screen)

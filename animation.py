@@ -23,6 +23,7 @@ class Animation():
             self._next_update += t
             if self._next_update >= self._period:
                 self.current += 1
+                #if (self.current == )
                 self._next_update %= self._period
                 self.current %= len(self.frames)
                 self.sprite.image = self.frames[self.current]
@@ -35,8 +36,9 @@ class Animation():
         else:
             canvas.blit(self.sprite.image, pos, None, pygame.BLEND_MAX)
 
-    def play(self):
+    def play(self):#, repeat = True):
         #self.current = 0
+        #self.repeating = repeat
         self.playing = True
 
     def stop(self):

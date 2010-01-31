@@ -20,7 +20,10 @@ class Stage:
 
     def load(self, filepath, space):
         import sys
-
+        #goal
+        doorblock = util.load_image("data/entity_door0.png")
+        
+        # standard blocks
         rblock = util.load_image("data/red_block16.png")
         gblock = util.load_image("data/green_block16.png")
         bblock = util.load_image("data/blue_block16.png")
@@ -76,6 +79,9 @@ class Stage:
                 elif col == 'Z':
                     block = bkblock
                     type = gameobject.OBJECT_TYPE_KEY_BLUE
+                elif col == 'D':
+                    block = doorblock
+                    type = gameobject.OBJECT_TYPE_GOAL
                 elif col == 'P':
                     self.player.body.position = (cnum * 16 - xoffset * 16, rnum * 16 - yoffset * 16)
                     continue

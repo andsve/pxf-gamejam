@@ -34,6 +34,7 @@ def create_box(space, pos, size = 10, mass = 5.0):
 
 (OBJECT_TYPE_FAIL,
  OBJECT_TYPE_PLAYER,
+ OBJECT_TYPE_GOAL,
  OBJECT_TYPE_KEY_RED,
  OBJECT_TYPE_KEY_GREEN,
  OBJECT_TYPE_KEY_BLUE,
@@ -42,7 +43,7 @@ def create_box(space, pos, size = 10, mass = 5.0):
  OBJECT_TYPE_BLUE,
  OBJECT_TYPE_SPLOSION,
  OBJECT_TYPE_BW,
- OBJECT_TYPE_ALL) = range(11)
+ OBJECT_TYPE_ALL) = range(12)
 
 class GameObject:
     def __init__(self, pos, sprite, space, obj_type, mass = 5.0):

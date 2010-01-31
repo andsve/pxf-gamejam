@@ -80,8 +80,8 @@ class Game:
 
         # music:
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
-        #self.bg_music.play(-1)
-        #self.bg_music_playing = True
+        self.bg_music.play(-1)
+        self.bg_music_playing = True
         self.bg_music_playing = False
         # billboards
         self.billboards = []
@@ -281,8 +281,8 @@ class Game:
         if event.type == KEYUP:
             if event.key == K_r:
                 self.start_new_level(self.current_stage_id)
-            if event.key == K_l:
-                self.start_new_level(self.current_stage_id+1)
+   #         if event.key == K_l:
+   #             self.start_new_level(self.current_stage_id+1)
 
 
 

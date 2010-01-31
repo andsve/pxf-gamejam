@@ -1,15 +1,16 @@
-                               WWWWWW
-                               WD   W
-                               WW   W
-                               W   ZW
-                               W   WW
-                               WY   W
-WWWWWWWWWWWWWWWWWWWW           WW   W
-WP                 W         WWW   WW
-WWWRW              WW        W      W
-W   W               WWWWWWWWWW  W   W
-W 1 G                              XW
-WWWWWWWWWWWWWWWWWWW         RRRRGGBBW
-                  WW                W
-                  WWW               W
-                  WWWWWWWWWWWWWWWWWWW
+                               WWWWWW 
+                               WD   W    
+                               WW   W    
+                               W   ZW    
+                               W   WW    
+                               WY   W    
+                               WW   W    
+WWWWWWWWWWWWWWWWWWWW         WWW   WW    
+WP                 W         W      W    
+WWWRW              WW    WWWWW  W   W    
+W   W               WWWWW          XW    
+W 1 G                       RRRRGGBBW    
+WWWWWWWWWWWWWWWWWWW        R        W    
+                  WW                W    
+                  WWW               W    
+                  WWWWWWWWWWWWWWWWWWW    

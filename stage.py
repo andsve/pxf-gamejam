@@ -4,7 +4,12 @@ import util
 import gameobject
 import animation
 
-STAGE_INTRO, STAGE_1, STAGE_2, STAGE_3, STAGE_5 = range(5)
+STAGE_INTRO = 1
+STAGE_1 = 2
+STAGE_2 = 3
+STAGE_3 = 4
+STAGE_5 = 5
+STAGE_6 = 6
 
 class Stage:
     def __init__(self, player, space):
@@ -142,4 +147,12 @@ class Stage5(Stage):
     def __init__(self,camera, player, space):
         Stage.__init__(self, player, space)
         self.load("data/stage5.txt", space)
+        self.keys[gameobject.OBJECT_TYPE_KEY_GREEN] = True
+        self.keys[gameobject.OBJECT_TYPE_KEY_BLUE] = True
+        self.camera = camera
+
+class Stage6(Stage):
+    def __init__(self,camera, player, space):
+        Stage.__init__(self, player, space)
+        self.load("data/stage6.txt", space)
         self.camera = camera

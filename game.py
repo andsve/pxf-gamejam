@@ -137,7 +137,10 @@ class Game:
                 return True"""
 
             cs = [shapea.collision_type, shapeb.collision_type]
-            alles = [gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_BLUE]
+            alles = [gameobject.OBJECT_TYPE_RED
+                    ,gameobject.OBJECT_TYPE_GREEN
+                    ,gameobject.OBJECT_TYPE_BLUE]
+
             m = {CRED: gameobject.OBJECT_TYPE_RED
                 ,CGREEN: gameobject.OBJECT_TYPE_GREEN
                 ,CBLUE: gameobject.OBJECT_TYPE_BLUE}

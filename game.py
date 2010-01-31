@@ -149,8 +149,9 @@ class Game:
 
     def handle_win_collisions(self, shapea, shapeb, contacts, normal_coef, surface):
         if self.current_stage.finished():
+            if not self.door_anim.playing:
+                self.door_anim.play()
             self.animate_door = True
-            self.door_anim.play()
         return False
 
     def handle_collision(self, shapea, shapeb, contacts, normal_coef, surface):
@@ -349,9 +350,11 @@ class Game:
                 if event.type == QUIT:
                     self.playing_intro = False
                     self.is_running = False
+                if event.type == pygame.KEYUP:
+                    if (event.key == K_ESCAPE):
+                        self.playing_intro = False
 
-            if pygame.key.get_pressed()[K_ESCAPE]:
-                self.playing_intro = False
+            
 
             pxf_logo.update(self.dt_last_frame)
             pxf_logo.draw(self.screen, (self.size[0] / 2 - 64, self.size[1] / 2 - 64), True)
@@ -443,6 +446,7 @@ class Game:
                     self.start_new_level(self.current_stage_id + 1)
                     self.door_anim.current = 0
                     self.animate_door = False
+                    self.door_anim.stop()
                 elif self.door_anim.current == 3:
                     self.fade_in_out = True
                     self.fade_in_out_time = 3

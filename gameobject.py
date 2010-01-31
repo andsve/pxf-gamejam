@@ -102,10 +102,10 @@ class MovableBlock(GameObject):
         pass
 
 class InfoBlock(GameObject):
-    def __init__(self, pos, image, space,anim_name = ""):
+    def __init__(self, pos, image, space,anim_name = "",num_frames = 1,sequence = [0,1],frequency = 8):
         self.is_movable = True
         GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/info_sign0.png")), space, OBJECT_TYPE_INFO, pm.inf)
-        self.body, self.shape = create_box(space, (pos.x, pos.y), 8, 12.0)
+        self.body, self.shape = create_box(space, (pos.x, pos.y), frequency, 12.0)
         self.shape.collision_type = OBJECT_TYPE_INFO
         self.info_bubble = util.load_image(image)
         space.add_static(self.shape)
@@ -126,7 +126,7 @@ class InfoBlock(GameObject):
         self.animation.update(dt)
 
     def draw(self,canvas):
-        canvas.blit(self.sprite.image, self.draw_pos.get(), None)
+        canvas.blit(self.sprite.image, self.draw_pos.get(), None,pygame.BLEND_MAX)
 
         if self._show_info:
             if not self.animation.playing:

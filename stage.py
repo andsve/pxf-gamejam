@@ -13,8 +13,6 @@ STAGE_4 = 5
 STAGE_5 = 6
 STAGE_6 = 7
 STAGE_7 = 8
-STAGE_8 = 9
-STAGE_9 = 10
 
 class Stage:
     def __init__(self, player, space):
@@ -142,8 +140,12 @@ class Stage0(Stage):
         self.camera = camera
         info0 = gameobject.InfoBlock(util.vec2(-64,16), "data/info_bubble0_0.png", space,"data/info_bubble0_")
         info1 = gameobject.InfoBlock(util.vec2(32,16), "data/info_bubble1_0.png", space,"data/info_bubble1_")
+        info2 = gameobject.InfoBlock(util.vec2(304,16), "data/info_bubble2_0.png", space,"data/info_bubble2_",6,[0,1,2,3,5,5,6,6,5,5,6,6])
+        info3 = gameobject.InfoBlock(util.vec2(404,16), "data/info_bubble3_0.png", space,"data/info_bubble3_",7,[0,1,2,3,4,5,6,7,6,7,6,7])
         self.info_blocks.append(info1)
         self.info_blocks.append(info0)
+        self.info_blocks.append(info2)
+        self.info_blocks.append(info3)
 
 class Stage1(Stage):
     def __init__(self,camera, player, space):
@@ -189,16 +191,4 @@ class Stage7(Stage):
     def __init__(self,camera, player, space):
         Stage.__init__(self, player, space)
         self.load("data/stage7.txt", space)
-        self.camera = camera
-
-class Stage8(Stage):
-    def __init__(self,camera, player, space):
-        Stage.__init__(self, player, space)
-        self.load("data/stage8.txt", space)
-        self.camera = camera
-
-class Stage9(Stage):
-    def __init__(self,camera, player, space):
-        Stage.__init__(self, player, space)
-        self.load("data/stage9.txt", space)
         self.camera = camera

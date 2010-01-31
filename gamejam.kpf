@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Komodo Project File - DO NOT EDIT -->
 <project id="05035d15-0dd6-473f-9d52-3c0fa0499950" kpf_version="4" name="gamejam.kpf">
-<file id="6d06ec56-2e5b-44ca-9ecc-449a83b8600d" idref="05035d15-0dd6-473f-9d52-3c0fa0499950" name="level1.txt" url="data/level1.txt">
+<file id="1f833a7c-fb9d-4a86-9879-92b523da0c4a" idref="05035d15-0dd6-473f-9d52-3c0fa0499950" name="stage0.txt" url="data/stage0.txt">
 </file>
 <preference-set idref="05035d15-0dd6-473f-9d52-3c0fa0499950">
   <boolean id="import_live">1</boolean>

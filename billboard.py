@@ -34,6 +34,11 @@ class GuiKeys():
             self.blue = self._blue
         else:
             print "unknown key type"
+    
+    def reset(self):
+        self.red = self._default
+        self.green = self._default
+        self.blue = self._default
 
 class Billboard:
     def __init__(self,name,pos,speed,repeat = False,animated = False):

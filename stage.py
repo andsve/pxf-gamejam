@@ -22,7 +22,7 @@ class Stage:
         gkblock = util.load_image("data/green_key0.png")
         bkblock = util.load_image("data/blue_key0.png")
         # movable
-        r_movableblock = util.load_image("data/red_block16.png")
+        r_movableblock = util.load_image("data/red_movable_block0.png")
         g_movableblock = util.load_image("data/green_block16.png")
         b_movableblock = util.load_image("data/blue_block16.png")
 
@@ -34,18 +34,18 @@ class Stage:
 
         for rnum, row in enumerate(data):
             for cnum, col in enumerate(row):
-                movable = false
-                if   col == 'A':
+                movable = False
+                if   col == '1':
                     block = r_movableblock
-                    movable = true
+                    movable = True
                     type = gameobject.OBJECT_TYPE_RED
-                elif   col == 'B':
+                elif   col == '2':
                     block = g_movableblock
-                    movable = true
+                    movable = True
                     type = gameobject.OBJECT_TYPE_GREEN
-                elif   col == 'C':
+                elif   col == '3':
                     block = b_movableblock
-                    movable = true
+                    movable = True
                     type = gameobject.OBJECT_TYPE_BLUE
                 elif   col == 'R':
                     block = rblock
@@ -75,9 +75,11 @@ class Stage:
                 pos = util.vec2(cnum * 16 - xoffset * 16, rnum * 16 - yoffset * 16)
                 if (movable):
                     go = gameobject.MovableBlock(pos, util.to_sprite(block), space, type)
+                    self.game_objects.append(go)
                 else:
                     go = gameobject.StaticBlock(pos, util.to_sprite(block), space, type)
-                self.tiles.append(go)
+                    self.tiles.append(go)
+
 
     def collide(self,rect):
         return rect.colliderect(self.camera.rect)
@@ -92,6 +94,8 @@ class Stage:
                 pass
         for splosion in self.splosion_objects:
             splosion.draw(canvas)
+        for obj in self.game_objects:
+            obj.draw(canvas)
 
 class IntroStage(Stage):
     def __init__(self,camera, player, space):

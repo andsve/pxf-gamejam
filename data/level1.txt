@@ -1,9 +1,9 @@
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 B                                           B
-BGGGGG                                      B
-B    GRRGGGGG                             Z B
-B P         B                            WWWB
-B           W       R                       B
+BGGGGG           11                         B
+B    GRRGGGGG       1                     Z B
+B           B       1                    WWWB
+B           W    P  R                       B
 B     W     G       G                       B
 B   Y W     W       R   B    G              B
 WWWWWWWWWWWWWWWWWWWWWWWWWWGGGBWWWWWWWWWWWWWWW

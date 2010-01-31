@@ -37,6 +37,9 @@ class Game:
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_KEY_GREEN, self.handle_key_collisions, self.screen)
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_KEY_BLUE, self.handle_key_collisions, self.screen)
 
+        # win collisions
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_GOAL, self.handle_win_collisions, self.screen)
+
         # collisions between
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_RED, self.handle_collision, self.screen)
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_GREEN, self.handle_collision, self.screen)
@@ -64,7 +67,7 @@ class Game:
         self.is_running = True
 
         self.restart_level_counter = -1
-        self.current_stage_id = stage.STAGE_5
+        self.current_stage_id = stage.STAGE_INTRO
         self.remove_player = False
 
         # physics
@@ -123,6 +126,11 @@ class Game:
 
         return False
 
+    def handle_win_collisions(self, shapea, shapeb, contacts, normal_coef, surface):
+        if self.current_stage.finished():
+            self.start_new_level(self.current_stage_id + 1)
+        return False
+
     def handle_collision(self, shapea, shapeb, contacts, normal_coef, surface):
         #self.player.in_air = False
         for c in contacts:
@@ -135,12 +143,15 @@ class Game:
                 return True"""
 
             cs = [shapea.collision_type, shapeb.collision_type]
-            alles = [gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_BLUE]
+            alles = [gameobject.OBJECT_TYPE_RED
+                    ,gameobject.OBJECT_TYPE_GREEN
+                    ,gameobject.OBJECT_TYPE_BLUE]
+
             m = {CRED: gameobject.OBJECT_TYPE_RED
                 ,CGREEN: gameobject.OBJECT_TYPE_GREEN
                 ,CBLUE: gameobject.OBJECT_TYPE_BLUE}
 
-            if all(x not in alles for x in cs) or m[self.player.active_color] in cs:
+            if all(x not in alles for x in cs) or m[self.player.active_color] in cs:# or any(not hasattr(x, 'is_movable') for x in cs):
                 if c.position.y == self.player.body.position.y:
                     d = c.position.x - self.player.body.position.x
                     if d < 0:
@@ -191,13 +202,15 @@ class Game:
         pygame.display.set_caption("Channel Panic! (%.2f FPS)" % (self.clock.get_fps()))
 
     def start_new_level(self, stage_id):
+        self.current_stage_id = stage_id
+
         self.restart_level_counter = -1
         self.init_physics()
         self.remove_player = False
 
         self.player = player.Player(util.vec2(100,20), self.space)
-        self.active_color = CRED
-        
+        self.active_color = self.player.toggle_color(CRED)
+
         self.gui_key.reset()
 
         stages = {

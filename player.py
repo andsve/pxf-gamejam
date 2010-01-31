@@ -121,7 +121,6 @@ class Player(gameobject.GameObject):
             elif self.active_color == game.CBLUE:
                 new_animation = self.animations[self.determine_lookdir("blue")]
 
-
             self.current_animation = new_animation
 
             if _play:
@@ -131,7 +130,6 @@ class Player(gameobject.GameObject):
 
 
     def draw(self, canvas):
-
         self.set_animation()
 
         #gameobject.GameObject.draw(self, canvas)

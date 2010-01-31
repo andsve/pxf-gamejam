@@ -47,7 +47,7 @@ class Stage1(Stage):
         gkblock = util.load_image("data/green_key0.png")
         bkblock = util.load_image("data/blue_key0.png")
 
-        with open("data/level1.txt") as f:
+        with open("data/intro_level.txt") as f:
             data = f.readlines()
 
         xoffset = 7

@@ -106,21 +106,27 @@ class InfoBlock(GameObject):
         GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/info_sign0.png")), space, OBJECT_TYPE_INFO, pm.inf)
         self.body, self.shape = create_box(space, (pos.x, pos.y), 8, 12.0)
         self.shape.collision_type = OBJECT_TYPE_INFO
-        self.info_bubble = image
+        self.info_bubble = util.load_image(image)
         space.add_static(self.shape)
-        self.showing_info = False
+        self._show_info = False
 
     def update(self, camera_pos):
         GameObject.update(self, camera_pos)
         pass
     
     def draw(self,canvas):
-        canvas.blit(self.sprite.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
+        canvas.blit(self.sprite.image, self.draw_pos.get(), None)
+        if self._show_info:
+            canvas.blit(self.info_bubble, (
+                self.draw_pos.x - self.info_bubble.get_rect().width,
+                self.draw_pos.y - self.info_bubble.get_rect().height),None,pygame.BLEND_MAX)
 
     def activate(self):
         #called when player lala
-        
-        pass
+        self._show_info = True
+    
+    def deactivate(self):
+        self._show_info = False
 
 
 splosion_red = util.to_sprite(util.load_image("data/red_explosion.png"))

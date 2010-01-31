@@ -49,7 +49,7 @@ class Billboard:
         self.pos = pos
         self.draw_pos = util.vec2(0,0)
         self.speed = speed
-        self.inv_speed = speed/40.
+        self.inv_speed = speed/100.
         self.repeat = repeat
         self.offset = 320
         self.last_frame_pos = 0

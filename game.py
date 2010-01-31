@@ -89,7 +89,7 @@ class Game:
 
         # misc
         names = util.name_sequence("data/entity_door","png",4)
-        frames = util.get_sequence(names,[0,1,2,3,4])
+        frames = util.get_sequence(names,[0,1,2,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4])
         self.door_anim = animation.Animation(frames,8)
         self.animate_door = False
 

@@ -5,12 +5,13 @@ import gameobject
 import animation
 
 STAGE_INTRO = 0
-STAGE_1 = 1
-STAGE_2 = 2
-STAGE_3 = 3
-STAGE_4 = 4
-STAGE_5 = 5
-STAGE_6 = 6
+STAGE_0 = 1
+STAGE_1 = 2
+STAGE_2 = 3
+STAGE_3 = 4
+STAGE_4 = 5
+STAGE_5 = 6
+STAGE_6 = 7
 
 class Stage:
     def __init__(self, player, space):
@@ -122,7 +123,16 @@ class Stage:
         for inf in self.info_blocks:
             inf.draw(canvas)
 
-class IntroStage(Stage):
+class StageIntro(Stage):
+    def __init__(self,camera, player, space):
+        Stage.__init__(self, player, space)
+        self.load("data/stage_intro.txt", space)
+        self.camera = camera
+        self.keys[gameobject.OBJECT_TYPE_KEY_RED] = True
+        self.keys[gameobject.OBJECT_TYPE_KEY_GREEN] = True
+        self.keys[gameobject.OBJECT_TYPE_KEY_BLUE] = True
+
+class Stage0(Stage):
     def __init__(self,camera, player, space):
         Stage.__init__(self, player, space)
         self.load("data/stage0.txt", space)

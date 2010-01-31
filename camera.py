@@ -14,14 +14,16 @@ class Camera:
     def update(self):
         delta = util.vec2(self.lookat_pos.x - self.real_pos.x, self.lookat_pos.y - self.real_pos.y)
         if (delta.x > self.center.x * self.delta_threshold):
-            self.real_pos = util.vec2(self.real_pos.x + 3.0, self.real_pos.y)
+            movedelta = delta.x - self.center.x * (1.0 - self.delta_threshold)
+            self.real_pos = util.vec2(self.real_pos.x + movedelta / 10.0, self.real_pos.y)
         elif (-delta.x > self.center.x * self.delta_threshold):
-            self.real_pos = util.vec2(self.real_pos.x - 3.0, self.real_pos.y)
+            movedelta = -delta.x - self.center.x * (1.0 - self.delta_threshold)
+            self.real_pos = util.vec2(self.real_pos.x - movedelta / 10.0, self.real_pos.y)
 
-        elif (delta.y > self.center.y * self.delta_threshold):
-            self.real_pos = util.vec2(self.real_pos.x, self.real_pos.y + 2.0)
+        if (delta.y > self.center.y * self.delta_threshold):
+            self.real_pos = util.vec2(self.real_pos.x, self.real_pos.y + 2)
         elif (-delta.y > self.center.y * self.delta_threshold):
-            self.real_pos = util.vec2(self.real_pos.x, self.real_pos.y - 2.0)
+            self.real_pos = util.vec2(self.real_pos.x, self.real_pos.y - 2)
 
         """delta = util.vec2(self.lookat_pos.x - self.real_pos.x, self.lookat_pos.y - self.real_pos.y)
         amount = math.sqrt(delta.x * delta.x + delta.y * delta.y)

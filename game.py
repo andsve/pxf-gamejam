@@ -64,7 +64,7 @@ class Game:
         self.is_running = True
 
         self.restart_level_counter = -1
-        self.current_stage_id = stage.STAGE_5
+        self.current_stage_id = stage.STAGE_2
         self.remove_player = False
 
         # physics
@@ -140,17 +140,10 @@ class Game:
             if all(x not in alles for x in cs) or m[self.player.active_color] in cs:
                 if c.position.y == self.player.body.position.y:
                     d = c.position.x - self.player.body.position.x
-                    if type(shapea) == type(gameobject.MovableBlock) or type(shapeb) == type(gameobject.MovableBlock):
-                        dir = -1
-                        honk = 5
-                        print "LOLO"
-                    else:
-                        dir = 1
-                        honk = 0.5
                     if d < 0:
-                        self.player.body.position.x += honk * dir
+                        self.player.body.position.x += 0.5
                     else:
-                        self.player.body.position.x -= honk * dir
+                        self.player.body.position.x -= 0.5
 
             in_air = True
             r = max( 3, abs(c.distance*5) )

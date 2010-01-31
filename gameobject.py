@@ -67,6 +67,7 @@ class GameObject:
 
     def draw(self, canvas):
         #canvas.blit(self.sprite.image, self.pos.get(), None, pygame.BLEND_MAX)
+        # lol fulhack :C
         if self.object_type == OBJECT_TYPE_BW:
             canvas.blit(self.sprite.image, self.draw_pos.get(), None)
         else:
@@ -100,19 +101,25 @@ class MovableBlock(GameObject):
         pass
 
 class InfoBlock(GameObject):
-    def __init__(self, pos, sprite, space):
+    def __init__(self, pos, image, space):
         self.is_movable = True
-        GameObject.__init__(self, pos, sprite, space, OBJECT_TYPE_INFO, pm.inf)
+        GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/info_sign0.png")), space, OBJECT_TYPE_INFO, pm.inf)
         self.body, self.shape = create_box(space, (pos.x, pos.y), 8, 12.0)
         self.shape.collision_type = OBJECT_TYPE_INFO
+        self.info_bubble = image
         space.add_static(self.shape)
         self.showing_info = False
 
     def update(self, camera_pos):
         GameObject.update(self, camera_pos)
         pass
+    
+    def draw(self,canvas):
+        canvas.blit(self.sprite.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
 
     def activate(self):
+        #called when player lala
+        
         pass
 
 

@@ -125,7 +125,7 @@ class IntroStage(Stage):
         Stage.__init__(self, player, space)
         self.load("data/intro_level.txt", space)
         self.camera = camera
-        info1 = gameobject.InfoBlock(util.vec2(16,16), util.to_sprite(util.load_image("data/red_block16.png")), space)
+        info1 = gameobject.InfoBlock(util.vec2(-96,16), "data/info_bubble0.png", space)
         self.info_blocks.append(info1)
 
 class Stage1(Stage):

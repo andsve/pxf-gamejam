@@ -139,7 +139,7 @@ class Game:
         for infoblock in self.current_stage.info_blocks:
             if (infoblock.shape == shapea or infoblock.shape == shapeb):
                 infoblock.activate()
-                
+
         return False
 
     def handle_win_collisions(self, shapea, shapeb, contacts, normal_coef, surface):
@@ -168,7 +168,14 @@ class Game:
                 ,CGREEN: gameobject.OBJECT_TYPE_GREEN
                 ,CBLUE: gameobject.OBJECT_TYPE_BLUE}
 
+            self.player.is_pushing = False
             if all(x not in alles for x in cs) or m[self.player.active_color] in cs:# or any(not hasattr(x, 'is_movable') for x in cs):
+                if (c.position.y - self.player.body.position.y < 1):
+                    for dyn_obj in self.current_stage.game_objects:
+                        if (dyn_obj.shape == shapea or dyn_obj.shape == shapeb):
+                            self.player.is_pushing = True
+                            #print("moving: ", c.position.y - self.player.body.position.y)
+
                 if c.position.y == self.player.body.position.y:
                     d = c.position.x - self.player.body.position.x
                     if d < 0:

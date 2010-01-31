@@ -111,17 +111,19 @@ class InfoBlock(GameObject):
         space.add_static(self.shape)
         self._show_info = False
         self.animation = animation.new_animation("data/info_bubble0_","png",1,4,[0,1])
+        self.animation.play()
 
-    def update(self, camera_pos):
+    def update(self, camera_pos,dt):
         GameObject.update(self, camera_pos)
-        pass
+        self.animation.update(dt)
     
     def draw(self,canvas):
         canvas.blit(self.sprite.image, self.draw_pos.get(), None)
+        
         if self._show_info:
-            canvas.blit(self.info_bubble, (
-                self.draw_pos.x - self.info_bubble.get_rect().width,
-                self.draw_pos.y - self.info_bubble.get_rect().height),None)
+            pos = (self.draw_pos.x - self.info_bubble.get_rect().width,
+                   self.draw_pos.y - self.info_bubble.get_rect().height)
+            self.animation.draw(canvas,pos)
 
     def activate(self):
         #called when player lala

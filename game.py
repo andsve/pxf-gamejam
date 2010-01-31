@@ -366,7 +366,7 @@ class Game:
                 obj.update(self.camera.get_pos())
 
             for inf in self.current_stage.info_blocks:
-                inf.update(self.camera.get_pos())
+                inf.update(self.camera.get_pos(),self.dt_last_frame)
 
             # update camera
             if (self.restart_level_counter < 0):

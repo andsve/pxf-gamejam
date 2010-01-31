@@ -67,7 +67,7 @@ class Game:
         self.is_running = True
 
         self.restart_level_counter = -1
-        self.current_stage_id = stage.STAGE_1
+        self.current_stage_id = stage.STAGE_INTRO
         self.remove_player = False
 
         # physics
@@ -233,6 +233,9 @@ class Game:
             self.active_color = self.player.toggle_color(CGREEN)
         if event.key == K_3:
             self.active_color = self.player.toggle_color(CBLUE)
+        if event.key == K_r:
+            self.start_new_level(self.current_stage_id)
+
 
 
         if event.key == K_RETURN:

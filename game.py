@@ -98,6 +98,8 @@ class Game:
         self.fade_in_out = False
         self.fade_in_out_time = 0
 
+        self.playing_intro = True
+
         # key gui thingy
         self.gui_key = billboard.GuiKeys(util.vec2(0,0),16)
 
@@ -331,6 +333,34 @@ class Game:
 
 
     def run(self):
+
+        pxf_logo = animation.new_animation("data/pxf_logo0", "png", 12, 5, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 12, 12, 12, 12][:-1])
+        pxf_logo.play()
+        while self.playing_intro:
+            self.dt_last_frame = self.clock.tick(60)
+
+            self.screen.fill([0,0,0])
+
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    self.playing_intro = False
+                    self.is_running = False
+
+            if pygame.key.get_pressed()[K_ESCAPE]:
+                self.playing_intro = False
+
+            pxf_logo.update(self.dt_last_frame)
+            pxf_logo.draw(self.screen, (self.size[0] / 2 - 64, self.size[1] / 2 - 64), True)
+
+            if self.scale:
+                pygame.transform.scale2x(self.screen, self.actual_screen)
+            else:
+                self.actual_screen.blit(self.screen, (0, 0))
+
+            pygame.display.flip()
+
+
+
         #self.set_level(stage.Stage1(self.camera, self.player, self.space))
         self.start_new_level(self.current_stage_id)
 

@@ -191,6 +191,8 @@ class Game:
 
         self.player = player.Player(util.vec2(100,20), self.space)
         self.active_color = CRED
+        
+        self.gui_key.reset()
 
         stages = {
             stage.STAGE_INTRO: stage.IntroStage,
@@ -215,12 +217,6 @@ class Game:
         if event.key == K_3:
             self.active_color = self.player.toggle_color(CBLUE)
 
-        if event.key == K_4:
-            self.gui_key.update(gameobject.OBJECT_TYPE_KEY_RED)
-        if event.key == K_5:
-            self.gui_key.update(gameobject.OBJECT_TYPE_KEY_GREEN)
-        if event.key == K_6:
-            self.gui_key.update(gameobject.OBJECT_TYPE_KEY_BLUE)
 
         if event.key == K_RETURN:
             self.anim_test.play_animation()

@@ -65,7 +65,10 @@ class GameObject:
 
     def draw(self, canvas):
         #canvas.blit(self.sprite.image, self.pos.get(), None, pygame.BLEND_MAX)
-        canvas.blit(self.sprite.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
+        if self.object_type == OBJECT_TYPE_BW:
+            canvas.blit(self.sprite.image, self.draw_pos.get(), None)
+        else:
+            canvas.blit(self.sprite.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
 
 
 

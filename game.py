@@ -76,8 +76,9 @@ class Game:
 
         # music:
         self.bg_music = util.load_sound("data/channel_panic!-theme.ogg")
+        #self.bg_music.play(-1)
+        #self.bg_music_playing = True
         self.bg_music_playing = False
-
         # billboards
         self.billboards = []
         self.billboards.append(billboard.Billboard("data/background_stars.png",(0,0),20))
@@ -268,7 +269,7 @@ class Game:
                 #self.player.vel.x += 0.9
                 #self.player.vel.y = 0.04
 
-        if pygame.key.get_pressed()[K_SPACE]:
+        if pygame.key.get_pressed()[K_F1]:
             if self.bg_music_playing:
                 self.bg_music.stop()
                 self.bg_music_playing = False

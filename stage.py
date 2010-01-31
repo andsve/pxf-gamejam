@@ -3,8 +3,9 @@ import pygame
 import util
 
 class Stage:
-    def __init__(self, space):
+    def __init__(self, player, space):
         self.tiles = []
+        self.player = player
         self.game_objects = []
         self.splosion_objects = []
 
@@ -50,6 +51,9 @@ class Stage:
                 elif col == 'Z':
                     block = bkblock
                     type = gameobject.OBJECT_TYPE_KEY_BLUE
+                elif col == 'P':
+                    self.player.body.position = (cnum * 16 - xoffset * 16, rnum * 16 - yoffset * 16)
+                    continue
                 else: continue
                 pos = util.vec2(cnum * 16 - xoffset * 16, rnum * 16 - yoffset * 16)
                 go = gameobject.StaticBlock(pos, util.to_sprite(block), space, type)
@@ -69,9 +73,15 @@ class Stage:
         for splosion in self.splosion_objects:
             splosion.draw(canvas)
 
+class IntroStage(Stage):
+    def __init__(self,camera, player, space):
+        Stage.__init__(self, player, space)
+        self.load("data/intro_level.txt", space)
+        self.camera = camera
+
 class Stage1(Stage):
-    def __init__(self,camera, space):
-        Stage.__init__(self, space)
+    def __init__(self,camera, player, space):
+        Stage.__init__(self, player, space)
         self.load("data/level1.txt", space)
         self.camera = camera
 

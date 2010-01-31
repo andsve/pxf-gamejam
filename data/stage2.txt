@@ -1,13 +1,16 @@
-WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W                                                      W
-W       1         WWWWW    WWWWW    WWWWW    WWWWW     W
-W                 W  XW    WY  W    WZ  W    W  DW     W
-W       2         WW WW    WW WW    WW WW    WW WW     W
-W                                                      W
-W       3           R        G        B        W       W  
-W  P                                                   W  
-W                                                      W  
-WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW  
-
-
-
+                               WWWWWW 
+                               WD   W    
+                               WW   W    
+                               W   ZW    
+                               W   WW    
+                               WY   W    
+                               WW   W    
+WWWWWWWWWWWWWWWWWWWW         WWW   WW    
+WP                 W         W      W    
+WWWRW              WW   WWWWWW  W   W    
+W   W               WWWWW          XW    
+W 1 G       2           W   RRRRGGBBW    
+WWWWWWWWWWWWWWWWWWW     W  R        W    
+                  WW                W    
+                  WWW               W    
+                  WWWWWWWWWWWWWWWWWWW    

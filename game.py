@@ -37,6 +37,9 @@ class Game:
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_KEY_GREEN, self.handle_key_collisions, self.screen)
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_KEY_BLUE, self.handle_key_collisions, self.screen)
 
+        # win collisions
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_GOAL, self.handle_win_collisions, self.screen)
+
         # collisions between
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_RED, self.handle_collision, self.screen)
         self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_GREEN, self.handle_collision, self.screen)
@@ -64,7 +67,7 @@ class Game:
         self.is_running = True
 
         self.restart_level_counter = -1
-        self.current_stage_id = stage.STAGE_5
+        self.current_stage_id = stage.STAGE_INTRO
         self.remove_player = False
 
         # physics
@@ -115,6 +118,11 @@ class Game:
         else:
             shapea.body.position = (-10000,-10000)
 
+        return False
+
+    def handle_win_collisions(self, shapea, shapeb, contacts, normal_coef, surface):
+        if self.current_stage.finished():
+            self.start_new_level(self.current_stage_id + 1)
         return False
 
     def handle_collision(self, shapea, shapeb, contacts, normal_coef, surface):
@@ -185,12 +193,16 @@ class Game:
         pygame.display.set_caption("Channel Panic! (%.2f FPS)" % (self.clock.get_fps()))
 
     def start_new_level(self, stage_id):
+        self.current_stage_id = stage_id
+
         self.restart_level_counter = -1
         self.init_physics()
         self.remove_player = False
 
         self.player = player.Player(util.vec2(100,20), self.space)
         self.active_color = self.player.toggle_color(CRED)
+
+        self.gui_key.reset()
 
         stages = {
             stage.STAGE_INTRO: stage.IntroStage,
@@ -217,12 +229,6 @@ class Game:
         if event.key == K_3:
             self.active_color = self.player.toggle_color(CBLUE)
 
-        if event.key == K_4:
-            self.gui_key.update(gameobject.OBJECT_TYPE_KEY_RED)
-        if event.key == K_5:
-            self.gui_key.update(gameobject.OBJECT_TYPE_KEY_GREEN)
-        if event.key == K_6:
-            self.gui_key.update(gameobject.OBJECT_TYPE_KEY_BLUE)
 
         if event.key == K_RETURN:
             self.anim_test.play_animation()

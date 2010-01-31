@@ -102,7 +102,7 @@ class MovableBlock(GameObject):
         pass
 
 class InfoBlock(GameObject):
-    def __init__(self, pos, image, space,anim_name = ""):
+    def __init__(self, pos, image, space,anim_name = "",num_frames = 1,sequence = [0,1]):
         self.is_movable = True
         GameObject.__init__(self, pos, util.to_sprite(util.load_image("data/info_sign0.png")), space, OBJECT_TYPE_INFO, pm.inf)
         self.body, self.shape = create_box(space, (pos.x, pos.y), 8, 12.0)
@@ -113,7 +113,7 @@ class InfoBlock(GameObject):
         self.cool_down = 0.0
 
         if not anim_name == "":
-            self.animation = animation.new_animation(anim_name,"png",1,6,[0,1])
+            self.animation = animation.new_animation(anim_name,"png",num_frames,6,sequence)
         self.animation.play()
 
     def update(self, camera_pos,dt):
@@ -131,9 +131,9 @@ class InfoBlock(GameObject):
         if self._show_info:
             if not self.animation.playing:
                 self.animation.play()
-            pos = (self.draw_pos.x - self.info_bubble.get_rect().width,
+            pos = (self.draw_pos.x - self.info_bubble.get_rect().width + 20,
                    self.draw_pos.y - self.info_bubble.get_rect().height)
-            self.animation.draw(canvas,pos)
+            self.animation.draw(canvas,pos,True)
         else:
             if self.animation.playing:
                 self.animation.stop()

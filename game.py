@@ -79,6 +79,12 @@ class Game:
         self.billboards = []
         self.billboards.append(billboard.Billboard("data/background_stars.png",(0,0),20))
         self.billboards.append(billboard.Billboard("data/background_stars.png",(320,0),20))
+        
+        # misc
+        names = util.name_sequence("data/entity_door","png",4)
+        frames = util.get_sequence(names,[0,1,2,3,4])
+        self.door_anim = animation.Animation(frames,8)
+        self.door_anim.play()
 
         # key gui thingy
         self.gui_key = billboard.GuiKeys(util.vec2(0,0),16)
@@ -336,6 +342,9 @@ class Game:
 
             # update game
             self.current_stage.draw(self.screen)
+            
+            self.door_anim.update(self.dt_last_frame)
+            self.door_anim.draw(self.screen,(0,20))
 
             # draw key gui
             self.gui_key.draw(self.screen)

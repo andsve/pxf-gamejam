@@ -22,7 +22,7 @@ class Stage:
         import sys
         #goal
         doorblock = util.load_image("data/entity_door0.png")
-        
+
         # standard blocks
         rblock = util.load_image("data/red_block16.png")
         gblock = util.load_image("data/green_block16.png")

@@ -17,10 +17,18 @@ PDIR_RIGHT,PDIR_LEFT = range(2)
 vel_epsilon = 0.1
 
 class Game:
-    def __init__(self, size):
+    def __init__(self, size, scale):
         pygame.init()
-        self.window = pygame.display.set_mode(size)
-        self.screen = pygame.display.get_surface()
+        self.scale = scale
+        self.size = size
+        if scale:
+            self.window = pygame.display.set_mode((size[0]*2, size[1]*2))
+        else:
+            self.window = pygame.display.set_mode(size)
+
+        self.screen = pygame.Surface(size)
+        self.actual_screen = pygame.display.get_surface()
+
         pygame.mouse.set_visible(0)
         self.clock = pygame.time.Clock()
         self.is_running = True
@@ -249,9 +257,15 @@ class Game:
             # fps limit
             #3self.clock.tick(25)
             self.update_title()
+
+            if self.scale:
+                pygame.transform.scale2x(self.screen, self.actual_screen)
+            else:
+                self.actual_screen.blit(self.screen, (0, 0))
+
             # swap buffers
             pygame.display.flip()
 
 if __name__ == '__main__':
-    g = Game((320, 240))
+    g = Game((320, 240), True)
     g.run()

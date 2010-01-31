@@ -3,38 +3,13 @@ import pygame
 import util
 
 class Stage:
-    def __init__(self, space):
+    def __init__(self, player, space):
         self.tiles = []
+        self.player = player
         self.game_objects = []
         self.splosion_objects = []
 
-    def load(self, space):
-        pass
-
-    def collide(self,rect):
-        pass
-
-    def draw(self,canvas):
-        for tile in self.tiles:
-            #discard items that should not be drawn
-            if self.collide(tile.sprite.rect):
-                tile.draw(canvas)
-            else:
-                #print tile.pos
-                pass
-        for splosion in self.splosion_objects:
-            splosion.draw(canvas)
-
-class Stage1(Stage):
-    def __init__(self,camera, space):
-        Stage.__init__(self, space)
-        self.load(space)
-        self.camera = camera
-
-    def collide(self,rect):
-        return rect.colliderect(self.camera.rect)
-
-    def load(self, space):
+    def load(self, filepath, space):
         import gameobject
         import sys
 
@@ -47,7 +22,7 @@ class Stage1(Stage):
         gkblock = util.load_image("data/green_key0.png")
         bkblock = util.load_image("data/blue_key0.png")
 
-        with open("data/level1.txt") as f:
+        with open(filepath) as f:
             data = f.readlines()
 
         xoffset = 7
@@ -76,7 +51,39 @@ class Stage1(Stage):
                 elif col == 'Z':
                     block = bkblock
                     type = gameobject.OBJECT_TYPE_KEY_BLUE
+                elif col == 'P':
+                    self.player.body.position = (cnum * 16 - xoffset * 16, rnum * 16 - yoffset * 16)
+                    continue
                 else: continue
                 pos = util.vec2(cnum * 16 - xoffset * 16, rnum * 16 - yoffset * 16)
                 go = gameobject.StaticBlock(pos, util.to_sprite(block), space, type)
                 self.tiles.append(go)
+
+    def collide(self,rect):
+        return rect.colliderect(self.camera.rect)
+
+    def draw(self,canvas):
+        for tile in self.tiles:
+            #discard items that should not be drawn
+            if self.collide(tile.sprite.rect):
+                tile.draw(canvas)
+            else:
+                #print tile.pos
+                pass
+        for splosion in self.splosion_objects:
+            splosion.draw(canvas)
+
+class IntroStage(Stage):
+    def __init__(self,camera, player, space):
+        Stage.__init__(self, player, space)
+        self.load("data/intro_level.txt", space)
+        self.camera = camera
+
+class Stage1(Stage):
+    def __init__(self,camera, player, space):
+        Stage.__init__(self, player, space)
+        self.load("data/level1.txt", space)
+        self.camera = camera
+
+    #def load(self, space):
+    #    Stage.load(self, "data/level1.txt", space)

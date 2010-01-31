@@ -23,7 +23,7 @@ class Billboard:
         self.pos[0] * dt
         self.pos[1] * dt
         
-        print self.draw_pos
+        #print self.draw_pos
         
         if self.draw_pos[0] < 0:
             print "hknk"

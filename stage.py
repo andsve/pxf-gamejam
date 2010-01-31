@@ -39,20 +39,7 @@ class Stage:
 
         for rnum, row in enumerate(data):
             for cnum, col in enumerate(row):
-                movable = False
-                if   col == '1':
-                    block = r_movableblock
-                    movable = True
-                    type = gameobject.OBJECT_TYPE_RED
-                elif   col == '2':
-                    block = g_movableblock
-                    movable = True
-                    type = gameobject.OBJECT_TYPE_GREEN
-                elif   col == '3':
-                    block = b_movableblock
-                    movable = True
-                    type = gameobject.OBJECT_TYPE_BLUE
-                elif   col == 'R':
+                if   col == 'R':
                     block = rblock
                     type = gameobject.OBJECT_TYPE_RED
                 elif col == 'G':
@@ -78,13 +65,8 @@ class Stage:
                     continue
                 else: continue
                 pos = util.vec2(cnum * 16 - xoffset * 16, rnum * 16 - yoffset * 16)
-                if (movable):
-                    go = gameobject.MovableBlock(pos, util.to_sprite(block), space, type)
-                    self.game_objects.append(go)
-                else:
-                    go = gameobject.StaticBlock(pos, util.to_sprite(block), space, type)
-                    self.tiles.append(go)
-
+                go = gameobject.StaticBlock(pos, util.to_sprite(block), space, type)
+                self.tiles.append(go)
 
     def collide(self,rect):
         return rect.colliderect(self.camera.rect)
@@ -99,8 +81,6 @@ class Stage:
                 pass
         for splosion in self.splosion_objects:
             splosion.draw(canvas)
-        for obj in self.game_objects:
-            obj.draw(canvas)
 
 class IntroStage(Stage):
     def __init__(self,camera, player, space):
@@ -108,11 +88,24 @@ class IntroStage(Stage):
         self.load("data/intro_level.txt", space)
         self.camera = camera
 
+class AnotherHugeLevel(Stage):
+    def __init__(self,camera, player, space):
+        Stage.__init__(self, player, space)
+        self.load("data/another_huge_level.txt", space)
+        self.camera = camera
+
 class Stage1(Stage):
     def __init__(self,camera, player, space):
         Stage.__init__(self, player, space)
         self.load("data/level1.txt", space)
         self.camera = camera
+"""
+class Stage2(Stage):
+    def __init__(self,camera, player, space):
+        Stage.__init__(self, player, space)
+        self.load("data/level2.txt", space)
+        self.camera = camera
+"""
 
     #def load(self, space):
     #    Stage.load(self, "data/level1.txt", space)

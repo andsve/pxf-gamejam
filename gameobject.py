@@ -113,7 +113,7 @@ class InfoBlock(GameObject):
         self.cool_down = 0.0
 
         if not anim_name == "":
-            self.animation = animation.new_animation(anim_name,"png",1,6,[0,1])
+            self.animation = animation.new_animation(anim_name,"png",num_frames,frequency,sequence)
         self.animation.play()
 
     def update(self, camera_pos,dt):
@@ -133,7 +133,7 @@ class InfoBlock(GameObject):
                 self.animation.play()
             pos = (self.draw_pos.x - self.info_bubble.get_rect().width,
                    self.draw_pos.y - self.info_bubble.get_rect().height)
-            self.animation.draw(canvas,pos)
+            self.animation.draw(canvas,pos,True)
         else:
             if self.animation.playing:
                 self.animation.stop()

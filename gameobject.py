@@ -3,6 +3,7 @@ import pygame
 import util
 import pymunk as pm
 import random
+import animation
 
 def create_ball(self, pos, mass=1.0, radius=8.0):
     moment = pm.moment_for_circle(mass, radius, 0.0, pm.Vec2d(0,0))
@@ -109,6 +110,7 @@ class InfoBlock(GameObject):
         self.info_bubble = util.load_image(image)
         space.add_static(self.shape)
         self._show_info = False
+        self.animation = animation.new_animation("data/info_bubble0_","png",1,4,[0,1])
 
     def update(self, camera_pos):
         GameObject.update(self, camera_pos)
@@ -119,7 +121,7 @@ class InfoBlock(GameObject):
         if self._show_info:
             canvas.blit(self.info_bubble, (
                 self.draw_pos.x - self.info_bubble.get_rect().width,
-                self.draw_pos.y - self.info_bubble.get_rect().height),None,pygame.BLEND_MAX)
+                self.draw_pos.y - self.info_bubble.get_rect().height),None)
 
     def activate(self):
         #called when player lala

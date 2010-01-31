@@ -62,6 +62,7 @@ class Game:
             self.window = pygame.display.set_mode(size)
 
         self.screen = pygame.Surface(size)
+        self.screen.set_colorkey((0,0,0))
         self.actual_screen = pygame.display.get_surface()
         self.camera = camera.Camera(util.vec2(30,25),size)
 
@@ -89,6 +90,7 @@ class Game:
 
         # misc
         names = util.name_sequence("data/entity_door","png",4)
+        # lol hack
         frames = util.get_sequence(names,[0,1,2,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4])
         self.door_anim = animation.Animation(frames,8)
         self.animate_door = False

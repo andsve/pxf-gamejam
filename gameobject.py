@@ -84,11 +84,12 @@ class StaticBlock(GameObject):
 
 class SplosionBlock(GameObject):
     def __init__(self, pos, space, color_type):
-        t_sprite = util.to_sprite(util.load_image("data/red_block16.png"))
+        t_sprite = util.to_sprite(util.load_image("data/green_explosion.png"))
         GameObject.__init__(self, pos, t_sprite, space, OBJECT_TYPE_SPLOSION, pm.inf)
         self.body, self.shape = create_ball(self, (pos.x, pos.y), mass=1.0, radius=2.0)
         self.shape.collision_type = OBJECT_TYPE_SPLOSION
         space.add(self.body, self.shape)
+        self.frame_id = random.randint(0, 7)
         self.area = (0,0,16,16) # make this random!
         self.body.apply_impulse((random.randint(-100, 100), random.randint(-200, 200))) # make this also random!
 

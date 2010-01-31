@@ -162,7 +162,7 @@ class Game:
         self.active_color = CRED
 
         if (stage_id == stage.STAGE_INTRO):
-            self.set_level(stage.IntroStage(self.camera, self.player, self.space))
+            self.set_level(stage.AnotherStage(self.camera, self.player, self.space))
         else:
             self.set_level(stage.Stage1(self.camera, self.player, self.space))
 

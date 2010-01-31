@@ -108,6 +108,12 @@ class IntroStage(Stage):
         self.load("data/intro_level.txt", space)
         self.camera = camera
 
+class AnotherStage(Stage):
+    def __init__(self,camera, player, space):
+        Stage.__init__(self, player, space)
+        self.load("data/another_huge_level.txt", space)
+        self.camera = camera
+
 class Stage1(Stage):
     def __init__(self,camera, player, space):
         Stage.__init__(self, player, space)

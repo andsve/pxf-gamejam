@@ -64,7 +64,7 @@ class Game:
         self.is_running = True
 
         self.restart_level_counter = -1
-        self.current_stage_id = stage.STAGE_2
+        self.current_stage_id = stage.STAGE_5
         self.remove_player = False
 
         # physics
@@ -143,6 +143,7 @@ class Game:
                     if type(shapea) == type(gameobject.MovableBlock) or type(shapeb) == type(gameobject.MovableBlock):
                         dir = -1
                         honk = 5
+                        print "LOLO"
                     else:
                         dir = 1
                         honk = 0.5
@@ -205,7 +206,8 @@ class Game:
             stage.STAGE_INTRO: stage.IntroStage,
             stage.STAGE_1: stage.Stage1,
             stage.STAGE_2: stage.Stage2,
-            stage.STAGE_3: stage.Stage3
+            stage.STAGE_3: stage.Stage3,
+            stage.STAGE_5: stage.Stage5
         }
 
         self.set_level(stages[stage_id](self.camera, self.player, self.space))

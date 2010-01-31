@@ -21,6 +21,10 @@ class Stage:
         rkblock = util.load_image("data/red_key0.png")
         gkblock = util.load_image("data/green_key0.png")
         bkblock = util.load_image("data/blue_key0.png")
+        # movable
+        r_movableblock = util.load_image("data/red_block16.png")
+        g_movableblock = util.load_image("data/green_block16.png")
+        b_movableblock = util.load_image("data/blue_block16.png")
 
         with open(filepath) as f:
             data = f.readlines()
@@ -30,7 +34,20 @@ class Stage:
 
         for rnum, row in enumerate(data):
             for cnum, col in enumerate(row):
-                if   col == 'R':
+                movable = false
+                if   col == 'A':
+                    block = r_movableblock
+                    movable = true
+                    type = gameobject.OBJECT_TYPE_RED
+                elif   col == 'B':
+                    block = g_movableblock
+                    movable = true
+                    type = gameobject.OBJECT_TYPE_GREEN
+                elif   col == 'C':
+                    block = b_movableblock
+                    movable = true
+                    type = gameobject.OBJECT_TYPE_BLUE
+                elif   col == 'R':
                     block = rblock
                     type = gameobject.OBJECT_TYPE_RED
                 elif col == 'G':
@@ -56,7 +73,10 @@ class Stage:
                     continue
                 else: continue
                 pos = util.vec2(cnum * 16 - xoffset * 16, rnum * 16 - yoffset * 16)
-                go = gameobject.StaticBlock(pos, util.to_sprite(block), space, type)
+                if (movable):
+                    go = gameobject.MovableBlock(pos, util.to_sprite(block), space, type)
+                else:
+                    go = gameobject.StaticBlock(pos, util.to_sprite(block), space, type)
                 self.tiles.append(go)
 
     def collide(self,rect):

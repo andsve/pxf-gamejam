@@ -90,6 +90,13 @@ class Stage1(Stage):
         Stage.__init__(self, player, space)
         self.load("data/level1.txt", space)
         self.camera = camera
+"""
+class Stage2(Stage):
+    def __init__(self,camera, player, space):
+        Stage.__init__(self, player, space)
+        self.load("data/level2.txt", space)
+        self.camera = camera
+"""
 
     #def load(self, space):
     #    Stage.load(self, "data/level1.txt", space)

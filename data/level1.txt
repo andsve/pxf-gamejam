@@ -1,6 +1,6 @@
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-B                                           B
-BGGGGG           11                         B
+B             3  3 3                        B
+BGGGGG           112 2                      B
 B    GRRGGGGG       1                     Z B
 B           B       1                    WWWB
 B           W    P  R                       B

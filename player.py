@@ -25,6 +25,7 @@ class Player(gameobject.GameObject):
         self.shape.collision_type = gameobject.OBJECT_TYPE_PLAYER
         #self.shape.collision_type = gameobject.OBJECT_TYPE_PLAYER
         self.stop_hammer_time = False
+        self.in_air = True
 
         #self.image = pygame.image.load("data/bw_guy_walk0.png")
         self.animations = {}

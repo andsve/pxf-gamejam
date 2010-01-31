@@ -1,6 +1,9 @@
 from __future__ import with_statement
 import pygame
 import util
+import gameobject
+
+STAGE_INTRO, STAGE_1, STAGE_2 = range(3)
 
 class Stage:
     def __init__(self, player, space):
@@ -8,9 +11,11 @@ class Stage:
         self.player = player
         self.game_objects = []
         self.splosion_objects = []
+        self.keys = { gameobject.OBJECT_TYPE_KEY_RED : False,
+                     gameobject.OBJECT_TYPE_KEY_GREEN : False,
+                     gameobject.OBJECT_TYPE_KEY_BLUE : False }
 
     def load(self, filepath, space):
-        import gameobject
         import sys
 
         rblock = util.load_image("data/red_block16.png")
@@ -21,6 +26,10 @@ class Stage:
         rkblock = util.load_image("data/red_key0.png")
         gkblock = util.load_image("data/green_key0.png")
         bkblock = util.load_image("data/blue_key0.png")
+        # movable
+        r_movableblock = util.load_image("data/red_movable_block0.png")
+        g_movableblock = util.load_image("data/green_movable_block0.png")
+        b_movableblock = util.load_image("data/blue_movable_block0.png")
 
         with open(filepath) as f:
             data = f.readlines()

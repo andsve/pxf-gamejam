@@ -17,6 +17,30 @@ PDIR_RIGHT,PDIR_LEFT = range(2)
 vel_epsilon = 0.1
 
 class Game:
+    def init_physics(self):
+        pm.init_pymunk()
+        self.space = pm.Space() #3
+        self.space.gravity = (0.0, 300.0)
+        self.space.resize_static_hash()
+        self.space.resize_active_hash()
+
+        # collisions between different colors
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_GREEN, None)
+        #self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_RED, None)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_BLUE, None)
+        #self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_GREEN, None)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_BLUE, None)
+        #self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_RED, None)
+
+        # collisions between
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_RED, self.handle_collision, self.screen)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_GREEN, self.handle_collision, self.screen)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_BLUE, self.handle_collision, self.screen)
+        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_BW, self.handle_collision, self.screen)
+        #self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_PLAYER, self.handle_collision, self.screen)
+        #self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_PLAYER, self.handle_collision, self.screen)
+        #self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_PLAYER, self.handle_collision, self.screen)
+
     def __init__(self, size, scale):
         pygame.init()
         self.scale = scale
@@ -28,34 +52,17 @@ class Game:
 
         self.screen = pygame.Surface(size)
         self.actual_screen = pygame.display.get_surface()
+        self.camera = camera.Camera(util.vec2(30,25),size)
 
         pygame.mouse.set_visible(0)
         self.clock = pygame.time.Clock()
         self.is_running = True
 
+        self.restart_level_counter = -1
+        self.current_stage_id = stage.STAGE_INTRO
+
         # physics
-        pm.init_pymunk()
-        self.space = pm.Space() #3
-        self.space.gravity = (0.0, 300.0)
-        self.space.resize_static_hash()
-        self.space.resize_active_hash()
-
-        # collisions between different colors
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_GREEN, None)
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_RED, None)
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_BLUE, None)
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_GREEN, None)
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_BLUE, None)
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_RED, None)
-
-        # collisions between
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_RED, self.handle_collision, self.screen)
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_GREEN, self.handle_collision, self.screen)
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_BLUE, self.handle_collision, self.screen)
-        self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_PLAYER, gameobject.OBJECT_TYPE_BW, self.handle_collision, self.screen)
-        #self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_PLAYER, self.handle_collision, self.screen)
-        #self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_PLAYER, self.handle_collision, self.screen)
-        #self.space.add_collisionpair_func(gameobject.OBJECT_TYPE_BLUE, gameobject.OBJECT_TYPE_PLAYER, self.handle_collision, self.screen)
+        #init_physics()
 
 
         # music:
@@ -68,15 +75,15 @@ class Game:
         #self.billboards.append(billboard.Billboard("data/background_stars.png",(320,0),20))
 
         # game settings
-        self.player = player.Player(util.vec2(100,20), self.space)
+        #self.player = player.Player(util.vec2(100,20), self.space)
         #print(self.player.object_type)
-        self.camera = camera.Camera(util.vec2(30,25),size)
-        self.current_stage = None
+        #self.camera = camera.Camera(util.vec2(30,25),size)
+        #self.current_stage = None
         # set color key to black
         #self.screen.set_colorkey(pygame.Color(0,0,0))
         pygame.key.set_repeat(1, 20)
 
-        self.active_color = CRED
+        #self.active_color = CRED
 
     def create_splosions(self, spltype):
         for i in range(20):
@@ -89,7 +96,7 @@ class Game:
             in_air = True
             r = max( 3, abs(c.distance*5) )
             spawn_splosions = False
-            if (r > 20.0):
+            if (r > 24.0):
                 spawn_splosions = True
 
             if c.position.y == self.player.body.position.y:
@@ -110,18 +117,21 @@ class Game:
                 if (shapea.collision_type == gameobject.OBJECT_TYPE_RED or shapeb.collision_type == gameobject.OBJECT_TYPE_RED):
                     if (spawn_splosions):
                         self.create_splosions(gameobject.OBJECT_TYPE_RED)
+                        self.restart_level_counter = 4.0
                     self.player.in_air = in_air
                     return True;
             elif (self.active_color == CGREEN):
                 if (shapea.collision_type == gameobject.OBJECT_TYPE_GREEN or shapeb.collision_type == gameobject.OBJECT_TYPE_GREEN):
                     if (spawn_splosions):
                         self.create_splosions(gameobject.OBJECT_TYPE_GREEN)
+                        self.restart_level_counter = 4.0
                     self.player.in_air = in_air
                     return True;
             elif (self.active_color == CBLUE):
                 if (shapea.collision_type == gameobject.OBJECT_TYPE_BLUE or shapeb.collision_type == gameobject.OBJECT_TYPE_BLUE):
                     if (spawn_splosions):
                         self.create_splosions(gameobject.OBJECT_TYPE_BLUE)
+                        self.restart_level_counter = 4.0
                     self.player.in_air = in_air
                     return True;
 
@@ -129,6 +139,18 @@ class Game:
 
     def update_title(self):
         pygame.display.set_caption("Channel Panic! (%.2f FPS)" % (self.clock.get_fps()))
+
+    def start_new_level(self, stage_id):
+        self.restart_level_counter = -1
+        self.init_physics()
+
+        self.player = player.Player(util.vec2(100,20), self.space)
+        self.active_color = CRED
+
+        if (stage_id == stage.STAGE_INTRO):
+            self.set_level(stage.IntroStage(self.camera, self.player, self.space))
+        else:
+            self.set_level(stage.Stage1(self.camera, self.player, self.space))
 
     def set_level(self, stage):
         self.current_stage = stage
@@ -193,22 +215,30 @@ class Game:
 
 
     def run(self):
-        self.set_level(stage.AnotherHugeLevel(self.camera, self.player, self.space))
+        #self.set_level(stage.Stage1(self.camera, self.player, self.space))
+        self.start_new_level(self.current_stage_id)
         #self.set_level(stage.Stage2(self.camera, self.player, self.space))
 
         while self.is_running:
             # update time
             self.dt_last_frame = self.clock.tick(60)
 
-            # event handling
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    self.is_running = False
-                elif event.type in (KEYDOWN, KEYUP):
-                    self.handle_input(event)
+            if (self.restart_level_counter > 0):
+                self.restart_level_counter -= self.dt_last_frame / 1000.0
+                print(self.dt_last_frame)
+                if (self.restart_level_counter <= 0):
+                    self.start_new_level(self.current_stage_id)
 
-            # handle game input
-            self.game_input()
+            # event handling
+            if (self.restart_level_counter < 0):
+                for event in pygame.event.get():
+                    if event.type == QUIT:
+                        self.is_running = False
+                    elif event.type in (KEYDOWN, KEYUP):
+                        self.handle_input(event)
+
+                # handle game input
+                self.game_input()
 
             self.screen.fill([0,0,0])
 

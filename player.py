@@ -26,38 +26,55 @@ class Player(gameobject.GameObject):
         #self.shape.collision_type = gameobject.OBJECT_TYPE_PLAYER
         self.stop_hammer_time = False
         self.in_air = True
+        self.is_pushing = False
 
-        #self.image = pygame.image.load("data/bw_guy_walk0.png")
         self.animations = {}
         self.active_color = game.CBLUE
-        #create animations
+        
+        #load animations
         animation_freq = 4
-        bw_player_walk_left = animation.new_animation("data/bw_guy_walk","png",1,animation_freq,[0,1])
-        bw_player_walk_right = animation.new_animation("data/bw_guy_walk_r","png",1,animation_freq,[0,1])
-
+        
+        red_player_push_left = animation.new_animation("data/red_guy_push","png",1,animation_freq,[0,1])
+        red_player_push_right = animation.new_animation("data/red_guy_push_r","png",1,animation_freq,[0,1])
+        
         red_player_walk_left = animation.new_animation("data/red_guy_walk","png",1,animation_freq,[0,1])
         red_player_walk_right = animation.new_animation("data/red_guy_walk_r","png",1,animation_freq,[0,1])
 
         green_player_walk_left = animation.new_animation("data/green_guy_walk","png",1,animation_freq,[0,1])
         green_player_walk_right = animation.new_animation("data/green_guy_walk_r","png",1,animation_freq,[0,1])
+        
+        green_player_push_left = animation.new_animation("data/green_guy_push","png",1,animation_freq,[0,1])
+        green_player_push_right = animation.new_animation("data/green_guy_push_r","png",1,animation_freq,[0,1])
 
         blue_player_walk_left = animation.new_animation("data/blue_guy_walk","png",1,animation_freq,[0,1])
         blue_player_walk_right = animation.new_animation("data/blue_guy_walk_r","png",1,animation_freq,[0,1])
+        
+        blue_player_push_left = animation.new_animation("data/blue_guy_push","png",1,animation_freq,[0,1])
+        blue_player_push_right = animation.new_animation("data/blue_guy_push_r","png",1,animation_freq,[0,1])
 
         #player_walk_left.play()
-        self.image = bw_player_walk_left.sprite.image
-
-        self.animations["bw_player_walk_left"] = bw_player_walk_left
-        self.animations["bw_player_walk_right"] = bw_player_walk_right
-
+        self.image = None
+        
+        # red player animations:
         self.animations["red_player_walk_left"] = red_player_walk_left
         self.animations["red_player_walk_right"] = red_player_walk_right
+        
+        self.animations["red_player_push_left"] = red_player_push_left
+        self.animations["red_player_push_right"] = red_player_push_right
 
+        # green player animations:
         self.animations["green_player_walk_left"] = green_player_walk_left
         self.animations["green_player_walk_right"] = green_player_walk_right
+        
+        self.animations["green_player_push_left"] = green_player_push_left
+        self.animations["green_player_push_right"] = green_player_push_right
 
+        # blue player animations:
         self.animations["blue_player_walk_left"] = blue_player_walk_left
         self.animations["blue_player_walk_right"] = blue_player_walk_right
+        
+        self.animations["blue_player_push_left"] = blue_player_push_left
+        self.animations["blue_player_push_right"] = blue_player_push_right
 
         self.current_animation = red_player_walk_left
         self.look_dir = game.PDIR_LEFT
@@ -94,12 +111,12 @@ class Player(gameobject.GameObject):
         self.has_changed  = True
         return color
 
-    def determine_lookdir(self,color_str):
+    def determine_lookdir(self,color_str,action_str):
         # right
         if self.look_dir == game.PDIR_RIGHT:
-            return color_str + "_player_walk_right"
+            return color_str + "_player_" + action_str + "_right"
         else:
-            return color_str + "_player_walk_left"
+            return color_str + "_player_" + action_str + "_left"
 
     def set_animation(self):
         vel = self.body._get_velocity()
@@ -109,26 +126,33 @@ class Player(gameobject.GameObject):
             if not self.has_changed:
                 self.current_animation.stop()
             _play = False
+        
+        if abs(vel.x) <= game.vel_epsilon:
+            self.current_animation.stop()
+            
+        action = ""
+        if self.is_pushing:
+            action = "push"
+        else:
+            action = "walk"
 
         if self.has_changed:
             new_animation = None
 
             if self.active_color == game.CNONE:
-                new_animation = self.animations[self.determine_lookdir("bw")]
+                new_animation = self.animations[self.determine_lookdir("bw","walk")]
             elif self.active_color == game.CRED:
-                new_animation = self.animations[self.determine_lookdir("red")]
-            elif self.active_color == game.CGREEN:
-                new_animation = self.animations[self.determine_lookdir("green")]
+                    new_animation = self.animations[self.determine_lookdir("red",action)]
+            elif self.active_color == game.CGREEN:                
+                new_animation = self.animations[self.determine_lookdir("green",action)]
             elif self.active_color == game.CBLUE:
-                new_animation = self.animations[self.determine_lookdir("blue")]
+                new_animation = self.animations[self.determine_lookdir("blue",action)]
 
             self.current_animation = new_animation
 
             if _play:
                 self.current_animation.play()
             self.has_changed = False
-
-
 
     def draw(self, canvas):
         self.set_animation()

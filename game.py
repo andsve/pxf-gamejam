@@ -57,7 +57,7 @@ class Game:
         # billboards
         self.billboards = []
         self.billboards.append(billboard.Billboard("data/background_stars.png",(0,0),20))
-        self.billboards.append(billboard.Billboard("data/background_stars.png",(320,0),20))
+        #self.billboards.append(billboard.Billboard("data/background_stars.png",(320,0),20))
 
         # game settings
         self.player = player.Player(util.vec2(100,20), self.space)

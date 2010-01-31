@@ -29,21 +29,24 @@ class Animation():
                 self.sprite.rect = self.sprite.image.get_rect(center=self.sprite.rect.center)
                 #self.current += int(self._next_update/self._period)
 
-    def draw(self,canvas,pos):
-        canvas.blit(self.sprite.image, pos, None, pygame.BLEND_MAX)
-        
+    def draw(self,canvas,pos,noblend=False):
+        if noblend:
+            canvas.blit(self.sprite.image, pos, None)
+        else:
+            canvas.blit(self.sprite.image, pos, None, pygame.BLEND_MAX)
+
     def play(self):
         #self.current = 0
         self.playing = True
-    
+
     def stop(self):
         self.current = 0
         self.sprite.image = self.frames[0]
         self.playing = False
-    
+
     def pause(self):
         self.playing = False
-    
+
 def new_animation(basename, ext, num, freq, sequence, num_digits=1, offset=0):
     frame_names = util.name_sequence(basename,ext,num,num_digits,offset)
     frames = util.get_sequence(frame_names,sequence)

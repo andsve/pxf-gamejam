@@ -83,12 +83,12 @@ class Game:
         self.billboards = []
         self.billboards.append(billboard.Billboard("data/background_stars.png",util.vec2(0,0),20,True))
         self.billboards.append(billboard.Billboard("data/background_city.png",util.vec2(0,200),30,True))
-        
+
         # misc
         names = util.name_sequence("data/entity_door","png",4)
         frames = util.get_sequence(names,[0,1,2,3,4])
         self.door_anim = animation.Animation(frames,8)
-        self.door_anim.play()
+        self.animate_door = False
 
         # key gui thingy
         self.gui_key = billboard.GuiKeys(util.vec2(0,0),16)
@@ -131,7 +131,8 @@ class Game:
 
     def handle_win_collisions(self, shapea, shapeb, contacts, normal_coef, surface):
         if self.current_stage.finished():
-            self.start_new_level(self.current_stage_id + 1)
+            self.animate_door = True
+            self.door_anim.play()
         return False
 
     def handle_collision(self, shapea, shapeb, contacts, normal_coef, surface):
@@ -241,8 +242,12 @@ class Game:
             self.active_color = self.player.toggle_color(CGREEN)
         if event.key == K_3:
             self.active_color = self.player.toggle_color(CBLUE)
-        if event.key == K_r:
-            self.start_new_level(self.current_stage_id)
+
+        if event.type == KEYUP:
+            if event.key == K_r:
+                self.start_new_level(self.current_stage_id)
+            if event.key == K_l:
+                self.start_new_level(self.current_stage_id+1)
 
 
 
@@ -361,10 +366,17 @@ class Game:
 
             # update game
             self.current_stage.draw(self.screen)
-            
-            self.door_anim.update(self.dt_last_frame)
-            self.door_anim.draw(self.screen,(0,20))
-            
+
+            if self.animate_door:
+                self.door_anim.update(self.dt_last_frame)
+                p = self.current_stage.doorpos
+                p = (p[0] - self.camera.get_pos().x, p[1] - self.camera.get_pos().y)
+                self.door_anim.draw(self.screen, p, True)
+                if self.door_anim.current == len(self.door_anim.frames)-1:
+                    self.start_new_level(self.current_stage_id + 1)
+                    self.animate_door = False
+
+
             self.player.draw(self.screen)
 
             # draw key gui

@@ -1,13 +1,14 @@
-WWWWWWWWWWWWWWWWWWWWWWWW
-W                      W
-W    RRR  G  G BBBB    W
-W    R  R G  G B       W
-W    R  R  GG  BBB     W
-W    RRR   GG  B       W
-W    R    G  G B       W
-W    R    G  G B       W
-W                      W
-W                      W
-W                P   D W
-WWWWWWWWWWWWWWWWWWWWWWWW
+WWWWWWWWWWWWWWWWWWWW  
+W                  W  
+W   RR  G  G BBB   W  
+W  R  R G  G B  B  W  
+W  R    GGGG B  B  W  
+W  R    G  G BBB   W  
+W  R  R G  G B     W  
+W   RR  G  G B     W  
+W                  W
+WWWWWWWWWWWWWWWWWWWW    
+W              P D W    
+WWWWWWWWWWWWWWWWWWWW    
                                      
+                        

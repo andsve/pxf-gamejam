@@ -1,1 +1,1 @@
-aoe
+Requires python 2.6, pygame and pymunk

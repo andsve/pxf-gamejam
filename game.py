@@ -91,9 +91,12 @@ class Game:
         # misc
         names = util.name_sequence("data/entity_door","png",4)
         # lol hack
-        frames = util.get_sequence(names,[0,1,2,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4])
+        frames = util.get_sequence(names,[0,1,2,3,4,4,4,4,4,4,4,4,4,4])
         self.door_anim = animation.Animation(frames,8)
         self.animate_door = False
+
+        self.fade_in_out = False
+        self.fade_in_out_time = 0
 
         # key gui thingy
         self.gui_key = billboard.GuiKeys(util.vec2(0,0),16)
@@ -396,13 +399,30 @@ class Game:
                 self.door_anim.draw(self.screen, p, True)
                 if self.door_anim.current == len(self.door_anim.frames)-1:
                     self.start_new_level(self.current_stage_id + 1)
+                    self.door_anim.current = 0
                     self.animate_door = False
+                elif self.door_anim.current == 3:
+                    self.fade_in_out = True
+                    self.fade_in_out_time = 3
 
 
             self.player.draw(self.screen)
 
             # draw key gui
             self.gui_key.draw(self.screen)
+
+            if self.fade_in_out:
+                self.fade_in_out_time -= self.dt_last_frame / 1000.0
+                surf = pygame.Surface(self.size)
+                surf.fill((0, 0, 0))
+                if self.fade_in_out_time > 2.0:
+                    a = 255 - int(255 * ((self.fade_in_out_time-2.0)/2.0))
+                else:
+                    a = int(255 * ((self.fade_in_out_time)/1.0))
+                surf.set_alpha(a)
+                self.screen.blit(surf, (0, 0))
+                if self.fade_in_out_time <= 0.0:
+                    self.fade_in_out = False
 
             # fps limit
             #3self.clock.tick(25)

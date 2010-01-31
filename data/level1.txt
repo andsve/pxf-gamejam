@@ -1,12 +1,12 @@
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 B                                           B
-BGGGGG                                      B
-B    GRRGGGGG                             Z B
-B           B                            WWWB
-B           W       R                       B
-B     W     G       G                       B
-B   Y W     W       R   B    G              B
-WWWWWWWWWWWWWWWWWWWWWWWWWWGGGBWWWWWWWWWWWWWWW
+BGGGGG                                      B                WWWWWWWWWWWWWWWWW
+B    GRRGGGGG                             Z B                W        B      W
+B           B                       WWWWWWWWB                W        B      W 
+B           W       R                       BRRRRRRRRRRRGGGGGG       ZB      W
+B     W     G       G                                              GGBB      W
+B   Y W     W       R   B    G                                 G B           W
+WWWWWWWWWWWWWWWWWWWWWWWWWWGGGBWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
                           B  G XW
                           B  GWWW
                           WWWWW

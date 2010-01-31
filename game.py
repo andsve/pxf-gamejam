@@ -101,6 +101,16 @@ class Game:
             elif (shapea.collision_type == gameobject.OBJECT_TYPE_BLUE and shapeb.collision_type == gameobject.OBJECT_TYPE_BLUE):
                 return True"""
 
+
+            if shapea.collision_type not in [gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_BLUE]\
+            and shapeb.collision_type not in [gameobject.OBJECT_TYPE_RED, gameobject.OBJECT_TYPE_GREEN, gameobject.OBJECT_TYPE_BLUE]:
+                if c.position.y == self.player.body.position.y:
+                    d = c.position.x - self.player.body.position.x
+                    if d < 0:
+                        self.player.body.position.x += 0.5
+                    else:
+                        self.player.body.position.x -= 0.5
+
             in_air = True
             r = max( 3, abs(c.distance*5) )
             spawn_splosions = False

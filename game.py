@@ -353,6 +353,8 @@ class Game:
                     if (event.key == K_ESCAPE):
                         self.playing_intro = False
 
+            
+
             pxf_logo.update(self.dt_last_frame)
             pxf_logo.draw(self.screen, (self.size[0] / 2 - 64, self.size[1] / 2 - 64), True)
 

@@ -22,12 +22,12 @@ WW W            WR  2 GW W
    WWWWWWWWW W                WWW W
         W                     W W W
         W               G     W W WWW
-     WWWW              GG     W W  DW
-     W                  G     W WWWWW
-     WBBW       BB      G     W 
-     W  W        B      G     W
+        W              GG     W W  DW
+     WWWW               G     W WWWWW
+     W          BB      G     W 
+     WBBW        B      G     W
      WRRW        B      G     W
-     W      G    B      G     W
+     WRR    G    B      G     W
      WWWWWWWWWWWWWWWWWWWWWWWWWW     
 
 

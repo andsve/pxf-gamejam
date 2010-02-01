@@ -472,6 +472,7 @@ class Game:
 
             if self.scale:
                 pygame.transform.scale2x(self.screen, self.actual_screen)
+                pygame.transform.scale2x(self.screen, self.actual_screen)
             else:
                 self.actual_screen.blit(self.screen, (0, 0))
 

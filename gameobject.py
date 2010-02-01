@@ -101,6 +101,14 @@ class MovableBlock(GameObject):
         GameObject.update(self, camera_pos)
         pass
 
+    def draw(self, canvas):
+        #canvas.blit(self.sprite.image, self.pos.get(), None, pygame.BLEND_MAX)
+        # lol fulhack :C
+        if self.object_type == OBJECT_TYPE_BW:
+            canvas.blit(self.sprite.image, self.draw_pos.get(), None)
+        else:
+            canvas.blit(self.sprite.image, self.draw_pos.get(), None, pygame.BLEND_MAX)
+
 class InfoBlock(GameObject):
     def __init__(self, pos, image, space,anim_name = "",num_frames = 1,sequence = [0,1],frequency = 8):
         self.is_movable = True

@@ -255,7 +255,8 @@ class Game:
             stage.STAGE_7: stage.Stage7,
             stage.STAGE_8: stage.Stage8,
             stage.STAGE_9: stage.Stage9,
-            stage.STAGE_10: stage.Stage10
+            stage.STAGE_10: stage.Stage10,
+            stage.STAGE_11: stage.Stage11
         }
 
         if stage_id > len(stages)-1:

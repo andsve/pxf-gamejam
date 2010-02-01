@@ -4,7 +4,7 @@
                          W      BBB1BBBRW
                          W  G   WWWWWWBRW
                          W  W   WBB1GGGRW
-                         WB     WWWWWWGRW
+                         WB     WWWWWWBRW
                          WB     WGG1BBBRW
                          WG  WBBWWWWWW WW
                          W   WY2    PW WWWWWW

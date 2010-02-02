@@ -139,7 +139,7 @@ class InfoBlock(GameObject):
         if self._show_info:
             if not self.animation.playing:
                 self.animation.play()
-            pos = (self.draw_pos.x - self.info_bubble.get_rect().width,
+            pos = (self.draw_pos.x - self.info_bubble.get_rect().width + 16,
                    self.draw_pos.y - self.info_bubble.get_rect().height)
             self.animation.draw(canvas,pos,True)
         else:

@@ -41,10 +41,11 @@ class GuiKeys():
         self.blue = self._default
 
 class Billboard:
-    def __init__(self,name,pos,speed,repeat = False,animated = False):
+    def __init__(self,name,pos,speed,repeat = False,animated = False,blend = False):
         self.image = util.load_image(name)
         self.rect = self.image.get_rect()
         self.width = self.rect.width
+        self.height = self.rect.height
         self.is_animated = animated
         self.pos = pos
         self.draw_pos = util.vec2(0,0)
@@ -53,6 +54,7 @@ class Billboard:
         self.repeat = repeat
         self.offset = 320
         self.last_frame_pos = 0
+        self.blend = blend
 
     def draw(self,canvas):
         if not self.is_animated:
@@ -61,7 +63,10 @@ class Billboard:
                     self.draw_pos.x += 320
 
                 for x in range(0, 6):
-                    canvas.blit(self.image, (-1000 + self.draw_pos.x + 320*x,self.draw_pos.y), None)
+                    if self.blend:
+                        canvas.blit(self.image, (-1000 + self.draw_pos.x + 320*x,self.draw_pos.y), None,pygame.BLEND_MAX)
+                    else:
+                        canvas.blit(self.image, (-1000 + self.draw_pos.x + 320*x,self.draw_pos.y), None)
 
 
                 """
@@ -80,12 +85,17 @@ class Billboard:
 
     def update(self,cam_pos,dt):
         self.draw_pos.set(self.pos.x-cam_pos.x*self.inv_speed,
-                         self.pos.y-cam_pos.y*self.inv_speed)
+                         self.pos.y-cam_pos.y*self.inv_speed*0.2)
 
         self.draw_pos.x * dt
         self.draw_pos.y * dt
 
-        self.draw_pos.set(int(self.draw_pos.x),self.pos.y)
+        self.draw_pos.set(int(self.draw_pos.x),int(self.draw_pos.y))
+        
+        if self.draw_pos.y <= 240-self.height:
+            self.draw_pos.y = self.pos.y
+        
+        #print self.pos.y,self.draw_pos.y,self.height
 
         #print self.draw_pos
 

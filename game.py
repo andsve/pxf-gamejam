@@ -85,8 +85,9 @@ class Game:
         self.bg_music_playing = False
         # billboards
         self.billboards = []
-        self.billboards.append(billboard.Billboard("data/background_stars.png",util.vec2(0,0),20,True))
-        self.billboards.append(billboard.Billboard("data/background_city.png",util.vec2(0,200),30,True))
+        self.billboards.append(billboard.Billboard("data/background_stars.png",util.vec2(0,0),10,True))
+        self.billboards.append(billboard.Billboard("data/background_city.png",util.vec2(0,210),40,True,False,False))
+        self.billboards.append(billboard.Billboard("data/background_city2.png",util.vec2(0,190),30,True,False,True))
 
         # misc
         names = util.name_sequence("data/entity_door","png",4)
@@ -297,24 +298,28 @@ class Game:
         if pygame.key.get_pressed()[K_LEFT]:
                 self.player.stop_hammer_time = False
             #if (len(self.physics.get_colliding_objects(self.physics.player)) > 0):
-                self.player.look_dir = 1
-                self.player.has_changed = True
-                #if (-self.player.body._get_velocity().x < 80.0):
+    
+                #if (-self.player.body._get_velocity().x < 80.0):                
                 if (self.player.in_air):
                     self.player.body.apply_impulse((-50,0))
                 else:
-                    self.player.body.apply_impulse((-100,0)) #_set_velocity((-80, 0))
+                    self.player.body.apply_impulse((-100,0))
+                    
+                self.player.look_dir = PDIR_LEFT
+                
+                #self.player.look_dir = 1
+                self.player.has_changed = True
                 #self.player.vel.y = 0.04
 
         if pygame.key.get_pressed()[K_RIGHT]:
                 self.player.stop_hammer_time = False
             #if (len(self.physics.get_colliding_objects(self.physics.player)) > 0)
-                self.player.look_dir = 0
-                self.player.has_changed = True
                 if (self.player.in_air):
                     self.player.body.apply_impulse((50,0))
                 else:
                     self.player.body.apply_impulse((100,0)) #_set_velocity((-80, 0))
+                self.player.has_changed = True
+                self.player.look_dir = PDIR_RIGHT
                 #self.player.vel.x += 0.9
                 #self.player.vel.y = 0.04
 

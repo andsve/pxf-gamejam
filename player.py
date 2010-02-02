@@ -27,7 +27,14 @@ class Player(gameobject.GameObject):
         self.stop_hammer_time = False
         self.in_air = True
         self.is_pushing = False
-
+        
+        self.honk_timer = False
+        self.honk_time = 4
+        self.time_to_honk = 0
+        self.show_honk = False
+        self.honk_animation = animation.new_animation("data/honk_honk","png",1,1,[0,1,1])
+        #util.load_image("data/honk_honk0.png")#animation.new_animation("data/")
+        
         self.animations = {}
         self.active_color = game.CBLUE
         
@@ -103,6 +110,26 @@ class Player(gameobject.GameObject):
                 self.body.velocity.x = max_speed
             elif self.body.velocity.x < -max_speed:
                 self.body.velocity.x = -max_speed
+        
+        #print self.body.velocity.x,self.body.velocity.y
+        if (self.body.velocity.x and self.body.velocity) == 0.0:
+            if self.honk_timer:
+                if self.time_to_honk >= self.honk_time:
+                    self.show_honk = True
+                    self.honk_timer = False
+                    self.time_to_honk = 0
+                else:
+                    self.honk_animation.update(dt)
+                    self.time_to_honk += dt*0.001
+                    #self.honk_timer = True
+            else:
+                self.honk_timer = True
+                self.time_to_honk += dt*0.001
+                self.honk_animation.play()
+        else:
+            self.show_honk = False
+            self.time_to_honk = 0
+            self.honk_animation.stop()
 
 
     # move this elsewhere
@@ -164,6 +191,10 @@ class Player(gameobject.GameObject):
         #self.current_animation.draw(canvas,self.draw_pos.get())
         pos = self.draw_pos.get()
         canvas.blit(self.current_animation.sprite.image, (pos[0], pos[1]-2), None, pygame.BLEND_MAX)
+        
+        if self.show_honk:
+            self.honk_animation.draw(canvas,(pos[0]-self.honk_animation.sprite.rect.width+8, pos[1]-self.honk_animation.sprite.rect.height))
+            #canvas.blit(self.honk_animation, (pos[0]-self.honk_animation.get_rect().width+8, pos[1]-self.honk_animation.get_rect().height), None, pygame.BLEND_MAX)
 
         # allways show "body"
         #canvas.blit(body_image, self.draw_pos.get(), None, pygame.BLEND_RGB_ADD)

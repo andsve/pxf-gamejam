@@ -289,6 +289,7 @@ class Game:
 
     def set_level(self, stage):
         self.current_stage = stage
+        self.map_timer.map_time = stage.map_time
 
     def handle_input(self, event):
         if event.type == KEYUP and event.key in (K_LEFT, K_RIGHT):

@@ -22,6 +22,7 @@ class Stage:
     def __init__(self, player, space):
         self.tiles = []
         self.player = player
+        self.map_time = 60*2
         self.game_objects = []
         self.info_blocks = []
         self.splosion_objects = []

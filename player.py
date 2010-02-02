@@ -33,6 +33,7 @@ class Player(gameobject.GameObject):
         self.time_to_honk = 0
         self.show_honk = False
         self.honk_animation = animation.new_animation("data/honk_honk","png",1,1,[0,1,1])
+        self.honk_animation_r = animation.new_animation("data/honk_honk_r","png",1,1,[0,1,1])
         #util.load_image("data/honk_honk0.png")#animation.new_animation("data/")
         
         self.animations = {}
@@ -120,16 +121,19 @@ class Player(gameobject.GameObject):
                     self.time_to_honk = 0
                 else:
                     self.honk_animation.update(dt)
+                    self.honk_animation_r.update(dt)
                     self.time_to_honk += dt*0.001
                     #self.honk_timer = True
             else:
                 self.honk_timer = True
                 self.time_to_honk += dt*0.001
                 self.honk_animation.play()
+                self.honk_animation_r.play()
         else:
             self.show_honk = False
             self.time_to_honk = 0
             self.honk_animation.stop()
+            self.honk_animation_r.stop()
 
 
     # move this elsewhere
@@ -193,7 +197,12 @@ class Player(gameobject.GameObject):
         canvas.blit(self.current_animation.sprite.image, (pos[0], pos[1]-2), None, pygame.BLEND_MAX)
         
         if self.show_honk:
-            self.honk_animation.draw(canvas,(pos[0]-self.honk_animation.sprite.rect.width+8, pos[1]-self.honk_animation.sprite.rect.height))
+            if self.look_dir == game.PDIR_LEFT:
+                self.honk_animation.draw(canvas,(pos[0]-self.honk_animation.sprite.rect.width+8, pos[1]-self.honk_animation.sprite.rect.height))
+            else:
+                self.honk_animation_r.draw(canvas,(pos[0]+self.honk_animation.sprite.rect.width/2-8, pos[1]-self.honk_animation.sprite.rect.height))
+            #self.current_animation.draw(canvas,(pos[0]-self.honk_animation.sprite.rect.width+8, pos[1]-self.honk_animation.sprite.rect.height))
+            #
             #canvas.blit(self.honk_animation, (pos[0]-self.honk_animation.get_rect().width+8, pos[1]-self.honk_animation.get_rect().height), None, pygame.BLEND_MAX)
 
         # allways show "body"

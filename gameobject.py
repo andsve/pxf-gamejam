@@ -64,6 +64,7 @@ class GameObject:
        #self.delta_move.y += y
 
     def update(self, camera_pos):
+        self.body.angle = 0
         self.draw_pos = util.vec2(self.body.position.x - camera_pos.x, self.body.position.y - camera_pos.y)#util.vec2(self.sprite.rect.left - camera_pos.x, self.sprite.rect.top - camera_pos.y)
 
     def draw(self, canvas):

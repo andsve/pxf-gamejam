@@ -258,7 +258,6 @@ class Game:
         self.active_color = self.player.toggle_color(CRED)
 
         self.gui_key.reset()
-        self.map_timer.reset()
 
         stages = {
             stage.STAGE_INTRO: stage.StageIntro,
@@ -275,6 +274,12 @@ class Game:
             stage.STAGE_10: stage.Stage10,
             stage.STAGE_11: stage.Stage11
         }
+        
+        if not self.current_stage_id == stage.STAGE_INTRO:
+            self.map_timer.reset()
+            self.map_timer.show()
+        else:
+            self.map_timer.hide()
 
         if stage_id > len(stages)-1:
             stage_id = 0

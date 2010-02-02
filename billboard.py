@@ -19,10 +19,11 @@ class GuiTimerBar():
         self.timer_finish = finish_time
         self.time_until_finish = self.map_time
         self.time_until_play = time_until_play
-        self.timer_on = True
+        self.timer_on = False
         self.has_stopped = False
         self.rect = self.empty_timer.get_rect()
         self.wait_until_play = False
+        self._show = True
         
     def start(self):
         self.timer_on = True
@@ -31,6 +32,11 @@ class GuiTimerBar():
     def stop(self):
         self.timer_on = False
         self.has_stopped = True
+        
+    def hide(self):
+        self._show = False
+    def show(self):
+        self._show = True
         
     def reset(self,time_until_play = 0.0, play = True):
         self.has_stopped = False
@@ -59,19 +65,19 @@ class GuiTimerBar():
                     self.time_until_finish -= dt*0.001
     
     def draw(self,canvas):
-        # third param = blit rect or whatever
-        draw_rect = self.rect.copy()
-        draw_rect.width -= draw_rect.width * (1-(self.time_until_finish/self.map_time))
-        canvas.blit(self.empty_timer, self.draw_pos.get(), None)
-        canvas.blit(self.stopwatch, (self.draw_pos.x+self.rect.width,self.draw_pos.y), None)
-        
-        if (self.time_until_finish <= 0.7*self.map_time) and (self.time_until_finish >= 0.25*self.map_time):
-            canvas.blit(self.green_timer, self.draw_pos.get(), draw_rect)
-        elif self.time_until_finish <= 0.25*self.map_time:
-            self.red_animation.play()
-            self.red_animation.draw(canvas,self.draw_pos.get(),True,draw_rect)
-        else:
-            canvas.blit(self.blue_timer, self.draw_pos.get(), draw_rect)
+        if self._show:            
+            draw_rect = self.rect.copy()
+            draw_rect.width -= draw_rect.width * (1-(self.time_until_finish/self.map_time))
+            canvas.blit(self.empty_timer, self.draw_pos.get(), None)
+            canvas.blit(self.stopwatch, (self.draw_pos.x+self.rect.width,self.draw_pos.y), None)
+            
+            if (self.time_until_finish <= 0.7*self.map_time) and (self.time_until_finish >= 0.25*self.map_time):
+                canvas.blit(self.green_timer, self.draw_pos.get(), draw_rect)
+            elif self.time_until_finish <= 0.25*self.map_time:
+                self.red_animation.play()
+                self.red_animation.draw(canvas,self.draw_pos.get(),True,draw_rect)
+            else:
+                canvas.blit(self.blue_timer, self.draw_pos.get(), draw_rect)
             
         
             

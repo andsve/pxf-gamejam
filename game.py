@@ -88,6 +88,9 @@ class Game:
         self.billboards.append(billboard.Billboard("data/background_stars.png",util.vec2(0,0),10,True))
         self.billboards.append(billboard.Billboard("data/background_city.png",util.vec2(0,210),40,True,False,False))
         self.billboards.append(billboard.Billboard("data/background_city2.png",util.vec2(0,190),30,True,False,True))
+        
+        #timer
+        self.map_timer = billboard.GuiTimerBar(util.vec2(240,0),15)
 
         # misc
         names = util.name_sequence("data/entity_door","png",4)
@@ -232,6 +235,18 @@ class Game:
     def update_title(self):
         pygame.display.set_caption("Channel Panic! (%.2f FPS)" % (self.clock.get_fps()))
 
+    def check_timer(self):
+        if self.map_timer.has_stopped:
+            if self.player.active_color == CRED:
+                self.create_splosions(gameobject.OBJECT_TYPE_RED)
+            if self.player.active_color == CGREEN:
+                self.create_splosions(gameobject.OBJECT_TYPE_GREEN)
+            if self.player.active_color == CBLUE:
+                self.create_splosions(gameobject.OBJECT_TYPE_BLUE)
+            self.restart_level_counter = 4.0
+            self.remove_player = True
+            self.map_timer.reset(4.0)
+
     def start_new_level(self, stage_id):
         self.current_stage_id = stage_id
 
@@ -243,6 +258,7 @@ class Game:
         self.active_color = self.player.toggle_color(CRED)
 
         self.gui_key.reset()
+        self.map_timer.reset()
 
         stages = {
             stage.STAGE_INTRO: stage.StageIntro,
@@ -458,6 +474,11 @@ class Game:
 
             # draw key gui
             self.gui_key.draw(self.screen)
+            
+            self.map_timer.update(self.dt_last_frame)
+            self.map_timer.draw(self.screen)
+            
+            self.check_timer()
 
             if self.fade_in_out:
                 self.fade_in_out_time -= self.dt_last_frame / 1000.0

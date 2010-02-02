@@ -2,6 +2,81 @@
 import util
 import pygame
 import gameobject
+import animation
+
+class GuiTimerBar():
+    def __init__(self,pos,finish_time,time_until_play = 0.0):
+        self.map_time = finish_time
+        self.draw_pos = pos
+        self.empty_timer = util.load_image("data/timer_empty0.png")
+        self.blue_timer = util.load_image("data/timer_blue0.png")
+        self.green_timer = util.load_image("data/timer_green0.png")
+        self.red_timer = util.load_image("data/timer_red0.png")
+        self.stopwatch = util.load_image("data/stopwatch0.png")
+        
+        self.red_animation = animation.new_animation("data/timer_red","png",1,8,[0,1])
+        
+        self.timer_finish = finish_time
+        self.time_until_finish = self.map_time
+        self.time_until_play = time_until_play
+        self.timer_on = True
+        self.has_stopped = False
+        self.rect = self.empty_timer.get_rect()
+        self.wait_until_play = False
+        
+    def start(self):
+        self.timer_on = True
+        self.time_until_finish = self.map_time
+        
+    def stop(self):
+        self.timer_on = False
+        self.has_stopped = True
+        
+    def reset(self,time_until_play = 0.0, play = True):
+        self.has_stopped = False
+        
+        if time_until_play > 0.0:
+            self.wait_until_play = True
+            self.time_until_play = time_until_play
+        
+        if play:
+            self.start()
+        
+    def update(self,dt):
+        if self.timer_on:
+            if self.wait_until_play:
+                if self.time_until_play <= 0:
+                    self.wait_until_play = False
+                else:
+                    self.time_until_play -= dt * 0.001
+            else:
+                if self.time_until_finish <= 0:
+                    self.timer_on = False
+                    self.has_stopped = True
+                else:
+                    if self.time_until_finish <= 0.25*self.map_time:
+                        self.red_animation.update(dt)
+                    self.time_until_finish -= dt*0.001
+    
+    def draw(self,canvas):
+        # third param = blit rect or whatever
+        draw_rect = self.rect.copy()
+        draw_rect.width -= draw_rect.width * (1-(self.time_until_finish/self.map_time))
+        canvas.blit(self.empty_timer, self.draw_pos.get(), None)
+        canvas.blit(self.stopwatch, (self.draw_pos.x+self.rect.width,self.draw_pos.y), None)
+        
+        if (self.time_until_finish <= 0.7*self.map_time) and (self.time_until_finish >= 0.25*self.map_time):
+            canvas.blit(self.green_timer, self.draw_pos.get(), draw_rect)
+        elif self.time_until_finish <= 0.25*self.map_time:
+            self.red_animation.play()
+            self.red_animation.draw(canvas,self.draw_pos.get(),True,draw_rect)
+        else:
+            canvas.blit(self.blue_timer, self.draw_pos.get(), draw_rect)
+            
+        
+            
+        
+        
 
 class GuiKeys():
     def __init__(self,pos,offset = 16):

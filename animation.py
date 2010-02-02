@@ -30,11 +30,11 @@ class Animation():
                 self.sprite.rect = self.sprite.image.get_rect(center=self.sprite.rect.center)
                 #self.current += int(self._next_update/self._period)
 
-    def draw(self,canvas,pos,noblend=False):
+    def draw(self,canvas,pos,noblend=False,draw_rect = None):
         if noblend:
-            canvas.blit(self.sprite.image, pos, None)
+            canvas.blit(self.sprite.image, pos, draw_rect)
         else:
-            canvas.blit(self.sprite.image, pos, None, pygame.BLEND_MAX)
+            canvas.blit(self.sprite.image, pos, draw_rect, pygame.BLEND_MAX)
 
     def play(self):#, repeat = True):
         #self.current = 0

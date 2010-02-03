@@ -27,7 +27,7 @@ class Player(gameobject.GameObject):
         self.stop_hammer_time = False
         self.in_air = True
         self.is_pushing = False
-        
+
         self.honk_timer = False
         self.honk_time = 4
         self.time_to_honk = 0
@@ -35,52 +35,52 @@ class Player(gameobject.GameObject):
         self.honk_animation = animation.new_animation("data/honk_honk","png",1,1,[0,1,1])
         self.honk_animation_r = animation.new_animation("data/honk_honk_r","png",1,1,[0,1,1])
         #util.load_image("data/honk_honk0.png")#animation.new_animation("data/")
-        
+
         self.animations = {}
         self.active_color = game.CBLUE
-        
+
         #load animations
         animation_freq = 4
-        
+
         red_player_push_left = animation.new_animation("data/red_guy_push","png",1,animation_freq,[0,1])
         red_player_push_right = animation.new_animation("data/red_guy_push_r","png",1,animation_freq,[0,1])
-        
+
         red_player_walk_left = animation.new_animation("data/red_guy_walk","png",1,animation_freq,[0,1])
         red_player_walk_right = animation.new_animation("data/red_guy_walk_r","png",1,animation_freq,[0,1])
 
         green_player_walk_left = animation.new_animation("data/green_guy_walk","png",1,animation_freq,[0,1])
         green_player_walk_right = animation.new_animation("data/green_guy_walk_r","png",1,animation_freq,[0,1])
-        
+
         green_player_push_left = animation.new_animation("data/green_guy_push","png",1,animation_freq,[0,1])
         green_player_push_right = animation.new_animation("data/green_guy_push_r","png",1,animation_freq,[0,1])
 
         blue_player_walk_left = animation.new_animation("data/blue_guy_walk","png",1,animation_freq,[0,1])
         blue_player_walk_right = animation.new_animation("data/blue_guy_walk_r","png",1,animation_freq,[0,1])
-        
+
         blue_player_push_left = animation.new_animation("data/blue_guy_push","png",1,animation_freq,[0,1])
         blue_player_push_right = animation.new_animation("data/blue_guy_push_r","png",1,animation_freq,[0,1])
 
         #player_walk_left.play()
         self.image = None
-        
+
         # red player animations:
         self.animations["red_player_walk_left"] = red_player_walk_left
         self.animations["red_player_walk_right"] = red_player_walk_right
-        
+
         self.animations["red_player_push_left"] = red_player_push_left
         self.animations["red_player_push_right"] = red_player_push_right
 
         # green player animations:
         self.animations["green_player_walk_left"] = green_player_walk_left
         self.animations["green_player_walk_right"] = green_player_walk_right
-        
+
         self.animations["green_player_push_left"] = green_player_push_left
         self.animations["green_player_push_right"] = green_player_push_right
 
         # blue player animations:
         self.animations["blue_player_walk_left"] = blue_player_walk_left
         self.animations["blue_player_walk_right"] = blue_player_walk_right
-        
+
         self.animations["blue_player_push_left"] = blue_player_push_left
         self.animations["blue_player_push_right"] = blue_player_push_right
 
@@ -97,21 +97,21 @@ class Player(gameobject.GameObject):
         self.current_animation.update(dt)
 
         if self.stop_hammer_time:
-            if -1.5 < self.body.velocity.x < 1.5:
+            if -3.5 < self.body.velocity.x < 3.5:
                 self.body.velocity.x = 0
             elif self.body.velocity.x > 0:
-                aoeu = 4
+                aoeu = 8
                 self.body.velocity.x -= aoeu
             elif self.body.velocity.x < 0:
-                aoeu = 4
+                aoeu = 8
                 self.body.velocity.x += aoeu
         else:
-            max_speed = 160
+            max_speed = 110
             if self.body.velocity.x > max_speed:
                 self.body.velocity.x = max_speed
             elif self.body.velocity.x < -max_speed:
                 self.body.velocity.x = -max_speed
-        
+
         #print self.body.velocity.x,self.body.velocity.y
         if (self.body.velocity.x and self.body.velocity) == 0.0:
             if self.honk_timer:
@@ -157,10 +157,10 @@ class Player(gameobject.GameObject):
             if not self.has_changed:
                 self.current_animation.stop()
             _play = False
-        
+
         if abs(vel.x) <= game.vel_epsilon:
             self.current_animation.stop()
-            
+
         action = ""
         if self.is_pushing:
             action = "push"
@@ -174,7 +174,7 @@ class Player(gameobject.GameObject):
                 new_animation = self.animations[self.determine_lookdir("bw","walk")]
             elif self.active_color == game.CRED:
                     new_animation = self.animations[self.determine_lookdir("red",action)]
-            elif self.active_color == game.CGREEN:                
+            elif self.active_color == game.CGREEN:
                 new_animation = self.animations[self.determine_lookdir("green",action)]
             elif self.active_color == game.CBLUE:
                 new_animation = self.animations[self.determine_lookdir("blue",action)]
@@ -195,7 +195,7 @@ class Player(gameobject.GameObject):
         #self.current_animation.draw(canvas,self.draw_pos.get())
         pos = self.draw_pos.get()
         canvas.blit(self.current_animation.sprite.image, (pos[0], pos[1]-2), None, pygame.BLEND_MAX)
-        
+
         if self.show_honk:
             if self.look_dir == game.PDIR_LEFT:
                 self.honk_animation.draw(canvas,(pos[0]-self.honk_animation.sprite.rect.width+8, pos[1]-self.honk_animation.sprite.rect.height))

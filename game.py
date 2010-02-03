@@ -88,7 +88,7 @@ class Game:
         self.billboards.append(billboard.Billboard("data/background_stars.png",util.vec2(0,0),10,True))
         self.billboards.append(billboard.Billboard("data/background_city.png",util.vec2(0,210),40,True,False,False))
         self.billboards.append(billboard.Billboard("data/background_city2.png",util.vec2(0,190),30,True,False,True))
-        
+
         #timer
         self.map_timer = billboard.GuiTimerBar(util.vec2(240,0),15)
 
@@ -159,6 +159,7 @@ class Game:
         return False
 
     def handle_collision(self, shapea, shapeb, contacts, normal_coef, surface):
+        import math
         #self.player.in_air = False
         for c in contacts:
 
@@ -178,21 +179,6 @@ class Game:
                 ,CGREEN: gameobject.OBJECT_TYPE_GREEN
                 ,CBLUE: gameobject.OBJECT_TYPE_BLUE}
 
-            self.player.is_pushing = False
-            if all(x not in alles for x in cs) or m[self.player.active_color] in cs:# or any(not hasattr(x, 'is_movable') for x in cs):
-                if (c.position.y - self.player.body.position.y < 1):
-                    for dyn_obj in self.current_stage.game_objects:
-                        if (dyn_obj.shape == shapea or dyn_obj.shape == shapeb):
-                            self.player.is_pushing = True
-                            #print("moving: ", c.position.y - self.player.body.position.y)
-
-                if c.position.y == self.player.body.position.y:
-                    d = c.position.x - self.player.body.position.x
-                    if d < 0:
-                        self.player.body.position.x += 0.5
-                    else:
-                        self.player.body.position.x -= 0.5
-
             in_air = True
             r = max( 3, abs(c.distance*5) )
             spawn_splosions = False
@@ -201,9 +187,25 @@ class Game:
             if (c.normal.y > 0 and c.normal.x < 0.1 and c.normal.x > -0.1):
                 in_air = False
 
+            self.player.is_pushing = False
+            if all(x not in alles for x in cs) or m[self.player.active_color] in cs:# or any(not hasattr(x, 'is_movable') for x in cs):
+                if (c.position.y - self.player.body.position.y < 1):
+                    for dyn_obj in self.current_stage.game_objects:
+                        if (dyn_obj.shape == shapea or dyn_obj.shape == shapeb):
+                            self.player.is_pushing = True
+                            #print("moving: ", c.position.y - self.player.body.position.y)
+
+                if math.fabs(self.player.body.position.y - c.position.y) == 0.0:
+                    d = c.position.x - self.player.body.position.x
+                    if d < 0:
+                        self.player.body.position.x += 0.3
+                    else:
+                        self.player.body.position.x -= 0.3
+
             if (shapea.collision_type == gameobject.OBJECT_TYPE_BW or shapeb.collision_type == gameobject.OBJECT_TYPE_BW):
                 self.player.in_air = in_air
                 return True;
+
 
             if (self.active_color == CRED):
                 if (shapea.collision_type == gameobject.OBJECT_TYPE_RED or shapeb.collision_type == gameobject.OBJECT_TYPE_RED):
@@ -274,7 +276,7 @@ class Game:
             stage.STAGE_10: stage.Stage10,
             stage.STAGE_11: stage.Stage11
         }
-        
+
         if not self.current_stage_id == stage.STAGE_INTRO:
             self.map_timer.reset()
             self.map_timer.show()
@@ -320,15 +322,15 @@ class Game:
         if pygame.key.get_pressed()[K_LEFT]:
                 self.player.stop_hammer_time = False
             #if (len(self.physics.get_colliding_objects(self.physics.player)) > 0):
-    
-                #if (-self.player.body._get_velocity().x < 80.0):                
+
+                #if (-self.player.body._get_velocity().x < 80.0):
                 if (self.player.in_air):
                     self.player.body.apply_impulse((-50,0))
                 else:
                     self.player.body.apply_impulse((-100,0))
-                    
+
                 self.player.look_dir = PDIR_LEFT
-                
+
                 #self.player.look_dir = 1
                 self.player.has_changed = True
                 #self.player.vel.y = 0.04
@@ -378,7 +380,7 @@ class Game:
                     if (event.key == K_ESCAPE):
                         self.playing_intro = False
 
-            
+
 
             pxf_logo.update(self.dt_last_frame)
             pxf_logo.draw(self.screen, (self.size[0] / 2 - 64, self.size[1] / 2 - 64), True)
@@ -480,10 +482,10 @@ class Game:
 
             # draw key gui
             self.gui_key.draw(self.screen)
-            
+
             self.map_timer.update(self.dt_last_frame)
             self.map_timer.draw(self.screen)
-            
+
             self.check_timer()
 
             if self.fade_in_out:
